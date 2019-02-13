@@ -1,1 +1,1 @@
-# znaka
+# znaka - programing language
