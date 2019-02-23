@@ -25,7 +25,8 @@ public class Token {
         this.value = value;
     }
 
-    public void printer(){
-        System.out.println("[" + type + " : " + value + "]");
+    public String printer(){
+        String token = "[" + type + " : " + value + "]";
+        return token;
     }
 }
