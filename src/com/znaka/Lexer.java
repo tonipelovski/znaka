@@ -31,7 +31,8 @@ public class Lexer {
             line = line.replace(";", " ; ");
             String[] splited = line.split(" ");
             final List<String> operators = Arrays.asList("+", "=", "-", "*", "/", "<", ">", "--", "++");
-            
+            final List<String> types = Arrays.asList("char", "int", "bool", "string", "float");
+
             /* splited[i].equals("=") || splited[i].equals("+") || splited[i].equals("-") || splited[i].equals("*")
                  || splited[i].equals("/") || splited[i].equals("<") || splited[i].equals(">") || splited[i].equals("--") ||
                splited[i].equals("++") */
@@ -39,7 +40,11 @@ public class Lexer {
             for(int i = 0; i < splited.length; i++) {
 
                 Token token = new Token("", "");
-               if(splited[i].matches("^[a-zA-Z_$][a-zA-Z_$0-9]*$")){
+                if(types.contains(splited[i])){
+                    token.setType("type");
+                    token.setValue(splited[i]);
+                }
+               else if(splited[i].matches("^[a-zA-Z_$][a-zA-Z_$0-9]*$")){
                     token.setType("symbol");
                     token.setValue(splited[i]);
                 }else if(operators.contains(splited[i])){
@@ -49,7 +54,16 @@ public class Lexer {
                 else if(splited[i].matches("-?\\d+(\\.\\d+)?")) {
                    token.setType("number");
                    token.setValue(splited[i]);
-               }else{
+                }
+                else if(splited[i].matches("\".*?\"")){
+                    token.setType("string_literal");
+                    token.setValue(splited[i]);
+                }
+                else if(splited[i].matches("'.'")){
+                    token.setType("character");
+                    token.setValue(splited[i]);
+                }
+                else{
                     token.setType(splited[i]);
                }
                 // TO DO  more if else with regex
