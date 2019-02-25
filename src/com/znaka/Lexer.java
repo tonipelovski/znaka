@@ -1,6 +1,9 @@
 package com.znaka;
 
 
+import com.znaka.Tokens.TokenMatcher;
+import com.znaka.Tokens.TokenTypeMatch;
+
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -11,10 +14,14 @@ import java.util.List;
 public class Lexer {
     ArrayList<Token> tokens;
     BufferedReader br;
+    TokenMatcher tm;
 
     public Lexer(ArrayList<Token> tokens, BufferedReader br) {
         this.tokens = tokens;
         this.br = br;
+        this.tm = new TokenMatcher();
+//        tm.ls.add(new TokenTypeMatch());
+        //add shit
     }
 
 
@@ -40,10 +47,15 @@ public class Lexer {
                  || splited[i].equals("/") || splited[i].equals("<") || splited[i].equals(">") || splited[i].equals("--") ||
                splited[i].equals("++") */
 
+            Token token;
             for(int i = 0; i < splited.length; i++) {
 
-                Token token = new Token("", "");
-                if(types.contains(splited[i])){
+                //Token token = new Token("", "");
+
+                token = tm.tokenize(splited[i]);
+
+
+                /*if(types.contains(splited[i])){
                     token.setType("type"); // signifies type of data
                     token.setValue(splited[i]);
                 }
@@ -75,11 +87,12 @@ public class Lexer {
                     token.setType(splited[i]);
                 }
                 // TO DO  more if else with regex
+                */
                 if(!token.getType().equals("")) {
                     tokens.add(token);
                 }
             }
-            return true;
+        return true;
     }
 
     public ArrayList<Token> getTokens() {
