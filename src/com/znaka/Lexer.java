@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 //TODO put operators and types as constant properties of Lexer
-//TODO Change the line replacement to avoid repetition
 //TODO Change the if, elses for matching with classes to use shared behaiviour and enable easier unittesting
 public class Lexer {
     ArrayList<Token> tokens;
@@ -30,14 +29,12 @@ public class Lexer {
             if(line == null){
                 return false;
             }
-            line = line.replace("(", " ( ");
-            line = line.replace(")", " ) ");
-            line = line.replace("}", " } ");
-            line = line.replace("{", " { ");
-            line = line.replace("--", " -- ");
-            line = line.replace("++", " ++ ");
-
-            line = line.replace(";", " ; ");
+            final List<String> addSpace = Arrays.asList("(", ")", "{", "}", ";", "--", "++", "[", "]");
+            for(int i = 0; i < addSpace.size(); i++) {
+                if (line.contains(addSpace.get(i))){
+                    line = line.replace(addSpace.get(i), " " + addSpace.get(i) + " ");
+                }
+            }
             String[] splited = line.split(" ");
             final List<String> operators = Arrays.asList("<=", ">=", "+", "=", "-", "*", "/", "<", ">", "--", "++");
             final List<String> types = Arrays.asList("char", "int", "bool", "string", "float");
@@ -49,7 +46,6 @@ public class Lexer {
 
             Token token;
             for(int i = 0; i < splited.length; i++) {
-
                 //Token token = new Token("", "");
 
                 token = tm.tokenize(splited[i]);

@@ -2,13 +2,15 @@ package com.znaka.Tokens;
 
 import com.znaka.Token;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-//TODO fix the compile error when adding matching to the list
 public class TokenMatcher {
     public List<TokenMatch> ls;
+
     public TokenMatcher(){
         //System.out.println("Hello from token macher");
+        this.ls = new ArrayList<>();
         ls.add(new TokenTypeMatch());
 
     }
