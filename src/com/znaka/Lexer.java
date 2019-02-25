@@ -5,7 +5,9 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
+//TODO put operators and types as constant properties of Lexer
+//TODO Change the line replacement to avoid repetition
+//TODO Change the if, elses for matching with classes to use shared behaiviour and enable easier unittesting
 public class Lexer {
     ArrayList<Token> tokens;
     BufferedReader br;
@@ -30,8 +32,9 @@ public class Lexer {
 
             line = line.replace(";", " ; ");
             String[] splited = line.split(" ");
-            final List<String> operators = Arrays.asList("+", "=", "-", "*", "/", "<", ">", "--", "++");
+            final List<String> operators = Arrays.asList("<=", ">=", "+", "=", "-", "*", "/", "<", ">", "--", "++");
             final List<String> types = Arrays.asList("char", "int", "bool", "string", "float");
+            final List<String> reserved = Arrays.asList("if", "else", "while", "for", "elseif");
 
             /* splited[i].equals("=") || splited[i].equals("+") || splited[i].equals("-") || splited[i].equals("*")
                  || splited[i].equals("/") || splited[i].equals("<") || splited[i].equals(">") || splited[i].equals("--") ||
@@ -41,31 +44,36 @@ public class Lexer {
 
                 Token token = new Token("", "");
                 if(types.contains(splited[i])){
-                    token.setType("type");
+                    token.setType("type"); // signifies type of data
+                    token.setValue(splited[i]);
+                }
+                else if(reserved.contains(splited[i])){
+                    token.setType("reserved_word"); //used to perform special operation
                     token.setValue(splited[i]);
                 }
                else if(splited[i].matches("^[a-zA-Z_$][a-zA-Z_$0-9]*$")){
-                    token.setType("symbol");
+                    token.setType("symbol"); // used to create a new variable in memmory
                     token.setValue(splited[i]);
-                }else if(operators.contains(splited[i])){
-                    token.setType("operator");
+                }
+               else if(operators.contains(splited[i])){
+                    token.setType("operator"); // boolean or arithmetic operator
                     token.setValue(splited[i]);
                 }
                 else if(splited[i].matches("-?\\d+(\\.\\d+)?")) {
-                   token.setType("number");
+                   token.setType("number"); // matches numbers
                    token.setValue(splited[i]);
                 }
                 else if(splited[i].matches("\".*?\"")){
-                    token.setType("string_literal");
+                    token.setType("string_literal"); // matches strings
                     token.setValue(splited[i]);
                 }
                 else if(splited[i].matches("'.'")){
-                    token.setType("character");
+                    token.setType("character"); // matches a single character
                     token.setValue(splited[i]);
                 }
                 else{
                     token.setType(splited[i]);
-               }
+                }
                 // TO DO  more if else with regex
                 if(!token.getType().equals("")) {
                     tokens.add(token);

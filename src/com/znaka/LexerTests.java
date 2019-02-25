@@ -29,12 +29,14 @@ public class LexerTests {
         String lexerOutput = lexer.printTokens();
         String actual =
                 "[type : int][symbol : a][operator : =][number : 10][; : ]" +
+                "[symbol : bit_conn3ct][operator : =][number : 1337][; : ]" +
                 "[type : char][symbol : c][operator : =][character : 'f'][; : ]" +
                 "[type : string][symbol : alabala][operator : =][string_literal : \"kurwa\"][; : ]" +
-                "[symbol : while][( : ][symbol : a][operator : >][number : 8][) : ][{ : ]" +
+                "[reserved_word : while][( : ][symbol : a][operator : >][number : 8][) : ][{ : ]" +
                 "[symbol : a][operator : --][; : ]" +
                 "[} : ]";
         Assertions.assertEquals(actual, lexerOutput);
-//        System.out.println("Hello");
+//        String a = "ASD()";
+//        System.out.println(a.replaceAll("([(])", " $1"));
     }
 }

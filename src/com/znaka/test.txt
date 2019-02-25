@@ -1,4 +1,5 @@
 int a = 10;
+bit_conn3ct = 1337;
 char c = 'f';
 string alabala = "kurwa";
 while(a > 8){
