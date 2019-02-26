@@ -12,6 +12,12 @@ public class TokenMatcher {
         //System.out.println("Hello from token macher");
         this.ls = new ArrayList<>();
         ls.add(new TokenTypeMatch());
+        ls.add(new TokenResWordMatch());
+        ls.add(new TokenSymbolMatch());
+        ls.add(new TokenOperatorMatch());
+        ls.add(new TokenNumberMatch());
+        ls.add(new TokenStringMatch());
+        ls.add(new TokenCharMatch());
 
     }
 
@@ -23,7 +29,7 @@ public class TokenMatcher {
                 return token;
             }
         }
-        return new Token("", "");
+        return new Token(s, "");
      }
 
 
