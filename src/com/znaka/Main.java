@@ -4,7 +4,6 @@ import java.io.*;
 import java.net.URL;
 import java.util.ArrayList;
 
-//TODO: turn into relative path test.txt
 public class Main {
 
     public static void main(String[] args) throws IOException {
