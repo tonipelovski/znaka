@@ -25,7 +25,7 @@ public class Token {
         this.value = value;
     }
 
-    public boolean empty() { return type == "" || value == ""; }
+    public boolean empty() { return type.isEmpty() || value.isEmpty(); }
 
     public String printer(){
         String token = "[" + type + " : " + value + "]";
