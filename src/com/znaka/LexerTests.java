@@ -23,12 +23,12 @@ public class LexerTests {
         BufferedReader reader = new BufferedReader(new FileReader(file));
         ArrayList<Token> tokens = new ArrayList<>();
         Lexer lexer = new Lexer(tokens, reader);
+        String lexerOutput = "";
 
         while(lexer.readLine()){
-
+            lexerOutput = lexerOutput.concat(lexer.printTokens());
         }
-        String lexerOutput = lexer.printTokens();
-        String actual =
+        String expected =
                 "[type : int][symbol : a][operator : =][number : 10][; : ]" +
                 "[symbol : bit_conn3ct][operator : =][number : 1337][; : ]" +
                 "[type : char][symbol : c][operator : =][character : 'f'][; : ]" +
@@ -36,7 +36,7 @@ public class LexerTests {
                 "[reserved_word : while][( : ][symbol : a][operator : >][number : 8][) : ][{ : ]" +
                 "[symbol : a][operator : --][; : ]" +
                 "[} : ]";
-        Assertions.assertEquals(actual, lexerOutput);
+        Assertions.assertEquals(expected, lexerOutput);
 //        String a = "ASD()";
 //        System.out.println(a.replaceAll("([(])", " $1"));
     }
