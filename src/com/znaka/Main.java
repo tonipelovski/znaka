@@ -1,6 +1,7 @@
 package com.znaka;
 
 import java.io.*;
+import java.net.URL;
 import java.util.ArrayList;
 
 //TODO: turn into relative path test.txt
@@ -8,18 +9,18 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
 	// write your code here
-        File file = new File("/home/theking/IdeaProjects/ZnakaInterpreter/src/com/znaka/test.txt");
-
+        URL url = Main.class.getResource("test.txt");
+        File file = new File(url.getPath());
         BufferedReader reader = new BufferedReader(new FileReader(file));
         ArrayList<Token> tokens = new ArrayList<>();
         Lexer lexer = new Lexer(tokens, reader);
 
-        while(lexer.readLine()){
+        String lexerOutput = "";
 
+        while(lexer.readLine()){
+            lexerOutput = lexerOutput.concat(lexer.printTokens());
         }
         System.out.println("lexer: ");
-
-        String tokens_output = lexer.printTokens();
-        System.out.println(tokens_output);
+        System.out.println(lexerOutput);
     }
 }
