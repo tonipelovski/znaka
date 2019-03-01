@@ -1,7 +1,5 @@
 package com.znaka.Tokens;
 
-import com.znaka.Token;
-
 public class TokenSymbolMatch extends TokenMatch{
 
     public TokenSymbolMatch() {

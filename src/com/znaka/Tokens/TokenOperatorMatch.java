@@ -1,12 +1,10 @@
 package com.znaka.Tokens;
 
-import com.znaka.Token;
-
 import java.util.Arrays;
 import java.util.List;
 
 public class TokenOperatorMatch extends TokenMatch{
-    final List<String> operators = Arrays.asList("<=", ">=", "+", "=", "-", "*", "/", "<", ">", "--", "++");
+    final List<String> operators = Arrays.asList("<=", ">=", "+", "=", "-", "*", "/", "^", "%", "<", ">", "--", "++");
     public TokenOperatorMatch(){
         super("operator");
     }

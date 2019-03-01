@@ -1,4 +1,6 @@
-package com.znaka;
+package com.znaka.Tokens;
+
+import java.util.Objects;
 
 public class Token {
     String type;
@@ -30,5 +32,19 @@ public class Token {
     public String printer(){
         String token = "[" + type + " : " + value + "]";
         return token;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Token token = (Token) o;
+        return type.equals(token.type) &&
+                Objects.equals(value, token.value);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(type, value);
     }
 }

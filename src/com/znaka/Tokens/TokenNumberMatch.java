@@ -1,7 +1,5 @@
 package com.znaka.Tokens;
 
-import com.znaka.Token;
-
 public class TokenNumberMatch extends TokenMatch {
     public TokenNumberMatch() {
         super("number");

@@ -1,7 +1,10 @@
 int a = 10;
 bit_conn3ct = 1337;
 char c = 'f';
+bool a = True;
 string alabala = "kurwa";
 while(a > 8){
     a--;
 }
+ls[6];
+

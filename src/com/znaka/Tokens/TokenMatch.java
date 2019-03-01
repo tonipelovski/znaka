@@ -1,7 +1,5 @@
 package com.znaka.Tokens;
 
-import com.znaka.Token;
-
 public abstract class TokenMatch {
     String key;
 

@@ -1,5 +1,7 @@
 package com.znaka;
 
+import com.znaka.Tokens.Token;
+
 import java.io.*;
 import java.net.URL;
 import java.util.ArrayList;

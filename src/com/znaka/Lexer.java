@@ -1,6 +1,7 @@
 package com.znaka;
 
 
+import com.znaka.Tokens.Token;
 import com.znaka.Tokens.TokenMatcher;
 import com.znaka.Tokens.TokenTypeMatch;
 
@@ -29,7 +30,16 @@ public class Lexer {
             final List<String> addSpace = Arrays.asList("(", ")", "{", "}", ";", "--", "++", "[", "]");
             for(int i = 0; i < addSpace.size(); i++) {
                 if (line.contains(addSpace.get(i))){
-                    line = line.replace(addSpace.get(i), " " + addSpace.get(i) + " ");
+                    if(addSpace.get(i) == "["){
+                        line = line.replace(addSpace.get(i), " " + addSpace.get(i));
+                    }
+                    else if(addSpace.get(i) == "]"){
+                        line = line.replace(addSpace.get(i), addSpace.get(i) + " ");
+                    }
+                    else{
+                        line = line.replace(addSpace.get(i), " " + addSpace.get(i) + " ");
+                    }
+
                 }
             }
             String[] splited = line.split(" ");

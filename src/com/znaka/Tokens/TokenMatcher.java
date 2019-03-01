@@ -1,9 +1,6 @@
 package com.znaka.Tokens;
 
-import com.znaka.Token;
-
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 public class TokenMatcher {
     public List<TokenMatch> ls;
@@ -11,13 +8,17 @@ public class TokenMatcher {
     public TokenMatcher(){
         //System.out.println("Hello from token macher");
         this.ls = new ArrayList<>();
+        ls.add(new TokenPunctuationMatch());
         ls.add(new TokenTypeMatch());
         ls.add(new TokenResWordMatch());
+        ls.add(new TokenBoolMatch());
         ls.add(new TokenSymbolMatch());
         ls.add(new TokenOperatorMatch());
+        ls.add(new TokenIndexMatch());
         ls.add(new TokenNumberMatch());
         ls.add(new TokenStringMatch());
         ls.add(new TokenCharMatch());
+
 
     }
 

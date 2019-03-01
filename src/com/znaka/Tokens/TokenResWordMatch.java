@@ -6,7 +6,7 @@ import java.util.List;
 public class TokenResWordMatch extends TokenMatch {
     final List<String> reserved = Arrays.asList("if", "else", "while", "for", "elseif");
     public TokenResWordMatch() {
-        super("reserved_word");
+        super("keyword");
     }
 
     boolean check(String s){
