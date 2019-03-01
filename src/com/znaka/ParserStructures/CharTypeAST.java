@@ -1,10 +1,10 @@
-package com.znaka.PerserStructures;
+package com.znaka.ParserStructures;
 
-public class BoolAST extends DefaultAST{
-    private boolean value;
+public class CharTypeAST extends DefaultAST{
+    private char value;
 
-    public BoolAST(boolean value) {
-        super("bool");
+    public CharTypeAST(char value) {
+        super("charType");
         this.value = value;
     }
 
@@ -17,7 +17,7 @@ public class BoolAST extends DefaultAST{
         }
     }
 
-    public boolean isValue() {
+    public char getValue() {
         return value;
     }
 }

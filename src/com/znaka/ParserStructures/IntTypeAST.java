@@ -1,4 +1,4 @@
-package com.znaka.PerserStructures;
+package com.znaka.ParserStructures;
 
 public class IntTypeAST extends DefaultAST {
     private int value;

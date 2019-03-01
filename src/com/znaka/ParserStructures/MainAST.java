@@ -1,4 +1,4 @@
-package com.znaka.PerserStructures;
+package com.znaka.ParserStructures;
 
 import java.util.Stack;
 

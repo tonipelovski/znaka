@@ -1,4 +1,4 @@
-package com.znaka.PerserStructures;
+package com.znaka.ParserStructures;
 
 public class IfConditionAST extends DefaultAST {
     private DefaultAST condition;

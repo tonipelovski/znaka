@@ -1,4 +1,4 @@
-package com.znaka.PerserStructures;
+package com.znaka.ParserStructures;
 
 public class AssignAST extends DefaultAST {
     private String operator;

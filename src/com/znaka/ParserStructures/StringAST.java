@@ -1,13 +1,12 @@
-package com.znaka.PerserStructures;
+package com.znaka.ParserStructures;
 
-public class CharTypeAST extends DefaultAST{
-    private char value;
+public class StringAST extends DefaultAST{
+    private String value;
 
-    public CharTypeAST(char value) {
-        super("charType");
+    public StringAST(String value) {
+        super("str");
         this.value = value;
     }
-
     @Override
     boolean matchAST(DefaultAST ast) {
         if(ast.getType().equals(this.getType())){
@@ -17,7 +16,7 @@ public class CharTypeAST extends DefaultAST{
         }
     }
 
-    public char getValue() {
+    public String getValue() {
         return value;
     }
 }

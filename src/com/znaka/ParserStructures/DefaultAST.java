@@ -1,4 +1,4 @@
-package com.znaka.PerserStructures;
+package com.znaka.ParserStructures;
 
 public abstract class DefaultAST {
     private String type;
