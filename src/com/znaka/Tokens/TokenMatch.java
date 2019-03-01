@@ -1,21 +1,34 @@
 package com.znaka.Tokens;
 
-import com.znaka.Token;
+import java.util.Arrays;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public abstract class TokenMatch {
     String key;
+
 
     public TokenMatch(String key) {
         this.key = key;
     }
 
-    public Token match(String s){
-        if(check(s)){
-            return new Token(key, s);
+
+    protected int nextTokenEndIndex(Pattern p1, String s){
+        Matcher m = p1.matcher(s);
+        if(!m.find()){
+            return 0;
         }
-        else{
-            return new Token("","");
-        }
+        return m.end();
     }
-    abstract boolean check(String s);
+
+    protected int nextTokenFromStringArray(String[] keywords, String s){
+        /*for(int i=0; i < keywords.length; i++){
+            keywords[i] = keywords[i].replaceAll("(.)", "\\\\$1");
+        }*/
+        String s1 = "".join("|", keywords);
+        return nextTokenEndIndex(Pattern.compile("^(" +s1+")\\b"), s);
+    }
+
+    public abstract int nextTokenEndIndex(String s);
+
 }

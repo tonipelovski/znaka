@@ -1,24 +1,22 @@
 package com.znaka.Tokens;
 
-import com.znaka.Token;
-
 import java.util.Arrays;
 import java.util.List;
+import java.util.regex.Pattern;
 
 public class TokenOperatorMatch extends TokenMatch{
-    final List<String> operators = Arrays.asList("<=", ">=", "+", "=", "-", "*", "/", "<", ">", "--", "++");
+    final List<String> operators = Arrays.asList("<=", ">=","--", "++", "+", "=", "-", "*", "/", "^", "%", "<", ">", ".");
     public TokenOperatorMatch(){
         super("operator");
     }
 
-    boolean check(String s){
-        return operators.contains(s);
-    }
-
-    /*public Token match(String s){
-        if(operators.contains(s)){
-            return new Token("operator", s);
+    @Override
+    public int nextTokenEndIndex(String s) {
+        for(String operator : operators){
+            if(s.indexOf(operator) == 0){
+                return operator.length();
+            }
         }
-        return new Token("", "");
-    }*/
+        return 0;
+    }
 }

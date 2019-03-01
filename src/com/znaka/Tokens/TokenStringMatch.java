@@ -1,11 +1,16 @@
 package com.znaka.Tokens;
 
+import java.util.regex.Pattern;
+
 public class TokenStringMatch extends TokenMatch {
     public TokenStringMatch() {
         super("string_literal");
     }
 
-    boolean check(String s){
-        return s.matches("\".*?\"");
+    @Override
+    public int nextTokenEndIndex(String s) {
+        return nextTokenEndIndex(Pattern.compile("^\".*?\""), s);
     }
+
+
 }

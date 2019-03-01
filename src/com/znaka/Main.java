@@ -1,12 +1,15 @@
 package com.znaka;
 
+import com.znaka.Tokens.Token;
+import com.znaka.Tokens.TokenExceptions.TokenMatchException;
+
 import java.io.*;
 import java.net.URL;
 import java.util.ArrayList;
 
 public class Main {
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, TokenMatchException {
 	// write your code here
         URL url = Main.class.getResource("test.txt");
         File file = new File(url.getPath());

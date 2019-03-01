@@ -1,8 +1,9 @@
 package com.znaka;
 
-
+//TODO send only whole lines without spaces, remove all spaces and then tokenizeLine
+import com.znaka.Tokens.Token;
+import com.znaka.Tokens.TokenExceptions.TokenMatchException;
 import com.znaka.Tokens.TokenMatcher;
-import com.znaka.Tokens.TokenTypeMatch;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -26,21 +27,16 @@ public class Lexer {
             if(line == null){
                 return false;
             }
-            final List<String> addSpace = Arrays.asList("(", ")", "{", "}", ";", "--", "++", "[", "]");
-            for(int i = 0; i < addSpace.size(); i++) {
-                if (line.contains(addSpace.get(i))){
-                    line = line.replace(addSpace.get(i), " " + addSpace.get(i) + " ");
-                }
-            }
-            String[] splited = line.split(" ");
-            Token token;
-            for(int i = 0; i < splited.length; i++) {
-                token = tm.tokenize(splited[i]);
-                if(!token.getType().equals("")) {
-                    tokens.add(token);
+
+                try{
+                    tokens = tm.tokenizeLine(line);
+                }catch (TokenMatchException te){
+                    System.out.println(te.getMessage());
+                    return false;
                 }
 
-            }
+
+
             return true;
     }
 

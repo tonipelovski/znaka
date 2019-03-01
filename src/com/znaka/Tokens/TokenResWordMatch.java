@@ -2,14 +2,18 @@ package com.znaka.Tokens;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.regex.Pattern;
 
 public class TokenResWordMatch extends TokenMatch {
-    final List<String> reserved = Arrays.asList("if", "else", "while", "for", "elseif");
+    private static final String[] keywords =  {"if", "else", "while", "for", "elseif"};
+
     public TokenResWordMatch() {
-        super("reserved_word");
+        super("keyword");
     }
 
-    boolean check(String s){
-        return reserved.contains(s);
+    @Override
+    public int nextTokenEndIndex(String s) {
+        return nextTokenFromStringArray(keywords, s);
     }
+
 }

@@ -1,6 +1,6 @@
 package com.znaka.Tokens;
 
-import com.znaka.Token;
+import java.util.regex.Pattern;
 
 public class TokenSymbolMatch extends TokenMatch{
 
@@ -8,13 +8,9 @@ public class TokenSymbolMatch extends TokenMatch{
         super("symbol");
     }
 
-    boolean check(String s){
-       return s.matches("^[a-zA-Z_$][a-zA-Z_$0-9]*$");
+    @Override
+    public int nextTokenEndIndex(String s) {
+        return nextTokenEndIndex(Pattern.compile("^[a-zA-Z_][a-zA-Z_0-9]*"), s);
     }
-    /*public Token match(String s){
-        if(s.matches("^[a-zA-Z_$][a-zA-Z_$0-9]*$")){
-            return new Token("symbol", s);
-        }
-        return new Token("","");
-    }*/
+
 }
