@@ -1,5 +1,10 @@
 package com.znaka.ParserStructures;
 
+import com.znaka.Parser;
+import com.znaka.Tokens.Token;
+
+import java.util.ArrayList;
+
 public abstract class DefaultAST {
     private String type;
 
@@ -11,5 +16,7 @@ public abstract class DefaultAST {
         return type;
     }
 
-    abstract boolean matchAST(DefaultAST ast);
+    abstract boolean matchAST(ArrayList<Token> tokens, Parser parsesr);
+
+    public abstract String printAST();
 }

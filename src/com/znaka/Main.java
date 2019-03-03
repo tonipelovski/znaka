@@ -10,18 +10,19 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
 	// write your code here
-        URL url = Main.class.getResource("test.txt");
+        URL url = Main.class.getResource("testParser");
         File file = new File(url.getPath());
         BufferedReader reader = new BufferedReader(new FileReader(file));
         ArrayList<Token> tokens = new ArrayList<>();
         Lexer lexer = new Lexer(tokens, reader);
 
-        String lexerOutput = "";
+        System.out.println("parser ");
 
+        Parser parser = new Parser(lexer);
         while(lexer.readLine()){
-            lexerOutput = lexerOutput.concat(lexer.printTokens());
+            parser.parseLIne();
         }
-        System.out.println("lexer: ");
-        System.out.println(lexerOutput);
+        parser.printASTS();
+
     }
 }

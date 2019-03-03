@@ -1,5 +1,10 @@
 package com.znaka.ParserStructures;
 
+import com.znaka.Parser;
+import com.znaka.Tokens.Token;
+
+import java.util.ArrayList;
+
 public class IfConditionAST extends DefaultAST {
     private DefaultAST condition;
     private DefaultAST then;
@@ -25,12 +30,24 @@ public class IfConditionAST extends DefaultAST {
         return else_condition;
     }
 
+
     @Override
-    boolean matchAST(DefaultAST ast) {
-        if(ast.getType().equals(this.getType())){
-            return true;
-        }else {
-            return false;
+    boolean matchAST(ArrayList<Token> tokens, Parser parsesr) {
+        for(Token token: tokens){
+            if(token.getType().equals("keyword") && token.getValue().equals("if")){
+                this.condition = null;
+                this.else_condition = null;
+                this.then = null;
+                parsesr.next(1);
+                return true;
+            }
         }
+        return false;
     }
+
+    @Override
+    public String printAST() {
+        return "[" + getType() + ":" + getCondition() + ":" + getElse_condition() + ":" + getThen() + "]";
+    }
+
 }
