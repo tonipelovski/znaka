@@ -1,6 +1,6 @@
 package com.znaka.Tokens;
 
-import com.znaka.Tokens.TokenExceptions.TokenMatchException;
+import com.znaka.Exceptions.TokenMatchException;
 
 import java.util.ArrayList;
 import java.util.List;

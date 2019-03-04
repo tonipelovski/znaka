@@ -1,13 +1,15 @@
 package com.znaka.Tests;
 
 import com.znaka.Tokens.Token;
-import com.znaka.Tokens.TokenExceptions.TokenMatchException;
+import com.znaka.Exceptions.TokenMatchException;
 import com.znaka.Tokens.TokenMatcher;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 
 public class TestTokenMatcher {
+    @Disabled
     @Test
     public void testTokenizeLine(){
         TokenMatcher tm = new TokenMatcher();

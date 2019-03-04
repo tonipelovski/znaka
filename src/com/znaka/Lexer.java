@@ -1,17 +1,34 @@
 package com.znaka;
 
-//TODO Make bracket validation
+//TODO Improve error bracket message: Line(1): f{
+//                                              ^
+//TODO Make lexer throw: ioException, tokenReadException and ValidationException
 
+import com.znaka.Exceptions.InvalidSyntax;
+import com.znaka.Exceptions.LineBasedException;
 import com.znaka.Tokens.Token;
-import com.znaka.Tokens.TokenExceptions.TokenMatchException;
+import com.znaka.Exceptions.TokenMatchException;
 import com.znaka.Tokens.TokenMatcher;
 
 import java.io.*;
 import java.util.*;
 
-class LineCause extends Throwable{
-    public LineCause(String message) {
-        super(message);
+
+class Bracket{
+    private char val;
+    private String line;
+
+    public Bracket(char val, String line) {
+        this.val = val;
+        this.line = line;
+    }
+
+    public char getVal() {
+        return val;
+    }
+
+    public String getLine() {
+        return line;
     }
 }
 
@@ -19,8 +36,9 @@ public class Lexer {
     private ArrayList<Token> tokens;
     private BufferedReader br;
     private TokenMatcher tm;
-    private Stack<Character> st = new Stack<>();
-    HashMap<Character, Character> mp;
+    private Stack<Bracket> st = new Stack<>();
+    private HashMap<Character, Character> mp;
+    private int lineNum = 0;
 
     public Lexer(ArrayList<Token> tokens, BufferedReader br) {
         this.tokens = tokens;
@@ -33,16 +51,16 @@ public class Lexer {
     }
 
     public boolean valid_brackets(String input) {
-        char opening_bracket;
+        Bracket opening_bracket;
         for (char c : input.toCharArray()) {
             if (mp.containsKey(c)) {
-                st.push(c);
+                st.push(new Bracket(c, LineErrorPrint(input)));
             } else if (mp.containsValue(c)) {
                 if (st.size() == 0) {
                     return false;
                 }
                 opening_bracket = st.pop();
-                if (mp.get(opening_bracket) != c) {
+                if (mp.get(opening_bracket.getVal()) != c) {
                     return false;
                 }
             }
@@ -50,28 +68,33 @@ public class Lexer {
         return true;
     }
 
+    private String LineErrorPrint(String input) {
+        return String.format("Line(%d): %s", lineNum, input);
+    }
 
-    public boolean readLine() throws IOException {
+
+    public boolean readLine() throws IOException, LineBasedException {
         String line = br.readLine();
         tokens.clear();
         if (line == null) {
             if(st.size() > 0){
-                throw new IOException("Invalid brackets!", new LineCause("Not closed end bracket"));
+                throw new InvalidSyntax(st.lastElement().getLine());
             }
             return false;
         }
-
+        lineNum++;
         if(!valid_brackets(line)){
-            throw new IOException("Invalid brackets!", new LineCause(line));
+            throw new InvalidSyntax(LineErrorPrint(line));
         }
-        try {
-            tokens = tm.tokenizeLine(line);
-        } catch (TokenMatchException te) {
-            throw new IOException(te.getMessage());
-        }
-
+        tokens = tm.tokenizeLine(line);
 
         return true;
+    }
+
+    public void resetInput(BufferedReader bufferedReader){
+        st.clear();
+        lineNum = 0;
+        br = bufferedReader;
     }
 
     public ArrayList<Token> getTokens() {

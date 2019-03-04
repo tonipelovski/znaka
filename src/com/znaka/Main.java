@@ -1,7 +1,8 @@
 package com.znaka;
 
+import com.znaka.Exceptions.LineBasedException;
 import com.znaka.Tokens.Token;
-import com.znaka.Tokens.TokenExceptions.TokenMatchException;
+import com.znaka.Exceptions.TokenMatchException;
 
 import java.io.*;
 import java.net.URL;
@@ -9,7 +10,7 @@ import java.util.ArrayList;
 
 public class Main {
 
-    public static void main(String[] args) throws IOException, TokenMatchException {
+    public static void main(String[] args) throws IOException, LineBasedException {
 	// write your code here
         URL url = Main.class.getResource("test.txt");
         File file = new File(url.getPath());
