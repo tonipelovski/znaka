@@ -1,8 +1,6 @@
 package com.znaka;
 
-import com.znaka.ParserStructures.DefaultAST;
-import com.znaka.ParserStructures.DefaultASTMatcher;
-import com.znaka.ParserStructures.MainAST;
+import com.znaka.ParserStructures.*;
 import com.znaka.Tokens.Token;
 
 import java.io.IOException;
@@ -27,6 +25,7 @@ public class Parser {
         last_token = 0;
         lexer.readLine();
         ArrayList<Token> all_tokens = lexer.getTokens();
+        MainAST to_order = new MainAST(new Stack<>());
         while(max_token < all_tokens.size()) {
             DefaultASTMatcher defaultASTMatcher = new DefaultASTMatcher(new ArrayList<DefaultAST>(), this);
 
@@ -35,12 +34,107 @@ public class Parser {
 
                 DefaultAST defaultAST = defaultASTMatcher.match(tokens);
                 if (defaultAST != null) {
-                    mainAST.addAST(defaultAST);
+                    to_order.addAST(defaultAST);
                     //printASTS();
                     //System.out.println(" ");
                 }
             }
             max_token++;
+        }
+        orderAST(to_order, 0, null);
+    }
+
+    private DefaultAST orderAST(MainAST to_order, int level, DefaultAST last) {
+        //System.out.println(to_order.getAll_AST().get(0).getType());
+
+        if(to_order.has(2)) {
+
+            if (to_order.getAll_AST().get(0).getType().equals("assign")) {
+                AssignAST assign = (AssignAST) to_order.getAll_AST().get(0);
+                DefaultAST left = last;
+                DefaultAST right = to_order.getAll_AST().get(1);
+                assign.setLeft(left);
+                to_order.popFrontAST(1);
+                if(to_order.has(2)) {
+                    if (to_order.getAll_AST().get(1).getType().equals("operator")) {
+                        assign.setRight(orderAST(to_order, level + 1, assign));
+                        if(level == 0  && to_order.getAll_AST().size() == 0) {
+                            mainAST.addAST(assign);
+                        }
+                        if(level == 0){
+                            orderAST(to_order, level, assign);
+                        }else {
+                            orderAST(to_order, level - 1, assign);
+                        }
+                    }else {
+                        assign.setRight(right);
+                        to_order.popFrontAST(1);
+                        if(level == 0  && to_order.getAll_AST().size() == 0) {
+                            mainAST.addAST(assign);
+                        }
+                        return assign;
+                    }
+                }else {
+
+                    assign.setRight(right);
+                    to_order.popFrontAST(1);
+                    if(level == 0) {
+                        mainAST.addAST(assign);
+                    }
+                    return assign;
+                }
+            }
+        }
+        if(to_order.has(2)){
+            if(to_order.getAll_AST().get(0).getType().equals("operator")){
+                OperatorAST operatorAST = (OperatorAST) to_order.getAll_AST().get(0);
+                DefaultAST left = last;
+                DefaultAST right = to_order.getAll_AST().get(1);
+                operatorAST.setLeft(left);
+                to_order.popFrontAST(1);
+                if(to_order.has(2)) {
+                    if (to_order.getAll_AST().get(1).getType().equals("operator")) {
+                        operatorAST.setRight(orderAST(to_order ,level + 1, operatorAST));
+                        if(level == 0  && to_order.getAll_AST().size() == 0) {
+                            mainAST.addAST(operatorAST);
+                        }
+                        if(level == 0){
+                            orderAST(to_order, level, operatorAST);
+                        }else {
+                            orderAST(to_order, level - 1, operatorAST);
+                        }
+                    }else {
+                        operatorAST.setRight(right);
+                        to_order.popFrontAST(1);
+                        if(level == 0  && to_order.getAll_AST().size() == 0) {
+                            mainAST.addAST(operatorAST);
+                        }
+                        return operatorAST;
+                    }
+                }else {
+
+                    operatorAST.setRight(right);
+                    to_order.popFrontAST(1);
+                    if(level == 0) {
+                        mainAST.addAST(operatorAST);
+                    }
+                    return operatorAST;
+                }
+
+            }
+        }
+        if(to_order.has(1)) {
+
+            DefaultAST defaultAST = to_order.getAll_AST().get(0);
+            //mainAST.addAST(defaultAST);
+            to_order.popFrontAST(1);
+            if(level == 0) {
+                return orderAST(to_order, 0, defaultAST);
+            }else{
+                return orderAST(to_order, level, defaultAST);
+            }
+        }else{
+            return null;
         }
     }
 

@@ -47,7 +47,19 @@ public class AssignAST extends DefaultAST {
 
     @Override
     public String printAST() {
-        return "[" + getType() + ":" + getOperator() + ":" + getLeft() + ":" + getRight() + "]";
+        String printLeft = "";
+        String printRight = "";
+        if(getLeft() == null){
+            printLeft = "null";
+        }else{
+            printLeft = getLeft().printAST();
+        }
+        if(getRight() == null){
+            printRight = "null";
+        }else {
+            printRight = getRight().printAST();
+        }
+        return "[" + getType() + ":" + getOperator() + ":" + printLeft + ":" + printRight + "]";
     }
 
     public void setOperator(String operator) {

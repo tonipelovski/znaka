@@ -1,4 +1,6 @@
 
-variable = a_var;
+variable = 10;
 
-ala * bala = alabala;
+a_var = b_var * c_var;
+
+one * two * three = four * five;

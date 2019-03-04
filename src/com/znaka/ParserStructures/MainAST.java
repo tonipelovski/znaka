@@ -23,5 +23,19 @@ public class MainAST{
         all_AST.add(ast);
     }
 
+    public void popFrontAST(int to_pop) {
+        Stack<DefaultAST> tmpStack = new Stack<>();
+        for(int i = to_pop; i < all_AST.size(); i++){
+            tmpStack.push(all_AST.get(i));
+        }
+        all_AST = tmpStack;
+    }
 
+    public boolean has(int count){
+        if(all_AST.size() >= count){
+            return true;
+        }else{
+            return false;
+        }
+    }
 }

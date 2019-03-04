@@ -22,7 +22,7 @@ public class Main {
         while(lexer.readLine()){
             parser.parseLIne();
         }
-        parser.printASTS();
+        System.out.println(parser.printASTS());
 
     }
 }
