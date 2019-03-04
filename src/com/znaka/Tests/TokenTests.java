@@ -1,5 +1,4 @@
 package com.znaka.Tests;
-//TODO add tests for all tokens
 import com.znaka.Tokens.*;
 //import com.znaka.Tokens.TokenIndexMatch;
 import org.junit.jupiter.api.*;
@@ -115,7 +114,7 @@ public class TokenTests {
     }
 
     @Test
-    public void TestIndexingMatch(){
+    public void TestIndexingMatch(){ // Deprecated
         TokenIndexMatch im = new TokenIndexMatch();
         Assertions.assertEquals(3, im.nextTokenEndIndex("[5]"));
         Assertions.assertEquals(5, im.nextTokenEndIndex("[523]"));

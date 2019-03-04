@@ -13,7 +13,7 @@ public class TokenMatcher {
         //System.out.println("Hello from token matcher");
         this.ls = new ArrayList<>();
         ls.add(new TokenPunctuationMatch());
-        ls.add(new TokenIndexMatch());
+        //ls.add(new TokenIndexMatch());
         ls.add(new TokenTypeMatch());
         ls.add(new TokenResWordMatch());
         ls.add(new TokenBoolMatch());

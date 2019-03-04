@@ -2,7 +2,6 @@ package com.znaka;
 
 //TODO Improve error bracket message: Line(1): f{
 //                                              ^
-//TODO Make lexer throw: ioException, tokenReadException and ValidationException
 
 import com.znaka.Exceptions.InvalidSyntax;
 import com.znaka.Exceptions.LineBasedException;

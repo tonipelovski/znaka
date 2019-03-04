@@ -2,7 +2,7 @@ package com.znaka.Tokens;
 
 import java.util.regex.Pattern;
 
-public class TokenIndexMatch extends TokenMatch {
+public class TokenIndexMatch extends TokenMatch { // Deprecated
 
     public TokenIndexMatch() {
         super("index");

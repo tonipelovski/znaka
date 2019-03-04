@@ -3,7 +3,7 @@ package com.znaka.Tokens;
 import java.util.regex.Pattern;
 
 public class TokenPunctuationMatch extends TokenMatch {
-    private static String punc =  ",;(){}";
+    private static String punc =  ",;(){}[]";
     public TokenPunctuationMatch() {
         super("punc");
     }

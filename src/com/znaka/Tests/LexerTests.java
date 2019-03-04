@@ -66,7 +66,7 @@ public class LexerTests {
                 "[keyword : while][punc : (][symbol : a][operator : >][number : 8][punc : )][punc : {]" +
                 "[symbol : a][operator : --][punc : ;]" +
                 "[punc : }]" +
-                "[symbol : ls][index : [6]][punc : ;]" +
+                "[symbol : ls][punc : [][number : 6][punc : ]][punc : ;]" +
                 "[symbol : a][operator : <][number : 2][punc : ;]";
         Assertions.assertEquals(expected, lexerOutput);
 
