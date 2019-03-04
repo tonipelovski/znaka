@@ -11,7 +11,5 @@ public class TokenCharMatch extends TokenMatch {
     public int nextTokenEndIndex(String s) {
         return nextTokenEndIndex(Pattern.compile("^'.'"), s);
     }
-/*boolean check(String s){
-        return s.matches("'.'");
-    }*/
+
 }

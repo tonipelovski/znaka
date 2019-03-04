@@ -9,18 +9,6 @@ import java.util.regex.Pattern;
 
 public class TokenTests {
 
-    static String cutOff(String s, Pattern p1) throws Exception {
-        p1 = Pattern.compile("^" + p1.pattern());
-        Matcher matcher = p1.matcher(s);
-        if(!matcher.find()){
-            throw new Exception("Not found");
-        }
-        String s1 = matcher.group(0);
-        String s2 = matcher.replaceFirst("");
-        System.out.println(s2);
-        return s1;
-    }
-
     @Test
     public void TestBoolMatch() {
         TokenBoolMatch bm = new TokenBoolMatch();

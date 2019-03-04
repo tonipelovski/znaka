@@ -5,7 +5,8 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 public class TokenOperatorMatch extends TokenMatch{
-    final List<String> operators = Arrays.asList("<=", ">=","--", "++", "+", "=", "-", "*", "/", "^", "%", "<", ">", ".");
+    final List<String> operators = Arrays.asList("<=", ">=", "==", "!=", "--", "++", "+=", "-=", "/=", "*=",
+            "+", "=", "-", "*", "/", "^", "%", "<", ">", ".");
     public TokenOperatorMatch(){
         super("operator");
     }
