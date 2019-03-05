@@ -46,7 +46,7 @@ public class TokenMatcher {
         while(inp_string.length() > 0){
             token = yoinkToken();
             if(token.empty()){
-                throw new TokenMatchException("Couldn't process line: " + s);
+                throw new TokenMatchException(s);
             }
             else{
                 tokens.add(token);

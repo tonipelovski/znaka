@@ -4,9 +4,9 @@ package com.znaka;
 //                                              ^
 
 import com.znaka.Exceptions.InvalidSyntax;
-import com.znaka.Exceptions.LineBasedException;
-import com.znaka.Tokens.Token;
+import com.znaka.Exceptions.LexerException;
 import com.znaka.Exceptions.TokenMatchException;
+import com.znaka.Tokens.Token;
 import com.znaka.Tokens.TokenMatcher;
 
 import java.io.*;
@@ -72,7 +72,7 @@ public class Lexer {
     }
 
 
-    public boolean readLine() throws IOException, LineBasedException {
+    public boolean readLine() throws IOException, LexerException {
         String line = br.readLine();
         tokens.clear();
         if (line == null) {
@@ -85,8 +85,11 @@ public class Lexer {
         if(!valid_brackets(line)){
             throw new InvalidSyntax(LineErrorPrint(line));
         }
-        tokens = tm.tokenizeLine(line);
-
+        try {
+            tokens = tm.tokenizeLine(line);
+        }catch (TokenMatchException tme){
+            throw new TokenMatchException(String.format("Couldn't process line(%d): ", lineNum)  + tme.getMessage());
+        }
         return true;
     }
 
@@ -107,7 +110,7 @@ public class Lexer {
     public String printTokens() {
         String token = "";
         for (int i = 0; i < tokens.size(); i++) {
-            token += tokens.get(i).printer();
+            token += tokens.get(i).toString();
         }
         return token;
     }

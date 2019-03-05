@@ -29,7 +29,7 @@ public class Token {
 
     public boolean empty() { return type.isEmpty() || value.isEmpty(); }
 
-    public String printer(){
+    public String toString(){
         String token = "[" + type + " : " + value + "]";
         return token;
     }

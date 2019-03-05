@@ -145,5 +145,6 @@ public class TokenTests {
         Assertions.assertEquals(0, cm.nextTokenEndIndex("'12'"));
         Assertions.assertEquals(0, cm.nextTokenEndIndex("-'12'"));
         Assertions.assertEquals(0, cm.nextTokenEndIndex("char a = '12'"));
+        Assertions.assertEquals(0, cm.nextTokenEndIndex("'a"));
     }
 }
