@@ -1,6 +1,6 @@
-
-variable = 10;
-
+char c = 'c';
+int a = 10;
+bool b = True;
+string str = "string";
 a_var = b_var * c_var;
-
 one * two * three = four * five;

@@ -5,28 +5,28 @@ import com.znaka.Tokens.Token;
 
 import java.util.ArrayList;
 
-public class StringAST extends DefaultAST {
-    private String value;
+public class CharAST extends DefaultAST {
+    private char value;
 
-    public String getValue() {
+    public char getValue() {
         return value;
     }
 
-    public void setValue(String value) {
+    public void setValue(char value) {
         this.value = value;
     }
 
-    public StringAST(String value) {
-        super("string_literal");
+    public CharAST(char value) {
+        super("char");
         this.value = value;
     }
 
     @Override
     boolean matchAST(ArrayList<Token> tokens, Parser parser) {
-        for(Token token: tokens){
+        for (Token token : tokens) {
             //System.out.println(token.getType() + ":" + token.getValue());
-            if(token.getType().equals("string_literal")){
-                setValue(token.getValue());
+            if (token.getType().equals("character")) {
+                setValue(token.getValue().charAt(1));
                 parser.next(1);
                 return true;
             }

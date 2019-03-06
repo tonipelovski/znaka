@@ -19,8 +19,7 @@ public class Main {
         System.out.println("parser ");
 
         Parser parser = new Parser(lexer);
-        while(lexer.readLine()){
-            parser.parseLIne();
+        while(parser.parseLIne()){
         }
         System.out.println(parser.printASTS());
 

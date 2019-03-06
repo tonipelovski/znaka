@@ -5,27 +5,26 @@ import com.znaka.Tokens.Token;
 
 import java.util.ArrayList;
 
-public class CharTypeAST extends DefaultAST{
+public class StringTypeAST extends DefaultAST{
     private String value;
 
-    public void setValue(String value) {
+    public StringTypeAST(String value) {
+        super("string");
         this.value = value;
     }
 
-    public CharTypeAST(String value) {
-        super("charType");
+    public void setValue(String value) {
         this.value = value;
     }
 
     @Override
     boolean matchAST(ArrayList<Token> tokens, Parser parser) {
         boolean flag = false;
-        for(Token token: tokens){
-            //System.out.println(token.getType() + ":" + token.getValue());
-            if(token.getType().equals("type") && token.getValue().equals("char")){
+        for (Token token : tokens) {
+            if (token.getType().equals("string")) {
+                //System.out.println(token.getType());
                 flag = true;
-
-            }else if(flag && token.getType().equals("symbol")){
+            } else if (flag && token.getType().equals("symbol")){
                 this.setValue(token.getValue());
                 parser.next(2);
                 return true;

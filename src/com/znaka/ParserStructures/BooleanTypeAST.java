@@ -5,15 +5,15 @@ import com.znaka.Tokens.Token;
 
 import java.util.ArrayList;
 
-public class CharTypeAST extends DefaultAST{
+public class BooleanTypeAST extends DefaultAST{
     private String value;
 
-    public void setValue(String value) {
+    public BooleanTypeAST(String value) {
+        super("booleanType");
         this.value = value;
     }
 
-    public CharTypeAST(String value) {
-        super("charType");
+    public void setValue(String value) {
         this.value = value;
     }
 
@@ -21,8 +21,7 @@ public class CharTypeAST extends DefaultAST{
     boolean matchAST(ArrayList<Token> tokens, Parser parser) {
         boolean flag = false;
         for(Token token: tokens){
-            //System.out.println(token.getType() + ":" + token.getValue());
-            if(token.getType().equals("type") && token.getValue().equals("char")){
+            if(token.getType().equals("type") && token.getValue().equals("bool")){
                 flag = true;
 
             }else if(flag && token.getType().equals("symbol")){

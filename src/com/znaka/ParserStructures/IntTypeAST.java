@@ -22,7 +22,6 @@ public class IntTypeAST extends DefaultAST {
     boolean matchAST(ArrayList<Token> tokens, Parser parsesr) {
         boolean flag = false;
         for(Token token: tokens){
-            //System.out.println(token.getType() + ":" + token.getValue());
             if(token.getType().equals("type") && token.getValue().equals("int")){
                 flag = true;
 

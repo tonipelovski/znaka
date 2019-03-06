@@ -20,10 +20,13 @@ public class Parser {
         mainAST = new MainAST(new Stack<>());
     }
 
-    public void parseLIne() throws IOException {
+    public boolean parseLIne() throws IOException {
         max_token = 0;
         last_token = 0;
-        lexer.readLine();
+        if(!lexer.readLine()){
+            return false;
+        }
+        //System.out.println(lexer.printTokens());
         ArrayList<Token> all_tokens = lexer.getTokens();
         MainAST to_order = new MainAST(new Stack<>());
         while(max_token < all_tokens.size()) {
@@ -42,6 +45,7 @@ public class Parser {
             max_token++;
         }
         orderAST(to_order, 0, null);
+        return true;
     }
 
     private DefaultAST orderAST(MainAST to_order, int level, DefaultAST last) {
@@ -58,14 +62,10 @@ public class Parser {
                 if(to_order.has(2)) {
                     if (to_order.getAll_AST().get(1).getType().equals("operator")) {
                         assign.setRight(orderAST(to_order, level + 1, assign));
-                        if(level == 0  && to_order.getAll_AST().size() == 0) {
+                        if(to_order.getAll_AST().size() == 0) {
                             mainAST.addAST(assign);
                         }
-                        if(level == 0){
-                            orderAST(to_order, level, assign);
-                        }else {
-                            orderAST(to_order, level - 1, assign);
-                        }
+                            orderAST(to_order, level + 1, assign);
                     }else {
                         assign.setRight(right);
                         to_order.popFrontAST(1);
