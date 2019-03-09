@@ -1,4 +1,12 @@
-int b = int c * int d;
+int c;
+int a;
+int b;
+int d = c * b;
 int ala * int bala = int balaala;
 int a = 10;
-func(int a * int c, int b);
+int func(a * c, b);
+int a = 10;
+char bit_conn3ct = 1337;
+char c = 'f';
+bool a = True;
+string alabala = "kurwa";

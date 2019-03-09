@@ -18,24 +18,21 @@ public class VarAST extends DefaultAST {
     }
 
     @Override
-    boolean matchAST(ArrayList<Token> tokens, Parser parsesr) {
+    boolean matchAST(ArrayList<Token> tokens, Parser parser) {
         boolean flag_punc = false;
         boolean flag_symbol = false;
         String value = "";
         if(tokens.size() > 1) {
-            for (Token token : tokens) {
-                System.out.println(token.getType());
-                if (token.getValue().equals("(")) {
-                    flag_punc = true;
-                } else if (token.getType().equals("symbol")) {
-                    flag_symbol = true;
-                    value = token.getValue();
-                }
+            if (tokens.get(1).getValue().equals("(")) {
+                flag_punc = true;
+            } else if (tokens.get(0).getType().equals("symbol")) {
+                flag_symbol = true;
+                value = tokens.get(0).getValue();
             }
         }
         if(flag_symbol && !flag_punc){
             this.setName(value);
-            parsesr.next(1);
+            parser.next(1);
             return true;
         }
         return false;

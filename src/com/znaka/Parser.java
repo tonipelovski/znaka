@@ -21,24 +21,25 @@ public class Parser {
     }
 
     public boolean parseLIne() throws IOException {
-        max_token = 0;
         last_token = 0;
         if(!lexer.readLine()){
             return false;
         }
         //System.out.println(lexer.printTokens());
         ArrayList<Token> all_tokens = lexer.getTokens();
+        max_token = 0;
         MainAST to_order = new MainAST(new Stack<>());
-        while(max_token < all_tokens.size()) {
+        while(max_token <= all_tokens.size()) {
             DefaultASTMatcher defaultASTMatcher = new DefaultASTMatcher(new ArrayList<DefaultAST>(), this);
 
             if(last_token < max_token) {
                 ArrayList<Token> tokens = new ArrayList(all_tokens.subList(last_token, max_token));
+                //System.out.println(tokens.get(tokens.size() - 1).getValue());
 
                 DefaultAST defaultAST = defaultASTMatcher.match(tokens);
                 if (defaultAST != null) {
                     to_order.addAST(defaultAST);
-                    //System.out.println(" ");
+                    //System.out.println(defaultAST.printAST());
                 }
             }
             max_token++;
@@ -203,14 +204,18 @@ public class Parser {
         if(to_order.has(1)) {
 
             DefaultAST defaultAST = to_order.getAll_AST().get(0);
+            //System.out.println(defaultAST.printAST());
             //mainAST.addAST(defaultAST);
             to_order.popFrontAST(1);
-            if(level == 0) {
+            if(level == 0 && to_order.getAll_AST().size() == 0){
+                mainAST.addAST(defaultAST);
+            }else if(level == 0) {
                 //mainAST.addAST(defaultAST);
                 return orderAST(to_order, level, defaultAST);
             }else{
                 return defaultAST;
             }
+            return null;
         }else{
             return null;
         }
@@ -224,9 +229,13 @@ public class Parser {
     public String printASTS(){
         String output = "";
         for(int i = 0; i < mainAST.getAll_AST().size(); i++){
-            output = output.concat(mainAST.getAll_AST().get(i).printAST());
+            if(mainAST.getAll_AST().get(i).printAST() != null) {
+                output = output.concat(mainAST.getAll_AST().get(i).printAST());
+            }
         }
         return output;
     }
 
 }
+
+

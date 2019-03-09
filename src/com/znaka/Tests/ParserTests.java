@@ -16,8 +16,8 @@ import java.util.ArrayList;
 
 public class ParserTests {
     @Test
-    public void testOutput() throws IOException {
-        URL url = Main.class.getResource("testParser");
+    public void genaralBasicsTest() throws IOException {
+        URL url = Main.class.getResource("testParserSecond");
         File file = new File(url.getPath());
         BufferedReader reader = new BufferedReader(new FileReader(file));
         ArrayList<Token> tokens = new ArrayList<>();
@@ -28,30 +28,41 @@ public class ParserTests {
 
         }
         String parserOutput = parser.printASTS();
-        String expected = "\n  [assign\n" +
+        String expected = "[intType:c][intType:a][intType:b]\n" +
+                "  [assign\n" +
                 "    =\n" +
-                "     [charType:c]\n" +
-                "     [char:c]]\n" +
+                "     [intType:d]\n" +
+                "     [operator:*:[var:c]:[var:b]]]\n" +
+                "  [assign\n" +
+                "    =\n" +
+                "     [operator:*:[intType:ala]:[intType:bala]]\n" +
+                "     [intType:balaala]]\n" +
+                "  [assign\n" +
+                "    =\n" +
+                "     [intType:a]\n" +
+                "     [number:10.0]]\n" +
+                "[call:int:[operator:*:[var:a]:[var:c]][var:b]]\n" +
+                "\n" +
                 "  [assign\n" +
                 "    =\n" +
                 "     [intType:a]\n" +
                 "     [number:10.0]]\n" +
                 "  [assign\n" +
                 "    =\n" +
-                "     [booleanType:b]\n" +
+                "     [charType:bit_conn3ct]\n" +
+                "     [number:1337.0]]\n" +
+                "  [assign\n" +
+                "    =\n" +
+                "     [charType:c]\n" +
+                "     [char:f]]\n" +
+                "  [assign\n" +
+                "    =\n" +
+                "     [booleanType:a]\n" +
                 "     [boolean:true]]\n" +
                 "  [assign\n" +
                 "    =\n" +
-                "     [string:s]\n" +
-                "     [string_literal:\"string\"]]\n" +
-                "  [assign\n" +
-                "    =\n" +
-                "     [var:a_var]\n" +
-                "     [operator:*:[var:b_var]:[var:c_var]]]\n" +
-                "  [assign\n" +
-                "    =\n" +
-                "     [operator:*:[var:one]:[operator:*:[var:two]:[var:three]]]\n" +
-                "     [operator:*:[var:four]:[var:five]]]";
+                "     [string:alabala]\n" +
+                "     [string_literal:\"kurwa\"]]";
         Assertions.assertEquals(expected, parserOutput);
 
     }

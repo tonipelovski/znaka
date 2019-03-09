@@ -20,17 +20,28 @@ public class StringTypeAST extends DefaultAST{
     @Override
     boolean matchAST(ArrayList<Token> tokens, Parser parser) {
         boolean flag = false;
-        for (Token token : tokens) {
-            //System.out.println(token.getType());
+        Token last = tokens.get(0);
+        IntTypeAST temp = new IntTypeAST("");
+        if(tokens.size() > 2) {
+            for (Token token : tokens) {
+                if (last.getValue().equals("string") && last.getType().equals("type") && token.getType().equals("symbol")) {
+                    temp.setValue(token.getValue());
 
-            if (token.getType().equals("type") && token.getValue().equals("string")) {
-                flag = true;
-            } else if (flag && token.getType().equals("symbol")){
-                this.setValue(token.getValue());
+                    flag = true;
+                } else if (flag && (!token.getValue().equals("("))) {
+
+                    this.setValue(temp.getValue());
+                    parser.next(2);
+                    return true;
+                } else {
+                    flag = false;
+                }
+                last = token;
+            }
+            if (flag) {
+                this.setValue(temp.getValue());
                 parser.next(2);
                 return true;
-            }else{
-                flag = false;
             }
         }
         return false;
