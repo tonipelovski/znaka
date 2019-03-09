@@ -38,6 +38,7 @@ public class AssignAST extends DefaultAST {
                 this.setLeft(null);
                 this.setRight(null);
                 parser.next(1);
+                //System.out.println("assigning");
                 return true;
             }
 
@@ -59,7 +60,7 @@ public class AssignAST extends DefaultAST {
         }else {
             printRight = getRight().printAST();
         }
-        return "[" + getType() + ":" + getOperator() + ":" + printLeft + ":" + printRight + "]";
+        return "\n  [" + getType() + "\n    " + getOperator() + "\n     " + printLeft + "\n     " + printRight + "]";
     }
 
     public void setOperator(String operator) {

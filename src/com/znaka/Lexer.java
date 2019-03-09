@@ -27,7 +27,7 @@ public class Lexer {
             if(line == null){
                 return false;
             }
-            final List<String> addSpace = Arrays.asList("(", ")", "{", "}", ";", "--", "++", "[", "]");
+            final List<String> addSpace = Arrays.asList("(", ")", "{", "}", ";", "--", "++", "[", "]", ",");
             for(int i = 0; i < addSpace.size(); i++) {
                 if (line.contains(addSpace.get(i))){
                     if(addSpace.get(i) == "["){

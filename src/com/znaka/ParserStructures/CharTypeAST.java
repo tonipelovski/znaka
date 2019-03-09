@@ -29,6 +29,8 @@ public class CharTypeAST extends DefaultAST{
                 this.setValue(token.getValue());
                 parser.next(2);
                 return true;
+            }else{
+                flag = false;
             }
         }
         return false;

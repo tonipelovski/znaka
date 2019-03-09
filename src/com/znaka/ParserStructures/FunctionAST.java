@@ -34,22 +34,34 @@ public class FunctionAST extends DefaultAST{
 
     @Override
     boolean matchAST(ArrayList<Token> tokens, Parser parser) {
+        boolean flag = false;
         for(Token token: tokens){
+            //
+            //System.out.println(token.getType() + ":" + token.getValue() + ":" + flag);
+
             if(token.getType().equals("symbol")){
-                if(token.getType().equals("punc") && token.getValue().equals("(")){
-                    this.args = null;
-                    this.ret_type = null;
-                    parser.next(2);
-                    return true;
-                }
+                flag = true;
+
+            }else if(flag && token.getType().equals("punc") && token.getValue().equals("(")){
+                parser.next(1);
+                return true;
+            }else{
+                //System.out.println("here");
+                flag = false;
             }
+
         }
+        //System.out.println("end");
         return false;
     }
 
     @Override
     public String printAST() {
-        return "[" + getType() + ":" + getRet_type() + ":" + getArgs() + "]";
+        String output = "\n[" + getType() + ":" + getRet_type() + ":";
+        for(int i = 0; i < getArgs().size(); i++){
+            output = output.concat(getArgs().get(i).printAST());
+        }
+        return output;
     }
 
 }

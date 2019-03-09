@@ -29,6 +29,8 @@ public class IntTypeAST extends DefaultAST {
                 this.setValue(token.getValue());
                 parsesr.next(2);
                 return true;
+            }else{
+                flag = false;
             }
         }
         return false;

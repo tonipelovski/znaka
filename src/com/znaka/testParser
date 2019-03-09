@@ -1,6 +1,6 @@
 char c = 'c';
 int a = 10;
 bool b = True;
-string str = "string";
+string s = "string";
 a_var = b_var * c_var;
 one * two * three = four * five;

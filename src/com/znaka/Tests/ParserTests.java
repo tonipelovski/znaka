@@ -24,18 +24,34 @@ public class ParserTests {
         Lexer lexer = new Lexer(tokens, reader);
 
         Parser parser = new Parser(lexer);
-        while(lexer.readLine()){
-            parser.parseLIne();
+        while(parser.parseLIne()){
+
         }
         String parserOutput = parser.printASTS();
-        String expected = "[var:variable]" +
-                "[assign:=:null:null]" +
-                "[var:a_var]" +
-                "[var:ala]" +
-                "[operator:*:null:null]" +
-                "[var:bala]" +
-                "[assign:=:null:null]" +
-                "[var:alabala]";
+        String expected = "\n  [assign\n" +
+                "    =\n" +
+                "     [charType:c]\n" +
+                "     [char:c]]\n" +
+                "  [assign\n" +
+                "    =\n" +
+                "     [intType:a]\n" +
+                "     [number:10.0]]\n" +
+                "  [assign\n" +
+                "    =\n" +
+                "     [booleanType:b]\n" +
+                "     [boolean:true]]\n" +
+                "  [assign\n" +
+                "    =\n" +
+                "     [string:s]\n" +
+                "     [string_literal:\"string\"]]\n" +
+                "  [assign\n" +
+                "    =\n" +
+                "     [var:a_var]\n" +
+                "     [operator:*:[var:b_var]:[var:c_var]]]\n" +
+                "  [assign\n" +
+                "    =\n" +
+                "     [operator:*:[var:one]:[operator:*:[var:two]:[var:three]]]\n" +
+                "     [operator:*:[var:four]:[var:five]]]";
         Assertions.assertEquals(expected, parserOutput);
 
     }

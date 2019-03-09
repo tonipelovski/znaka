@@ -21,13 +21,16 @@ public class StringTypeAST extends DefaultAST{
     boolean matchAST(ArrayList<Token> tokens, Parser parser) {
         boolean flag = false;
         for (Token token : tokens) {
-            if (token.getType().equals("string")) {
-                //System.out.println(token.getType());
+            //System.out.println(token.getType());
+
+            if (token.getType().equals("type") && token.getValue().equals("string")) {
                 flag = true;
             } else if (flag && token.getType().equals("symbol")){
                 this.setValue(token.getValue());
                 parser.next(2);
                 return true;
+            }else{
+                flag = false;
             }
         }
         return false;
