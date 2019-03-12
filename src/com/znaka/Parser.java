@@ -81,16 +81,8 @@ public class Parser {
                         return orderAST(to_order, level + 1, func);
                     }
                 }else {
-                    if (level == 0 && to_order.getAll_AST().size() == 0) {
-                        mainAST.addAST(func);
-                    }
+                    return order_redo(to_order, level, func);
 
-                    if (level == 0) {
-                        //mainAST.addAST(func);
-                        return orderAST(to_order, level, func);
-                    } else {
-                        return func;
-                    }
                 }
             }
         }
@@ -108,59 +100,27 @@ public class Parser {
 
                         to_order.popFrontAST(1);
                         assign.setRight(orderAST(to_order, level + 1, right));
-                        if(level == 0 && to_order.getAll_AST().size() == 0){
-                            mainAST.addAST(assign);
-                        }
+                        return order_redo(to_order, level, assign);
 
-                        if(level == 0) {
-                            //mainAST.addAST(assign);
-                            return orderAST(to_order, level, assign);
-                        }else{
-                            return assign;
-                        }
                     }else if(to_order.getAll_AST().get(0).getType().equals("call")){
                         assign.setRight(orderAST(to_order, level + 1, assign));
-                        if(level == 0 && to_order.getAll_AST().size() == 0){
-                            mainAST.addAST(assign);
-                        }
+                        return order_redo(to_order, level, assign);
 
-                        if(level == 0) {
-                            //mainAST.addAST(assign);
-                            return orderAST(to_order, level, assign);
-                        }else{
-                            return assign;
-                        }
                     }
                     else {
                         assign.setRight(right);
                         to_order.popFrontAST(1);
 
-                        if(level == 0 && to_order.getAll_AST().size() == 0){
-                            mainAST.addAST(assign);
-                        }
+                        return order_redo(to_order, level, assign);
 
-                        if(level == 0) {
-                            //mainAST.addAST(assign);
-                            return orderAST(to_order, level, assign);
-                        }else{
-                            return assign;
-                        }
                     }
                 }else {
 
                     assign.setRight(right);
                     to_order.popFrontAST(1);
 
-                    if(level == 0 && to_order.getAll_AST().size() == 0){
-                        mainAST.addAST(assign);
-                    }
+                    return order_redo(to_order, level, assign);
 
-                    if(level == 0) {
-                       // mainAST.addAST(assign);
-                        return orderAST(to_order, level, assign);
-                    }else{
-                        return assign;
-                    }
                 }
             }
         }
@@ -176,60 +136,27 @@ public class Parser {
 
                         to_order.popFrontAST(1);
                         operatorAST.setRight(orderAST(to_order ,level + 1, right));
+                        return order_redo(to_order, level, operatorAST);
 
-                        if(level == 0 && to_order.getAll_AST().size() == 0){
-                            mainAST.addAST(operatorAST);
-                        }
-
-                        if(level == 0) {
-                            //mainAST.addAST(operatorAST);
-                            return orderAST(to_order, level, operatorAST);
-                        }else{
-                            return operatorAST;
-                        }
 
                     }else if(to_order.getAll_AST().get(0).getType().equals("call")){
                         operatorAST.setRight(orderAST(to_order, level + 1, operatorAST));
-                        if(level == 0 && to_order.getAll_AST().size() == 0){
-                            mainAST.addAST(operatorAST);
-                        }
+                        return order_redo(to_order, level, operatorAST);
 
-                        if(level == 0) {
-                            //mainAST.addAST(assign);
-                            return orderAST(to_order, level, operatorAST);
-                        }else{
-                            return operatorAST;
-                        }
                     }else {
                         operatorAST.setRight(right);
                         to_order.popFrontAST(1);
 
-                        if(level == 0 && to_order.getAll_AST().size() == 0){
-                            mainAST.addAST(operatorAST);
-                        }
+                        return order_redo(to_order, level, operatorAST);
 
-                        if(level == 0) {
-                            //mainAST.addAST(operatorAST);
-                            return orderAST(to_order, level, operatorAST);
-                        }else{
-                            return operatorAST;
-                        }
                     }
                 }else {
 
                     operatorAST.setRight(right);
                     to_order.popFrontAST(1);
 
-                    if(level == 0 && to_order.getAll_AST().size() == 0){
-                        mainAST.addAST(operatorAST);
-                    }
+                    return order_redo(to_order, level, operatorAST);
 
-                    if(level == 0) {
-                        //mainAST.addAST(operatorAST);
-                        return orderAST(to_order, level, operatorAST);
-                    }else{
-                        return operatorAST;
-                    }
                 }
 
             }
@@ -240,15 +167,7 @@ public class Parser {
             //System.out.println(defaultAST.printAST());
             //mainAST.addAST(defaultAST);
             to_order.popFrontAST(1);
-            if(level == 0 && to_order.getAll_AST().size() == 0){
-                mainAST.addAST(defaultAST);
-            }else if(level == 0) {
-                //mainAST.addAST(defaultAST);
-                return orderAST(to_order, level, defaultAST);
-            }else{
-                return defaultAST;
-            }
-            return null;
+            return order_redo(to_order, level, defaultAST);
         }else{
             return null;
         }
@@ -268,7 +187,18 @@ public class Parser {
         }
         return output;
     }
+    private DefaultAST order_redo(MainAST to_order, int level, DefaultAST defaultAST){
+        if(level == 0 && to_order.getAll_AST().size() == 0){
+            mainAST.addAST(defaultAST);
+        }
 
+        if(level == 0) {
+            //mainAST.addAST(operatorAST);
+            return orderAST(to_order, level, defaultAST);
+        }else{
+            return defaultAST;
+        }
+    }
 }
 
 
