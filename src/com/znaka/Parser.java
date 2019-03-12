@@ -76,15 +76,21 @@ public class Parser {
 
                 }
                 func.setArgs(args);
-                if(level == 0 && to_order.getAll_AST().size() == 0){
-                    mainAST.addAST(func);
-                }
+                if(to_order.getAll_AST().size() > 0){
+                    if(to_order.getAll_AST().get(0).getType().equals("operator")){
+                        return orderAST(to_order, level + 1, func);
+                    }
+                }else {
+                    if (level == 0 && to_order.getAll_AST().size() == 0) {
+                        mainAST.addAST(func);
+                    }
 
-                if(level == 0) {
-                    //mainAST.addAST(func);
-                    return orderAST(to_order, level, func);
-                }else{
-                    return func;
+                    if (level == 0) {
+                        //mainAST.addAST(func);
+                        return orderAST(to_order, level, func);
+                    } else {
+                        return func;
+                    }
                 }
             }
         }
@@ -99,9 +105,9 @@ public class Parser {
                 to_order.popFrontAST(1);
                 if(to_order.has(2)) {
                     if (to_order.getAll_AST().get(1).getType().equals("operator")) {
-                        DefaultAST temp_right = to_order.getAll_AST().get(0);
+
                         to_order.popFrontAST(1);
-                        assign.setRight(orderAST(to_order, level + 1, temp_right));
+                        assign.setRight(orderAST(to_order, level + 1, right));
                         if(level == 0 && to_order.getAll_AST().size() == 0){
                             mainAST.addAST(assign);
                         }
@@ -112,7 +118,20 @@ public class Parser {
                         }else{
                             return assign;
                         }
-                    }else {
+                    }else if(to_order.getAll_AST().get(0).getType().equals("call")){
+                        assign.setRight(orderAST(to_order, level + 1, assign));
+                        if(level == 0 && to_order.getAll_AST().size() == 0){
+                            mainAST.addAST(assign);
+                        }
+
+                        if(level == 0) {
+                            //mainAST.addAST(assign);
+                            return orderAST(to_order, level, assign);
+                        }else{
+                            return assign;
+                        }
+                    }
+                    else {
                         assign.setRight(right);
                         to_order.popFrontAST(1);
 
@@ -155,7 +174,8 @@ public class Parser {
                 if(to_order.has(2)) {
                     if (to_order.getAll_AST().get(1).getType().equals("operator")) {
 
-                        operatorAST.setRight(orderAST(to_order ,level + 1, operatorAST));
+                        to_order.popFrontAST(1);
+                        operatorAST.setRight(orderAST(to_order ,level + 1, right));
 
                         if(level == 0 && to_order.getAll_AST().size() == 0){
                             mainAST.addAST(operatorAST);
@@ -163,6 +183,19 @@ public class Parser {
 
                         if(level == 0) {
                             //mainAST.addAST(operatorAST);
+                            return orderAST(to_order, level, operatorAST);
+                        }else{
+                            return operatorAST;
+                        }
+
+                    }else if(to_order.getAll_AST().get(0).getType().equals("call")){
+                        operatorAST.setRight(orderAST(to_order, level + 1, operatorAST));
+                        if(level == 0 && to_order.getAll_AST().size() == 0){
+                            mainAST.addAST(operatorAST);
+                        }
+
+                        if(level == 0) {
+                            //mainAST.addAST(assign);
                             return orderAST(to_order, level, operatorAST);
                         }else{
                             return operatorAST;

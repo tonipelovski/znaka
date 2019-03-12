@@ -1,0 +1,8 @@
+int a = 10;
+int b = 15;
+char c = 'c';
+bool b = True;
+string alabala = "alaaaa";
+a = a * 10;
+char func(int a);
+c = func(a);

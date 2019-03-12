@@ -41,7 +41,6 @@ public class AssignAST extends DefaultAST {
                 //System.out.println("assigning");
                 return true;
             }
-
         }
         return false;
     }

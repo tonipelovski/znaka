@@ -79,11 +79,11 @@ public class FunctionAST extends DefaultAST{
 
     @Override
     public String printAST() {
-        String output = "\n[" + getType() + ":" + getRet_type() + ":";
+        String output = "[" + getName() + ":" + getRet_type() + ":";
         for(int i = 0; i < getArgs().size(); i++){
             output = output.concat(getArgs().get(i).printAST());
         }
-        output = output.concat("]\n");
+        output = output.concat("]");
         return output;
     }
 

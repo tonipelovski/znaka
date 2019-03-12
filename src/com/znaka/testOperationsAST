@@ -1,0 +1,5 @@
+int a = 10 * 15;
+int b;
+b = a * 100;
+one * two = three * four * five;
+five = func(a) * 10;

@@ -40,8 +40,7 @@ public class ParserTests {
                 "  [assign\n" +
                 "    =\n" +
                 "     [intType:a]\n" +
-                "     [number:10.0]]\n" +
-                "[call:int:[operator:*:[var:a]:[var:c]][var:b]]\n" +
+                "     [number:10.0]][func:int:[operator:*:[var:a]:[var:c]][var:b]]" +
                 "\n" +
                 "  [assign\n" +
                 "    =\n" +
@@ -66,4 +65,98 @@ public class ParserTests {
         Assertions.assertEquals(expected, parserOutput);
 
     }
+
+    @Test
+    public void testTypesASTS() throws IOException{
+        URL url = Main.class.getResource("testTypesAST");
+        File file = new File(url.getPath());
+        BufferedReader reader = new BufferedReader(new FileReader(file));
+        ArrayList<Token> tokens = new ArrayList<>();
+        Lexer lexer = new Lexer(tokens, reader);
+
+        Parser parser = new Parser(lexer);
+        while(parser.parseLIne()){
+
+        }
+        String parserOutput = parser.printASTS();
+        String expected = "[intType:a][charType:c][booleanType:b][string:alabala]";
+        Assertions.assertEquals(expected, parserOutput);
+    }
+
+    @Test
+    public void testAssignsATS() throws IOException{
+        URL url = Main.class.getResource("testAssignsAST");
+        File file = new File(url.getPath());
+        BufferedReader reader = new BufferedReader(new FileReader(file));
+        ArrayList<Token> tokens = new ArrayList<>();
+        Lexer lexer = new Lexer(tokens, reader);
+
+        Parser parser = new Parser(lexer);
+        while(parser.parseLIne()){
+
+        }
+        String parserOutput = parser.printASTS();
+        String expected = "\n  [assign\n" +
+                "    =\n" +
+                "     [intType:a]\n" +
+                "     [number:10.0]]\n" +
+                "  [assign\n" +
+                "    =\n" +
+                "     [intType:b]\n" +
+                "     [number:15.0]]\n" +
+                "  [assign\n" +
+                "    =\n" +
+                "     [charType:c]\n" +
+                "     [char:c]]\n" +
+                "  [assign\n" +
+                "    =\n" +
+                "     [booleanType:b]\n" +
+                "     [boolean:true]]\n" +
+                "  [assign\n" +
+                "    =\n" +
+                "     [string:alabala]\n" +
+                "     [string_literal:\"alaaaa\"]]\n" +
+                "  [assign\n" +
+                "    =\n" +
+                "     [var:a]\n" +
+                "     [operator:*:[var:a]:[number:10.0]]][func:char:[intType:a]]\n" +
+                "  [assign\n" +
+                "    =\n" +
+                "     [var:c]\n" +
+                "     [func::[var:a]]]";
+        Assertions.assertEquals(expected, parserOutput);
+    }
+
+    @Test
+    public void testOperationsATS() throws IOException{
+        URL url = Main.class.getResource("testOperationsAST");
+        File file = new File(url.getPath());
+        BufferedReader reader = new BufferedReader(new FileReader(file));
+        ArrayList<Token> tokens = new ArrayList<>();
+        Lexer lexer = new Lexer(tokens, reader);
+
+        Parser parser = new Parser(lexer);
+        while(parser.parseLIne()){
+
+        }
+        String parserOutput = parser.printASTS();
+        String expected = "\n  [assign\n" +
+                "    =\n" +
+                "     [intType:a]\n" +
+                "     [operator:*:[number:10.0]:[number:15.0]]][intType:b]\n" +
+                "  [assign\n" +
+                "    =\n" +
+                "     [var:b]\n" +
+                "     [operator:*:[var:a]:[number:100.0]]]\n" +
+                "  [assign\n" +
+                "    =\n" +
+                "     [operator:*:[var:one]:[var:two]]\n" +
+                "     [operator:*:[var:three]:[operator:*:[var:four]:[var:five]]]]\n" +
+                "  [assign\n" +
+                "    =\n" +
+                "     [var:five]\n" +
+                "     [operator:*:[func::[var:a]]:[number:10.0]]]";
+        Assertions.assertEquals(expected, parserOutput);
+    }
+
 }

@@ -51,6 +51,8 @@ public class OperatorAST extends DefaultAST {
                 this.setRight(null);
                 parser.next(1);
                 return true;
+            }else{
+                return false;
             }
 
         }
