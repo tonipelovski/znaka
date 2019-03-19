@@ -1,13 +1,18 @@
 package com.znaka.ParserStructures;
 
+import com.znaka.Main;
+import com.znaka.Parser;
+import com.znaka.Tokens.Token;
+
+import java.util.ArrayList;
 import java.util.Stack;
 
-public class MainAST{
+public class MainAST extends DefaultAST{
     private String type;
     private Stack<DefaultAST> all_AST;
 
     public MainAST(Stack<DefaultAST> all_AST) {
-        this.type = "main";
+        super("main");
         this.all_AST = all_AST;
     }
 
@@ -15,9 +20,27 @@ public class MainAST{
         return type;
     }
 
+    @Override
+    boolean matchAST(ArrayList<Token> tokens, Parser parsesr) {
+        return false;
+    }
+
+    @Override
+    public String printAST() {
+        return null;
+    }
+
     public Stack<DefaultAST> getAll_AST() {
         return all_AST;
     }
+
+    public void addAST(MainAST ast){
+        for(DefaultAST defaultAST : ast.getAll_AST()){
+            all_AST.add(defaultAST);
+        }
+        //all_AST.add(ast);
+    }
+
 
     public void addAST(DefaultAST ast){
         all_AST.add(ast);

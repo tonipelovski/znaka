@@ -40,6 +40,8 @@ public class AssignAST extends DefaultAST {
                 parser.next(1);
                 //System.out.println("assigning");
                 return true;
+            }else{
+                return false;
             }
         }
         return false;

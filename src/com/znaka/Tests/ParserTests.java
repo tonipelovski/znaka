@@ -159,4 +159,39 @@ public class ParserTests {
         Assertions.assertEquals(expected, parserOutput);
     }
 
+
+    @Test
+    public void testConditionsATS() throws IOException{
+        URL url = Main.class.getResource("testConditionsAST");
+        File file = new File(url.getPath());
+        BufferedReader reader = new BufferedReader(new FileReader(file));
+        ArrayList<Token> tokens = new ArrayList<>();
+        Lexer lexer = new Lexer(tokens, reader);
+
+        Parser parser = new Parser(lexer);
+        while(parser.parseLIne()){
+
+        }
+        String parserOutput = parser.printASTS();
+        String expected = "[intType:a][intType:b]\n" +
+                "  [assign\n" +
+                "    =\n" +
+                "     [var:a]\n" +
+                "     [operator:*:[var:a]:[operator:+:[var:c]:[operator:+:[var:b]:[var:d]]]]]\n" +
+                "  [assign\n" +
+                "    =\n" +
+                "     [operator:+:[var:a]:[var:b]]\n" +
+                "     [var:c]]\n" +
+                "  [assign\n" +
+                "    =\n" +
+                "     [var:c]\n" +
+                "     [func::[var:d][var:c]]]\n" +
+                "[if:[operator:>:[var:ala]:[var:bala]]::]\n" +
+                "  [assign\n" +
+                "    =\n" +
+                "     [var:ala]\n" +
+                "     [var:bala]]";
+        Assertions.assertEquals(expected, parserOutput);
+    }
+
 }

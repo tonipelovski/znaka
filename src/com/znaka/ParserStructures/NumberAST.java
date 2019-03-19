@@ -27,6 +27,8 @@ public class NumberAST extends DefaultAST{
                 this.setValue(Double.parseDouble(token.getValue()));
                 parser.next(1);
                 return true;
+            }else{
+                return false;
             }
         }
         return false;

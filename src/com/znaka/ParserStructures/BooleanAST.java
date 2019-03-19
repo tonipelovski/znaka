@@ -21,6 +21,8 @@ public class BooleanAST extends DefaultAST{
                 setValue(Boolean.parseBoolean(token.getValue()));
                 parser.next(1);
                 return true;
+            }else{
+                return false;
             }
         }
         return false;    }

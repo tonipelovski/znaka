@@ -10,7 +10,7 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
 	// write your code here
-        URL url = Main.class.getResource("testParserSecond");
+        URL url = Main.class.getResource("testParser");
         File file = new File(url.getPath());
         BufferedReader reader = new BufferedReader(new FileReader(file));
         ArrayList<Token> tokens = new ArrayList<>();

@@ -6,11 +6,23 @@ import com.znaka.Tokens.Token;
 import java.util.ArrayList;
 
 public class IfConditionAST extends DefaultAST {
-    private DefaultAST condition;
-    private DefaultAST then;
+    private MainAST condition;
+    private MainAST then;
     private DefaultAST else_condition;
 
-    public IfConditionAST(DefaultAST cond, DefaultAST th, DefaultAST else_cond) {
+    public void setCondition(MainAST condition) {
+        this.condition = condition;
+    }
+
+    public void setThen(MainAST then) {
+        this.then = then;
+    }
+
+    public void setElse_condition(DefaultAST else_condition) {
+        this.else_condition = else_condition;
+    }
+
+    public IfConditionAST(MainAST cond, MainAST th, DefaultAST else_cond) {
         super("if");
         this.condition = cond;
         this.then = th;
@@ -18,11 +30,11 @@ public class IfConditionAST extends DefaultAST {
 
     }
 
-    public DefaultAST getCondition() {
+    public MainAST getCondition() {
         return condition;
     }
 
-    public DefaultAST getThen() {
+    public MainAST getThen() {
         return then;
     }
 
@@ -34,12 +46,15 @@ public class IfConditionAST extends DefaultAST {
     @Override
     boolean matchAST(ArrayList<Token> tokens, Parser parsesr) {
         for(Token token: tokens){
-            if(token.getType().equals("keyword") && token.getValue().equals("if")){
+            if(token.getType().equals("keyword") && (token.getValue().equals("if") || token.getValue().equals("else")
+            || token.getValue().equals("else if"))){
                 this.condition = null;
                 this.else_condition = null;
                 this.then = null;
                 parsesr.next(1);
                 return true;
+            }else {
+                return false;
             }
         }
         return false;
@@ -47,7 +62,28 @@ public class IfConditionAST extends DefaultAST {
 
     @Override
     public String printAST() {
-        return "[" + getType() + ":" + getCondition() + ":" + getElse_condition() + ":" + getThen() + "]";
+        String condition = "";
+        if (getCondition() != null){
+            for(DefaultAST defaultAST : getCondition().getAll_AST()) {
+                if(defaultAST != null) {
+                    condition = condition.concat(defaultAST.printAST());
+                }
+            }
+        }
+
+        String then = "";
+        if (getThen() != null){
+            for(DefaultAST defaultAST : getThen().getAll_AST()) {
+                if(defaultAST != null) {
+                    then = then.concat(defaultAST.printAST());
+                }
+            }        }
+
+        String else_cond = "";
+        if (getElse_condition() != null){
+            else_cond = getElse_condition().printAST();
+        }
+        return "\n[" + getType() + ":" + condition + ":" + else_cond + ":" + then + "]";
     }
 
 }

@@ -69,7 +69,7 @@ public class FunctionAST extends DefaultAST{
                 return true;
             }else{
                 //System.out.println("here");
-                flag = false;
+                return false;
             }
 
         }

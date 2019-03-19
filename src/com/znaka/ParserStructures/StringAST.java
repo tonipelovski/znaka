@@ -29,6 +29,8 @@ public class StringAST extends DefaultAST {
                 setValue(token.getValue());
                 parser.next(1);
                 return true;
+            }else {
+                return false;
             }
         }
         return false;
