@@ -128,7 +128,7 @@ public class ParserTests {
     }
 
     @Test
-    public void testOperationsATS() throws IOException{
+    public void testOperationsAST() throws IOException{
         URL url = Main.class.getResource("testOperationsAST");
         File file = new File(url.getPath());
         BufferedReader reader = new BufferedReader(new FileReader(file));
@@ -161,7 +161,7 @@ public class ParserTests {
 
 
     @Test
-    public void testConditionsATS() throws IOException{
+    public void testConditionsAST() throws IOException{
         URL url = Main.class.getResource("testConditionsAST");
         File file = new File(url.getPath());
         BufferedReader reader = new BufferedReader(new FileReader(file));
@@ -173,24 +173,36 @@ public class ParserTests {
 
         }
         String parserOutput = parser.printASTS();
-        String expected = "[intType:a][intType:b]\n" +
-                "  [assign\n" +
-                "    =\n" +
-                "     [var:a]\n" +
-                "     [operator:*:[var:a]:[operator:+:[var:c]:[operator:+:[var:b]:[var:d]]]]]\n" +
-                "  [assign\n" +
-                "    =\n" +
-                "     [operator:+:[var:a]:[var:b]]\n" +
-                "     [var:c]]\n" +
-                "  [assign\n" +
-                "    =\n" +
-                "     [var:c]\n" +
-                "     [func::[var:d][var:c]]]\n" +
-                "[if:[operator:>:[var:ala]:[var:bala]]::]\n" +
+        String expected = "\n[if:[operator:>:[var:ala]:[var:bala]]::\n" +
                 "  [assign\n" +
                 "    =\n" +
                 "     [var:ala]\n" +
-                "     [var:bala]]";
+                "     [var:bala]]\n" +
+                "  [assign\n" +
+                "    =\n" +
+                "     [var:c]\n" +
+                "     [var:a]]]\n" +
+                "[if:[operator:<:[var:ala]:[var:bala]]::\n" +
+                "  [assign\n" +
+                "    =\n" +
+                "     [var:ala]\n" +
+                "     [operator:+:[var:ala]:[number:1.0]]]]\n" +
+                "  [assign\n" +
+                "    =\n" +
+                "     [var:a]\n" +
+                "     [operator:*:[number:4.0]:[number:10.0]]]\n" +
+                "  [assign\n" +
+                "    =\n" +
+                "     [operator:*:[var:a]:[var:b]]\n" +
+                "     [operator:*:[var:c]:[var:a]]]\n" +
+                "  [assign\n" +
+                "    =\n" +
+                "     [var:a]\n" +
+                "     [operator:*:[operator:+:[var:a]:[operator:+:[var:b]:[var:c]]]:[var:c]]]\n" +
+                "  [assign\n" +
+                "    =\n" +
+                "     [var:c]\n" +
+                "     [func::[var:c][var:d]]]";
         Assertions.assertEquals(expected, parserOutput);
     }
 

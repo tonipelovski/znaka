@@ -27,7 +27,9 @@ public class MainAST extends DefaultAST{
 
     @Override
     public String printAST() {
-        return null;
+        String result = "";
+
+        return result;
     }
 
     public Stack<DefaultAST> getAll_AST() {
@@ -35,9 +37,7 @@ public class MainAST extends DefaultAST{
     }
 
     public void addAST(MainAST ast){
-        for(DefaultAST defaultAST : ast.getAll_AST()){
-            all_AST.add(defaultAST);
-        }
+        all_AST.addAll(ast.getAll_AST());
         //all_AST.add(ast);
     }
 
