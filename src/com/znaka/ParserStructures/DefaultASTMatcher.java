@@ -22,6 +22,7 @@ public class DefaultASTMatcher {
         asts.add(new FunctionAST("", null));
         asts.add(new OperatorAST(null, null));
         asts.add(new IfConditionAST(null, null, null));
+        asts.add(new LoopAST());
 
         asts.add(new NumberAST(0));
         asts.add(new CharAST(' '));

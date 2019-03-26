@@ -169,6 +169,66 @@ public class Parser {
             }
         }
 
+        if(to_order.has(2)){
+            if(to_order.getAll_AST().get(0).getType().equals("loop")){
+
+                LoopAST loopAST = (LoopAST) to_order.getAll_AST().get(0);
+                to_order.popFrontAST(2);
+                DefaultAST defaultAST = to_order.getAll_AST().get(0);
+                MainAST temp = new MainAST(new Stack<DefaultAST>());
+                int subAST = 1;
+                while(subAST > 0){
+                    temp.addAST(defaultAST);
+                    to_order.popFrontAST(1);
+                    defaultAST = to_order.getAll_AST().get(0);
+                    if(defaultAST.getType().equals("open_punc")){
+                        subAST++;
+                    }
+
+                    if(defaultAST.getType().equals("close_punc")){
+                        subAST--;
+                    }
+
+                }
+                MainAST ordered = new MainAST(new Stack<DefaultAST>());
+                orderAST(temp, 0, null, ordered);
+                to_order.popFrontAST(1);
+                loopAST.setCondition(ordered);
+
+                MainAST asts = new MainAST(new Stack<>());
+                if(to_order.getAll_AST().get(0).getType().equals("open_curly")) {
+                    boolean flag = true;
+                    Parser temp_parser = new Parser(lexer);
+
+                    while(temp_parser.parseLIne() && flag){
+                        //System.out.println("cccc");
+
+                        for(DefaultAST defaultAST1 : temp_parser.mainAST.getAll_AST()){
+                            //System.out.println("ala: " + defaultAST1.printAST());
+                            if(defaultAST1.getType().equals("close_curly")){
+                                flag = false;
+                                to_order.popFrontAST(1);
+                                loopAST.setBody(asts);
+                                be_ordered.addAST(loopAST);
+                                be_ordered.addAST(temp_parser.mainAST);
+                                temp_parser.mainAST.getAll_AST().clear();
+                                return null;
+                            }else{
+                                temp_parser.mainAST.popFrontAST(1);
+                                asts.addAST(defaultAST1);
+
+                            }
+                        }
+                    }
+                }else{
+                    orderAST(to_order, 0, null, asts);
+                    loopAST.setBody(asts);
+                    return order_redo(to_order, level, loopAST, be_ordered);
+
+                }
+            }
+        }
+
 
         if(to_order.has(2)) {
 

@@ -1,13 +1,3 @@
-
-if(ala > bala){
-    ala = bala;
-    c = a;
-}int a = 10;
-
-if( ala < bala ) ala = ala + 1;
-
-a = 4 * 10;
-a * b = c * a;
-a = (a + b + c) * c;
-
-c = func(c, d);
+while( a > (b * c ) ){
+    a = b * c;
+}
