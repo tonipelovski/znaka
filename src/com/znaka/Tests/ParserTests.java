@@ -28,39 +28,38 @@ public class ParserTests {
 
         }
         String parserOutput = parser.printASTS();
-        String expected = "[intType:c][intType:a][intType:b]\n" +
-                "  [assign\n" +
+        String expected = "[var:int:c][var:int:a][var:int:b]\n" +
+                "  [operator\n" +
                 "    =\n" +
-                "     [intType:d]\n" +
-                "     [operator:*:[var:c]:[var:b]]]\n" +
-                "  [assign\n" +
+                "     [var:int:d]\n" +
+                "     [operator:*:[var::c]:[var::b]]]\n" +
+                "  [operator\n" +
                 "    =\n" +
-                "     [operator:*:[intType:ala]:[intType:bala]]\n" +
-                "     [intType:balaala]]\n" +
-                "  [assign\n" +
+                "     [operator:*:[var:int:ala]:[var:int:bala]]\n" +
+                "     [var:int:balaala]]\n" +
+                "  [operator\n" +
                 "    =\n" +
-                "     [intType:a]\n" +
-                "     [number:10.0]][func:int:[operator:*:[var:a]:[var:c]][var:b]]" +
-                "\n" +
-                "  [assign\n" +
+                "     [var:int:a]\n" +
+                "     [number:10.0]][func:int:[operator:*:[var::a]:[var::c]][var::b]]\n" +
+                "  [operator\n" +
                 "    =\n" +
-                "     [intType:a]\n" +
+                "     [var:int:a]\n" +
                 "     [number:10.0]]\n" +
-                "  [assign\n" +
+                "  [operator\n" +
                 "    =\n" +
-                "     [charType:bit_conn3ct]\n" +
+                "     [var:char:bit_conn3ct]\n" +
                 "     [number:1337.0]]\n" +
-                "  [assign\n" +
+                "  [operator\n" +
                 "    =\n" +
-                "     [charType:c]\n" +
+                "     [var:char:c]\n" +
                 "     [char:f]]\n" +
-                "  [assign\n" +
+                "  [operator\n" +
                 "    =\n" +
-                "     [booleanType:a]\n" +
+                "     [var:bool:a]\n" +
                 "     [boolean:true]]\n" +
-                "  [assign\n" +
+                "  [operator\n" +
                 "    =\n" +
-                "     [string:alabala]\n" +
+                "     [var:string:alabala]\n" +
                 "     [string_literal:\"kurwa\"]]";
         Assertions.assertEquals(expected, parserOutput);
 
@@ -79,7 +78,7 @@ public class ParserTests {
 
         }
         String parserOutput = parser.printASTS();
-        String expected = "[intType:a][charType:c][booleanType:b][string:alabala]";
+        String expected = "[var:int:a][var:char:c][var:bool:b][var:string:alabala]";
         Assertions.assertEquals(expected, parserOutput);
     }
 
@@ -96,34 +95,34 @@ public class ParserTests {
 
         }
         String parserOutput = parser.printASTS();
-        String expected = "\n  [assign\n" +
+        String expected = "\n  [operator\n" +
                 "    =\n" +
-                "     [intType:a]\n" +
+                "     [var:int:a]\n" +
                 "     [number:10.0]]\n" +
-                "  [assign\n" +
+                "  [operator\n" +
                 "    =\n" +
-                "     [intType:b]\n" +
+                "     [var:int:b]\n" +
                 "     [number:15.0]]\n" +
-                "  [assign\n" +
+                "  [operator\n" +
                 "    =\n" +
-                "     [charType:c]\n" +
+                "     [var:char:c]\n" +
                 "     [char:c]]\n" +
-                "  [assign\n" +
+                "  [operator\n" +
                 "    =\n" +
-                "     [booleanType:b]\n" +
+                "     [var:bool:b]\n" +
                 "     [boolean:true]]\n" +
-                "  [assign\n" +
+                "  [operator\n" +
                 "    =\n" +
-                "     [string:alabala]\n" +
+                "     [var:string:alabala]\n" +
                 "     [string_literal:\"alaaaa\"]]\n" +
-                "  [assign\n" +
+                "  [operator\n" +
                 "    =\n" +
-                "     [var:a]\n" +
-                "     [operator:*:[var:a]:[number:10.0]]][func:char:[intType:a]]\n" +
-                "  [assign\n" +
+                "     [var::a]\n" +
+                "     [operator:*:[var::a]:[number:10.0]]][func:char:[var:int:a]]\n" +
+                "  [operator\n" +
                 "    =\n" +
-                "     [var:c]\n" +
-                "     [func::[var:a]]]";
+                "     [var::c]\n" +
+                "     [func::[var::a]]]";
         Assertions.assertEquals(expected, parserOutput);
     }
 
@@ -140,22 +139,22 @@ public class ParserTests {
 
         }
         String parserOutput = parser.printASTS();
-        String expected = "\n  [assign\n" +
+        String expected = "\n  [operator\n" +
                 "    =\n" +
-                "     [intType:a]\n" +
-                "     [operator:*:[number:10.0]:[number:15.0]]][intType:b]\n" +
-                "  [assign\n" +
+                "     [var:int:a]\n" +
+                "     [operator:*:[number:10.0]:[number:15.0]]][var:int:b]\n" +
+                "  [operator\n" +
                 "    =\n" +
-                "     [var:b]\n" +
-                "     [operator:*:[var:a]:[number:100.0]]]\n" +
-                "  [assign\n" +
+                "     [var::b]\n" +
+                "     [operator:*:[var::a]:[number:100.0]]]\n" +
+                "  [operator\n" +
                 "    =\n" +
-                "     [operator:*:[var:one]:[var:two]]\n" +
-                "     [operator:*:[var:three]:[operator:*:[var:four]:[var:five]]]]\n" +
-                "  [assign\n" +
+                "     [operator:*:[var::one]:[var::two]]\n" +
+                "     [operator:*:[var::three]:[operator:*:[var::four]:[var::five]]]]\n" +
+                "  [operator\n" +
                 "    =\n" +
-                "     [var:five]\n" +
-                "     [operator:*:[func::[var:a]]:[number:10.0]]]";
+                "     [var::five]\n" +
+                "     [operator:*:[func::[var::a]]:[number:10.0]]]";
         Assertions.assertEquals(expected, parserOutput);
     }
 
@@ -173,36 +172,36 @@ public class ParserTests {
 
         }
         String parserOutput = parser.printASTS();
-        String expected = "\n[if:[operator:>:[var:ala]:[var:bala]]::\n" +
-                "  [assign\n" +
+        String expected = "\n[if:[operator:>:[var::ala]:[var::bala]]::\n" +
+                "  [operator\n" +
                 "    =\n" +
-                "     [var:ala]\n" +
-                "     [var:bala]]\n" +
-                "  [assign\n" +
+                "     [var::ala]\n" +
+                "     [var::bala]]\n" +
+                "  [operator\n" +
                 "    =\n" +
-                "     [var:c]\n" +
-                "     [var:a]]]\n" +
-                "[if:[operator:<:[var:ala]:[var:bala]]::\n" +
-                "  [assign\n" +
+                "     [var::c]\n" +
+                "     [var::a]]]\n" +
+                "[if:[operator:<:[var::ala]:[var::bala]]::\n" +
+                "  [operator\n" +
                 "    =\n" +
-                "     [var:ala]\n" +
-                "     [operator:+:[var:ala]:[number:1.0]]]]\n" +
-                "  [assign\n" +
+                "     [var::ala]\n" +
+                "     [operator:+:[var::ala]:[number:1.0]]]]\n" +
+                "  [operator\n" +
                 "    =\n" +
-                "     [var:a]\n" +
+                "     [var::a]\n" +
                 "     [operator:*:[number:4.0]:[number:10.0]]]\n" +
-                "  [assign\n" +
+                "  [operator\n" +
                 "    =\n" +
-                "     [operator:*:[var:a]:[var:b]]\n" +
-                "     [operator:*:[var:c]:[var:a]]]\n" +
-                "  [assign\n" +
+                "     [operator:*:[var::a]:[var::b]]\n" +
+                "     [operator:*:[var::c]:[var::a]]]\n" +
+                "  [operator\n" +
                 "    =\n" +
-                "     [var:a]\n" +
-                "     [operator:*:[operator:+:[var:a]:[operator:+:[var:b]:[var:c]]]:[var:c]]]\n" +
-                "  [assign\n" +
+                "     [var::a]\n" +
+                "     [operator:*:[operator:+:[var::a]:[operator:+:[var::b]:[var::c]]]:[var::c]]]\n" +
+                "  [operator\n" +
                 "    =\n" +
-                "     [var:c]\n" +
-                "     [func::[var:c][var:d]]]";
+                "     [var::c]\n" +
+                "     [func::[var::c][var::d]]]";
         Assertions.assertEquals(expected, parserOutput);
     }
 

@@ -230,91 +230,34 @@ public class Parser {
         }
 
 
-        if(to_order.has(2)) {
+       if(to_order.has(2)) {
 
-            if (to_order.getAll_AST().get(0).getType().equals("assign")) {
-                AssignAST assign = (AssignAST) to_order.getAll_AST().get(0);
-                DefaultAST left = last;
-                DefaultAST right = to_order.getAll_AST().get(1);
+            if (to_order.getAll_AST().get(0).getType().equals("operator")) {
+                BasicOperators assign = (BasicOperators) to_order.getAll_AST().get(0);
+                if(assign.getOperator().equals("=")) {
+                    DefaultAST left = last;
+                    DefaultAST right = to_order.getAll_AST().get(1);
 
-                assign.setLeft(left);
-                to_order.popFrontAST(1);
-                if(to_order.has(2)) {
-
-                    if (to_order.getAll_AST().get(1).getType().equals("operator")) {
-
-                        to_order.popFrontAST(1);
-                        assign.setRight(orderAST(to_order, level + 1, right, be_ordered));
-                        return order_redo(to_order, level, assign, be_ordered);
-
-                    }else if(to_order.getAll_AST().get(0).getType().equals("call")){
-                        assign.setRight(orderAST(to_order, level + 1, assign, be_ordered));
-                        return order_redo(to_order, level, assign, be_ordered);
-
-                    }else if(to_order.getAll_AST().get(0).getType().equals("open_punc")){
-                        assign.setRight(orderAST(to_order, level + 1, assign, be_ordered));
-                        return order_redo(to_order, level, assign, be_ordered);
-
-                    }
-                    else {
-                        assign.setRight(right);
-                        to_order.popFrontAST(1);
-
-                        return order_redo(to_order, level, assign, be_ordered);
-
-                    }
-                }else {
-
-                    assign.setRight(right);
-
+                    assign.setLeft(left);
                     to_order.popFrontAST(1);
-
-                    return order_redo(to_order, level, assign, be_ordered);
-
+                    return getRight(to_order, level, last, be_ordered, assign, right);
                 }
             }
         }
+
         if(to_order.has(2)){
             if(to_order.getAll_AST().get(0).getType().equals("operator")){
-                OperatorAST operatorAST = (OperatorAST) to_order.getAll_AST().get(0);
-                DefaultAST left = last;
-                DefaultAST right = to_order.getAll_AST().get(1);
-                operatorAST.setLeft(left);
-                to_order.popFrontAST(1);
+                BasicOperators operatorAST = (BasicOperators) to_order.getAll_AST().get(0);
+                if(!operatorAST.getOperator().equals("=")) {
 
-                if(to_order.has(2)) {
-
-                    if (to_order.getAll_AST().get(1).getType().equals("operator")) {
-
-                        to_order.popFrontAST(1);
-                        operatorAST.setRight(orderAST(to_order ,level + 1, right, be_ordered));
-                        return order_redo(to_order, level, operatorAST, be_ordered);
-
-
-                    }else if(to_order.getAll_AST().get(0).getType().equals("call")){
-                        operatorAST.setRight(orderAST(to_order, level + 1, operatorAST, be_ordered));
-                        return order_redo(to_order, level, operatorAST, be_ordered);
-
-                    }else if(to_order.getAll_AST().get(0).getType().equals("open_punc")){
-                        operatorAST.setRight(orderAST(to_order, level + 1, operatorAST, be_ordered));
-                        return order_redo(to_order, level, operatorAST, be_ordered);
-
-                    }
-                    else {
-                        operatorAST.setRight(right);
-                        to_order.popFrontAST(1);
-
-                        return order_redo(to_order, level, operatorAST, be_ordered);
-
-                    }
-                }else {
-
-                    operatorAST.setRight(right);
+                    DefaultAST left = last;
+                    DefaultAST right = to_order.getAll_AST().get(1);
+                    operatorAST.setLeft(left);
                     to_order.popFrontAST(1);
-                    return order_redo(to_order, level, operatorAST, be_ordered);
+                    //System.out.println("debaaa" + operatorAST.printAST());
 
+                    return getRight(to_order, level, last, be_ordered, operatorAST, right);
                 }
-
             }
         }
 
@@ -407,6 +350,49 @@ public class Parser {
             return defaultAST;
         }
     }
+
+    private DefaultAST getRight(MainAST to_order, int level, DefaultAST last, MainAST be_ordered, BasicOperators basicOperators, DefaultAST right) throws IOException {
+        if(to_order.has(2)) {
+
+            if (to_order.getAll_AST().get(1).getType().equals("operator")) {
+                BasicOperators next = (BasicOperators) to_order.getAll_AST().get(1);
+                if(!next.getOperator().equals("=")) {
+                    to_order.popFrontAST(1);
+                    basicOperators.setRight(orderAST(to_order, level + 1, right, be_ordered));
+                    return order_redo(to_order, level, basicOperators, be_ordered);
+
+                }else{
+                    basicOperators.setRight(right);
+                    to_order.popFrontAST(1);
+
+                    return order_redo(to_order, level, basicOperators, be_ordered);
+                }
+            }else if(to_order.getAll_AST().get(0).getType().equals("call")){
+                basicOperators.setRight(orderAST(to_order, level + 1, basicOperators, be_ordered));
+                return order_redo(to_order, level, basicOperators, be_ordered);
+
+            }else if(to_order.getAll_AST().get(0).getType().equals("open_punc")){
+                basicOperators.setRight(orderAST(to_order, level + 1, basicOperators, be_ordered));
+                return order_redo(to_order, level, basicOperators, be_ordered);
+
+            }
+            else {
+                basicOperators.setRight(right);
+                to_order.popFrontAST(1);
+
+                return order_redo(to_order, level, basicOperators, be_ordered);
+
+            }
+        }else {
+
+            basicOperators.setRight(right);
+            to_order.popFrontAST(1);
+            return order_redo(to_order, level, basicOperators, be_ordered);
+
+        }
+    }
+
+
 }
 
 

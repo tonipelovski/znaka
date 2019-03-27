@@ -6,6 +6,7 @@ import com.znaka.Tokens.Token;
 import java.util.ArrayList;
 
 public class VarAST extends DefaultAST {
+    private String type;
     public void setName(String name) {
         this.name = name;
     }
@@ -14,7 +15,17 @@ public class VarAST extends DefaultAST {
 
     public VarAST() {
         super("var");
+        this.type = "";
 
+    }
+
+    @Override
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     @Override
@@ -22,17 +33,39 @@ public class VarAST extends DefaultAST {
         boolean flag_punc = false;
         boolean flag_symbol = false;
         String value = "";
-        if(tokens.size() > 1) {
-            if (tokens.get(1).getValue().equals("(")) {
-                flag_punc = true;
-            } else if (tokens.get(0).getType().equals("symbol")) {
-                flag_symbol = true;
-                value = tokens.get(0).getValue();
+        String t = "";
+        int i = 0;
+
+        //System.out.println("start");
+        if (tokens.get(i).getType().equals("type")) {
+            t = tokens.get(i).getValue();
+            i++;
+
+        }
+        if(tokens.size() > i + 1) {
+            for (; i < tokens.size(); i++) {
+                Token token = tokens.get(i);
+                //System.out.println(token.getValue());
+                if (token.getValue().equals("(")) {
+                     return false;
+                } else if (token.getType().equals("symbol")) {
+                    flag_symbol = true;
+                    value = token.getValue();
+
+                 }
             }
         }
-        if(flag_symbol && !flag_punc){
+        if(flag_symbol){
+            //System.out.println("end");
+
             this.setName(value);
-            parser.next(1);
+            this.setType(t);
+            if(!t.equals("")) {
+                parser.next(2);
+            }else{
+                parser.next(1);
+            }
+
             return true;
         }
         return false;
@@ -44,6 +77,6 @@ public class VarAST extends DefaultAST {
 
     @Override
     public String printAST() {
-         return "[var" + ":" + getName() + "]";
+         return "[var" + ":" + getType() + ":" + getName() + "]";
     }
 }

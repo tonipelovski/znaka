@@ -12,11 +12,11 @@ public class DefaultASTMatcher {
     public DefaultASTMatcher(ArrayList<DefaultAST> asts, Parser parser) {
         this.asts = asts;
         this.parser = parser;
-        asts.add(new VarAST());
-        asts.add(new StringTypeAST(""));
-        asts.add(new CharTypeAST(""));
-        asts.add(new IntTypeAST(""));
-        asts.add(new BooleanTypeAST(""));
+
+        //asts.add(new StringTypeAST(""));
+        //asts.add(new CharTypeAST(""));
+        //asts.add(new IntTypeAST(""));
+        //asts.add(new BooleanTypeAST(""));
 
         asts.add(new AssignAST(null, null));
         asts.add(new FunctionAST("", null));
@@ -35,6 +35,9 @@ public class DefaultASTMatcher {
         asts.add(new ClosePuncAST());
         asts.add(new OpenCurlyAST());
         asts.add(new CloseCurlyAST());
+
+
+        asts.add(new VarAST());
 
     }
 

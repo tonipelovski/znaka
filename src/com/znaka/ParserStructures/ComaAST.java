@@ -17,6 +17,8 @@ public class ComaAST extends DefaultAST{
             if(token.getType().equals("punc") && token.getValue().equals(",")){
                 parser.next(1);
                 return true;
+            }else{
+                return false;
             }
         }
         return false;

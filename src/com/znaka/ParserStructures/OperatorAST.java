@@ -5,39 +5,10 @@ import com.znaka.Tokens.Token;
 
 import java.util.ArrayList;
 
-public class OperatorAST extends DefaultAST {
-    private String operator;
-    private DefaultAST left;
-    private DefaultAST right;
-
-    public String getOperator() {
-        return operator;
-    }
-
-    public void setOperator(String operator) {
-        this.operator = operator;
-    }
-
-    public DefaultAST getLeft() {
-        return left;
-    }
-
-    public void setLeft(DefaultAST left) {
-        this.left = left;
-    }
-
-    public DefaultAST getRight() {
-        return right;
-    }
-
-    public void setRight(DefaultAST right) {
-        this.right = right;
-    }
+public class OperatorAST extends BasicOperators {
 
     public OperatorAST(DefaultAST l, DefaultAST r) {
-        super("operator");
-        this.left = l;
-        this.right = r;
+        super(l, r);
     }
 
     @Override
