@@ -37,7 +37,7 @@ public class Lexer {
     private TokenMatcher tm;
     private Stack<Bracket> st = new Stack<>();
     private HashMap<Character, Character> mp;
-    private int lineNum = 0;
+    private int lineNum = 1;
 
     public Lexer(ArrayList<Token> tokens, BufferedReader br) {
         this.tokens = tokens;
@@ -51,9 +51,10 @@ public class Lexer {
 
     public boolean valid_brackets(String input) {
         Bracket opening_bracket;
+        int i=0;
         for (char c : input.toCharArray()) {
             if (mp.containsKey(c)) {
-                st.push(new Bracket(c, LineErrorPrint(input)));
+                st.push(new Bracket(c, LineErrorPrint(input, i)));
             } else if (mp.containsValue(c)) {
                 if (st.size() == 0) {
                     return false;
@@ -63,12 +64,19 @@ public class Lexer {
                     return false;
                 }
             }
+            i++;
         }
         return true;
     }
 
-    private String LineErrorPrint(String input) {
-        return String.format("Line(%d): %s", lineNum, input);
+    private String LineErrorPrint(String input, int bracket_error_i) {
+//        return String.format("Line(%d): %s", lineNum, input);
+        String s = String.format("Line(%d): ", lineNum);
+        StringBuffer outputBuffer = new StringBuffer(s.length());
+        for (int i = 0; i < s.length()+bracket_error_i; i++){
+            outputBuffer.append(" ");
+        }
+        return s + input + "\n" + outputBuffer.toString() + "^";
     }
 
 
@@ -81,21 +89,22 @@ public class Lexer {
             }
             return false;
         }
-        lineNum++;
+
         if(!valid_brackets(line)){
-            throw new InvalidSyntax(LineErrorPrint(line));
+            throw new InvalidSyntax(LineErrorPrint(line, 0));
         }
         try {
             tokens = tm.tokenizeLine(line);
         }catch (TokenMatchException tme){
             throw new TokenMatchException(String.format("Couldn't process line(%d): ", lineNum)  + tme.getMessage());
         }
+        lineNum++;
         return true;
     }
 
     public void resetInput(BufferedReader bufferedReader){
         st.clear();
-        lineNum = 0;
+        lineNum = 1;
         br = bufferedReader;
     }
 
@@ -107,7 +116,7 @@ public class Lexer {
         this.tokens = tokens;
     }
 
-    public String printTokens() {
+    public String tokensToString() {
         String token = "";
         for (int i = 0; i < tokens.size(); i++) {
             token += tokens.get(i).toString();

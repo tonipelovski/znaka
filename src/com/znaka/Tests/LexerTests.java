@@ -13,7 +13,7 @@ import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 //TODO INdex into punctuation
-
+//TODO Fix error messages
 
 public class LexerTests {
     private Lexer lexer;
@@ -52,7 +52,7 @@ public class LexerTests {
 
         String lexerOutput = "";
         while (lexer.readLine()) {
-            lexerOutput = lexerOutput.concat(lexer.printTokens());
+            lexerOutput = lexerOutput.concat(lexer.tokensToString());
         }
         String expected =
                 "[symbol : noType][operator : =][number : 15]" +
@@ -81,9 +81,15 @@ public class LexerTests {
 
     @Test
     public void TestLexerErrorMessages() {
-        ErrorMessageHelper("Line(1): fun(", "fun(");
-        ErrorMessageHelper("Line(1): fun{", "fun{");
-        ErrorMessageHelper("Line(1): {", "{");
+        ErrorMessageHelper("Line(1): fun(\n" +
+                                   "            ^",
+                "fun(");
+        ErrorMessageHelper("Line(1): {\n" +
+                                   "         ^",
+                "{");
+        ErrorMessageHelper("Line(1): fun{\n" +
+                                   "            ^",
+                "fun{");
         ErrorMessageHelper("Couldn't process line(1): ?", "?");
         ErrorMessageHelper("Couldn't process line(1): 's", "'s");
     }

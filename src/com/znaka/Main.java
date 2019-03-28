@@ -20,7 +20,7 @@ public class Main {
         String lexerOutput = "";
 
         while(lexer.readLine()){
-            lexerOutput = lexerOutput.concat(lexer.printTokens());
+            lexerOutput = lexerOutput.concat(lexer.tokensToString());
         }
         System.out.println("lexer: ");
         System.out.println(lexerOutput);
