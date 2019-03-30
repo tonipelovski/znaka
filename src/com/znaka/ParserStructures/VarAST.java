@@ -46,7 +46,7 @@ public class VarAST extends DefaultAST {
             for (; i < tokens.size(); i++) {
                 Token token = tokens.get(i);
                 //System.out.println(token.getValue());
-                if (token.getValue().equals("(")) {
+                if (token.getValue().equals("(") || token.getValue().equals("[")) {
                      return false;
                 } else if (token.getType().equals("symbol")) {
                     flag_symbol = true;

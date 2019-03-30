@@ -38,7 +38,7 @@ public class DefaultASTMatcher {
 
 
         asts.add(new VarAST());
-
+        asts.add(new ArrayAST());
     }
 
     public DefaultAST match(ArrayList<Token> tokens){
