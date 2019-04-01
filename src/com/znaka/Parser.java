@@ -6,7 +6,10 @@ import com.znaka.Tokens.Token;
 
 import java.io.IOException;
 import java.util.*;
-
+//TODO add body to function
+//TODO Create Parent AST for if, while - check if it is working
+//TODO create function for getting condition ASTS in ()
+//TODO create function for getting body of while, if or func - check if it is working
 public class Parser {
     Lexer lexer;
     MainAST mainAST;
@@ -111,9 +114,9 @@ public class Parser {
         }
 
         if(to_order.has(2)){
-            if(to_order.getAll_AST().get(0).getType().equals("if")){
+            if(to_order.getAll_AST().get(0).getType().equals("conditional")){
 
-                IfConditionAST ifConditionAST = (IfConditionAST) to_order.getAll_AST().get(0);
+                ConditionalsAST conditionalAST = (ConditionalsAST) to_order.getAll_AST().get(0);
                 to_order.popFrontAST(2);
                 DefaultAST defaultAST = to_order.getAll_AST().get(0);
                 MainAST temp = new MainAST(new Stack<DefaultAST>());
@@ -134,102 +137,13 @@ public class Parser {
                 MainAST ordered = new MainAST(new Stack<DefaultAST>());
                 orderAST(temp, 0, null, ordered);
                 to_order.popFrontAST(1);
-                ifConditionAST.setCondition(ordered);
+                conditionalAST.setCond(ordered);
 
                 MainAST asts = new MainAST(new Stack<>());
-                if(to_order.getAll_AST().get(0).getType().equals("open_curly")) {
-                    boolean flag = true;
-                    Parser temp_parser = new Parser(lexer);
+                return getBody(to_order, level, last, be_ordered, conditionalAST, asts);
 
-                    while(temp_parser.parseLIne() && flag){
-                        //System.out.println("cccc");
-
-                        for(DefaultAST defaultAST1 : temp_parser.mainAST.getAll_AST()){
-                            //System.out.println("ala: " + defaultAST1.printAST());
-                            if(defaultAST1.getType().equals("close_curly")){
-                                flag = false;
-                                to_order.popFrontAST(1);
-                                ifConditionAST.setThen(asts);
-                                be_ordered.addAST(ifConditionAST);
-                                be_ordered.addAST(temp_parser.mainAST);
-                                temp_parser.mainAST.getAll_AST().clear();
-                                return null;
-                            }else{
-                                temp_parser.mainAST.popFrontAST(1);
-                                asts.addAST(defaultAST1);
-
-                            }
-                        }
-                    }
-                }else{
-                    orderAST(to_order, 0, null, asts);
-                    ifConditionAST.setThen(asts);
-                    return order_redo(to_order, level, ifConditionAST, be_ordered);
-
-                }
             }
         }
-
-        if(to_order.has(2)){
-            if(to_order.getAll_AST().get(0).getType().equals("loop")){
-
-                LoopAST loopAST = (LoopAST) to_order.getAll_AST().get(0);
-                to_order.popFrontAST(2);
-                DefaultAST defaultAST = to_order.getAll_AST().get(0);
-                MainAST temp = new MainAST(new Stack<DefaultAST>());
-                int subAST = 1;
-                while(subAST > 0){
-                    temp.addAST(defaultAST);
-                    to_order.popFrontAST(1);
-                    defaultAST = to_order.getAll_AST().get(0);
-                    if(defaultAST.getType().equals("open_punc")){
-                        subAST++;
-                    }
-
-                    if(defaultAST.getType().equals("close_punc")){
-                        subAST--;
-                    }
-
-                }
-                MainAST ordered = new MainAST(new Stack<DefaultAST>());
-                orderAST(temp, 0, null, ordered);
-                to_order.popFrontAST(1);
-                loopAST.setCondition(ordered);
-
-                MainAST asts = new MainAST(new Stack<>());
-                if(to_order.getAll_AST().get(0).getType().equals("open_curly")) {
-                    boolean flag = true;
-                    Parser temp_parser = new Parser(lexer);
-
-                    while(temp_parser.parseLIne() && flag){
-                        //System.out.println("cccc");
-
-                        for(DefaultAST defaultAST1 : temp_parser.mainAST.getAll_AST()){
-                            //System.out.println("ala: " + defaultAST1.printAST());
-                            if(defaultAST1.getType().equals("close_curly")){
-                                flag = false;
-                                to_order.popFrontAST(1);
-                                loopAST.setBody(asts);
-                                be_ordered.addAST(loopAST);
-                                be_ordered.addAST(temp_parser.mainAST);
-                                temp_parser.mainAST.getAll_AST().clear();
-                                return null;
-                            }else{
-                                temp_parser.mainAST.popFrontAST(1);
-                                asts.addAST(defaultAST1);
-
-                            }
-                        }
-                    }
-                }else{
-                    orderAST(to_order, 0, null, asts);
-                    loopAST.setBody(asts);
-                    return order_redo(to_order, level, loopAST, be_ordered);
-
-                }
-            }
-        }
-
 
        if(to_order.has(2)) {
 
@@ -394,6 +308,38 @@ public class Parser {
     }
 
 
+    private DefaultAST getBody(MainAST to_order, int level, DefaultAST last, MainAST be_ordered, ConditionalsAST conditionalsAST, MainAST asts) throws IOException, LexerException {
+        if(to_order.getAll_AST().get(0).getType().equals("open_curly")) {
+            Parser temp_parser = new Parser(lexer);
+
+            while(temp_parser.parseLIne()){
+                //System.out.println("cccc");
+
+                for(DefaultAST defaultAST1 : temp_parser.mainAST.getAll_AST()){
+                    //System.out.println("ala: " + defaultAST1.printAST());
+                    if(defaultAST1.getType().equals("close_curly")){
+                        to_order.popFrontAST(1);
+                        conditionalsAST.setBody(asts);
+                        be_ordered.addAST(conditionalsAST);
+                        be_ordered.addAST(temp_parser.mainAST);
+                        temp_parser.mainAST.getAll_AST().clear();
+                        System.out.println("here");
+                        return null;
+                    }else{
+                        temp_parser.mainAST.popFrontAST(1);
+                        asts.addAST(defaultAST1);
+
+                    }
+                }
+            }
+        }else{
+            orderAST(to_order, 0, null, asts);
+            conditionalsAST.setBody(asts);
+            return order_redo(to_order, level, conditionalsAST, be_ordered);
+
+        }
+        return order_redo(to_order, level, conditionalsAST, be_ordered);
+    }
 }
 
 

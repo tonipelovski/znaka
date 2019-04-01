@@ -11,18 +11,16 @@ public class Main {
 
     public static void main(String[] args) throws IOException, LexerException {
 	// write your code here
-        URL url = Main.class.getResource("test.txt");
+        URL url = Main.class.getResource("testConditionsAST");
         File file = new File(url.getPath());
         BufferedReader reader = new BufferedReader(new FileReader(file));
         ArrayList<Token> tokens = new ArrayList<>();
         Lexer lexer = new Lexer(tokens, reader);
 
         String lexerOutput = "";
-
-        while(lexer.readLine()){
-            lexerOutput = lexerOutput.concat(lexer.tokensToString());
+        Parser parser = new Parser(lexer);
+        while(parser.parseLIne()){
         }
-        System.out.println("lexer: ");
-        System.out.println(lexerOutput);
+        System.out.println(parser.printASTS());
     }
 }

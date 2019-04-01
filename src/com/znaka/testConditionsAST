@@ -4,6 +4,11 @@ if(ala > bala){
     c = a;
 }
 
+while(ala == bala){
+    ala += 1;
+    c += a;
+}
+
 if( ala < bala ) ala = ala + 1;
 
 a = 4 * 10;

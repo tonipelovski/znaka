@@ -173,7 +173,7 @@ public class ParserTests {
 
         }
         String parserOutput = parser.printASTS();
-        String expected = "\n[if:[operator:>:[var::ala]:[var::bala]]::\n" +
+        String expected = "\n[if:[operator:>:[var::ala]:[var::bala]]:\n" +
                 "  [operator\n" +
                 "    =\n" +
                 "     [var::ala]\n" +
@@ -182,7 +182,8 @@ public class ParserTests {
                 "    =\n" +
                 "     [var::c]\n" +
                 "     [var::a]]]\n" +
-                "[if:[operator:<:[var::ala]:[var::bala]]::\n" +
+                "[while:[operator:==:[var::ala]:[var::bala]]:[operator:+=:[var::ala]:[number:1.0]][operator:+=:[var::c]:[var::a]]]\n" +
+                "[if:[operator:<:[var::ala]:[var::bala]]:\n" +
                 "  [operator\n" +
                 "    =\n" +
                 "     [var::ala]\n" +
@@ -205,5 +206,6 @@ public class ParserTests {
                 "     [func::[var::c][var::d]]]";
         Assertions.assertEquals(expected, parserOutput);
     }
+
 
 }
