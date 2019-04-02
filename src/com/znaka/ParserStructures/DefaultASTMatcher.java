@@ -19,7 +19,7 @@ public class DefaultASTMatcher {
         //asts.add(new BooleanTypeAST(""));
 
         asts.add(new AssignAST(null, null));
-        asts.add(new FunctionAST("", null));
+        asts.add(new FunctionAST("", null, null));
         asts.add(new OperatorAST(null, null));
         asts.add(new IfConditionAST(null, null));
         asts.add(new LoopAST(null, null));

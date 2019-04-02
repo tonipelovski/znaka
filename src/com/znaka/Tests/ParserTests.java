@@ -207,5 +207,30 @@ public class ParserTests {
         Assertions.assertEquals(expected, parserOutput);
     }
 
+    @Test
+    public void testFunctionsAST() throws IOException, LexerException {
+        URL url = Main.class.getResource("testFunctionsAST");
+        File file = new File(url.getPath());
+        BufferedReader reader = new BufferedReader(new FileReader(file));
+        ArrayList<Token> tokens = new ArrayList<>();
+        Lexer lexer = new Lexer(tokens, reader);
+
+        Parser parser = new Parser(lexer);
+        while(parser.parseLIne()){
+
+        }
+        String parserOutput = parser.printASTS();
+        String expected = "[func::[var:int:a][var:int:b]\n" +
+                "  [operator\n" +
+                "    =\n" +
+                "     [var::a]\n" +
+                "     [var::b]]]\n" +
+                "  [operator\n" +
+                "    =\n" +
+                "     [var::a]\n" +
+                "     [operator:*:[func::[var::c][var::b]]:[number:10.0]]]";
+        Assertions.assertEquals(expected, parserOutput);
+    }
+
 
 }

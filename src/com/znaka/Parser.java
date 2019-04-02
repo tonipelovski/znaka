@@ -6,10 +6,6 @@ import com.znaka.Tokens.Token;
 
 import java.io.IOException;
 import java.util.*;
-//TODO add body to function
-//TODO Create Parent AST for if, while - check if it is working
-//TODO create function for getting condition ASTS in ()
-//TODO create function for getting body of while, if or func - check if it is working
 public class Parser {
     Lexer lexer;
     MainAST mainAST;
@@ -98,15 +94,43 @@ public class Parser {
 
                 }
                 func.setArgs(args);
-                if(to_order.getAll_AST().size() > 0){
-                    if(to_order.getAll_AST().get(0).getType().equals("operator")){
+                MainAST asts = new MainAST(new Stack<DefaultAST>());
+                if(to_order.has(1)) {
+                    if (to_order.getAll_AST().get(0).getType().equals("open_curly")) {
+                        Parser temp_parser = new Parser(lexer);
+
+                        while (temp_parser.parseLIne()) {
+                            //System.out.println("cccc");
+
+                            for (DefaultAST defaultAST1 : temp_parser.mainAST.getAll_AST()) {
+                                //System.out.println("ala: " + defaultAST1.printAST());
+                                if (defaultAST1.getType().equals("close_curly")) {
+                                    to_order.popFrontAST(1);
+                                    func.setBody(asts);
+                                    be_ordered.addAST(func);
+                                    be_ordered.addAST(temp_parser.mainAST);
+                                    temp_parser.mainAST.getAll_AST().clear();
+                                    return null;
+                                } else {
+                                    temp_parser.mainAST.popFrontAST(1);
+                                    asts.addAST(defaultAST1);
+
+                                }
+                            }
+                        }
+                    }
+                    else if (to_order.getAll_AST().get(0).getType().equals("operator")) {
                         DefaultAST defaultAST = orderAST(to_order, level + 1, func, be_ordered);
-                        if(level == 0) {
+                        if (level == 0) {
                             be_ordered.addAST(defaultAST);
                         }
                         return defaultAST;
+
+                    }else{
+                        return order_redo(to_order, level, func, be_ordered);
+
                     }
-                }else {
+                }else{
                     return order_redo(to_order, level, func, be_ordered);
 
                 }

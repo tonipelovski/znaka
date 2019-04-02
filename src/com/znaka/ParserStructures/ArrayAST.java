@@ -51,14 +51,14 @@ public class ArrayAST extends DefaultAST {
             i++;
 
         }
-        if(tokens.size() > i + 1) {
+        if(tokens.size() > i + 3) {
             for (; i < tokens.size(); i++) {
                 Token token = tokens.get(i);
-                //System.out.println(token.getValue());
                 if (token.getValue().equals("[") && flag_symbol) {
                     i++;
                     Token number = tokens.get(i);
                     i++;
+
                     this.setName(value);
                     this.setType(t);
                     this.setSize(Integer.parseInt(number.getValue()));
@@ -67,6 +67,7 @@ public class ArrayAST extends DefaultAST {
                     }else{
                         parser.next(4);
                     }
+                    return true;
 
                 } else if (token.getType().equals("symbol")) {
 
@@ -87,6 +88,6 @@ public class ArrayAST extends DefaultAST {
 
     @Override
     public String printAST() {
-        return "[var" + ":" + getType() + ":" + getName() + "]";
+        return "[array" + ":" + getType() + ":" + getName() + ":index:" + getSize() + "]";
     }
 }

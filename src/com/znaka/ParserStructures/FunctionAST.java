@@ -1,5 +1,6 @@
 package com.znaka.ParserStructures;
 
+import com.znaka.Main;
 import com.znaka.Parser;
 import com.znaka.Tokens.Token;
 
@@ -9,6 +10,16 @@ import java.util.Stack;
 public class FunctionAST extends DefaultAST{
     private String ret_type;
     private String name;
+    private Stack<DefaultAST> args;
+    private MainAST body;
+
+    public MainAST getBody() {
+        return body;
+    }
+
+    public void setBody(MainAST body) {
+        this.body = body;
+    }
 
     public String getName() {
         return name;
@@ -18,12 +29,12 @@ public class FunctionAST extends DefaultAST{
         this.name = name;
     }
 
-    private Stack<DefaultAST> args;
 
-    public FunctionAST(String return_type, Stack<DefaultAST> arguments) {
+    public FunctionAST(String return_type, Stack<DefaultAST> arguments, MainAST body) {
         super("call");
         this.ret_type = return_type;
         this.args = arguments;
+        this.body = body;
     }
 
     public String getRet_type() {
@@ -79,12 +90,20 @@ public class FunctionAST extends DefaultAST{
 
     @Override
     public String printAST() {
+        String body = "";
+        if (getBody() != null) {
+            for (DefaultAST defaultAST : getBody().getAll_AST()) {
+                if (defaultAST != null) {
+                    body = body.concat(defaultAST.printAST());
+                }
+            }
+        }
         String output = "[" + getName() + ":" + getRet_type() + ":";
         for(int i = 0; i < getArgs().size(); i++){
             output = output.concat(getArgs().get(i).printAST());
         }
-        output = output.concat("]");
-        return output;
+        output = output.concat(body);
+        return output.concat("]");
     }
 
 }
