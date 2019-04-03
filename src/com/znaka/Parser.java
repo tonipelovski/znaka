@@ -58,6 +58,33 @@ public class Parser {
             System.out.println(last.printAST());
         }
         */
+
+        if(to_order.has(1)){
+            if(to_order.getAll_AST().get(0).getType().equals("open_curly")){
+                DefaultAST openCurlyAST = to_order.getAll_AST().get(0);
+                to_order.popFrontAST(1);
+                ArrayAST asts = new ArrayAST(new Stack<>());
+                DefaultAST result = openCurlyAST;
+                while(true){
+                    result = to_order.getAll_AST().get(0);
+
+                    if(result != null) {
+                        if (result.getType().equals("close_curly")) {
+                            break;
+                        }else{
+                            if(!result.getType().equals("open_curly") && !result.getType().equals("coma")) {
+                                asts.addAST(result);
+                            }
+                        }
+                    }
+                    to_order.popFrontAST(1);
+                }
+                to_order.popFrontAST(1);
+                return order_redo(to_order, level, asts, be_ordered);
+            }
+        }
+
+
         if(to_order.has(1)){
             if(to_order.getAll_AST().get(0).getType().equals("close_curly")){
                 DefaultAST closeCurlyAST = to_order.getAll_AST().get(0);
@@ -246,6 +273,18 @@ public class Parser {
 
             }
         }
+
+        if(to_order.has(1)){
+            if(to_order.getAll_AST().get(0).getType().equals("coma")){
+                DefaultAST comaAST = to_order.getAll_AST().get(0);
+                to_order.popFrontAST(1);
+                if(level == 0) {
+                    be_ordered.addAST(last);
+                }
+                return order_redo(to_order, level, comaAST, be_ordered);
+            }
+        }
+
         if(to_order.has(1)) {
 
             DefaultAST defaultAST = to_order.getAll_AST().get(0);
@@ -311,6 +350,10 @@ public class Parser {
                 return order_redo(to_order, level, basicOperators, be_ordered);
 
             }else if(to_order.getAll_AST().get(0).getType().equals("open_punc")){
+                basicOperators.setRight(orderAST(to_order, level + 1, basicOperators, be_ordered));
+                return order_redo(to_order, level, basicOperators, be_ordered);
+
+            }else if(to_order.getAll_AST().get(0).getType().equals("open_curly")){
                 basicOperators.setRight(orderAST(to_order, level + 1, basicOperators, be_ordered));
                 return order_redo(to_order, level, basicOperators, be_ordered);
 
