@@ -35,9 +35,10 @@ public class Lexer {
     private ArrayList<Token> tokens;
     private BufferedReader br;
     private TokenMatcher tm;
-    private Stack<Bracket> st = new Stack<>();
+    private Stack<Character> st = new Stack<>();
     private HashMap<Character, Character> mp;
     private int lineNum = 1;
+    private Bracket last_bracket;
 
     public Lexer(ArrayList<Token> tokens, BufferedReader br) {
         this.tokens = tokens;
@@ -50,17 +51,19 @@ public class Lexer {
     }
 
     public boolean valid_brackets(String input) {
-        Bracket opening_bracket;
+        char opening_bracket;
         int i=0;
         for (char c : input.toCharArray()) {
+            last_bracket = new Bracket(c, LineErrorPrint(input, i));
             if (mp.containsKey(c)) {
-                st.push(new Bracket(c, LineErrorPrint(input, i)));
+                st.push(c);
             } else if (mp.containsValue(c)) {
+
                 if (st.size() == 0) {
                     return false;
                 }
                 opening_bracket = st.pop();
-                if (mp.get(opening_bracket.getVal()) != c) {
+                if (mp.get(opening_bracket) != c) {
                     return false;
                 }
             }
@@ -72,7 +75,7 @@ public class Lexer {
     private String LineErrorPrint(String input, int bracket_error_i) {
 //        return String.format("Line(%d): %s", lineNum, input);
         String s = String.format("Line(%d): ", lineNum);
-        StringBuffer outputBuffer = new StringBuffer(s.length());
+        StringBuilder outputBuffer = new StringBuilder(s.length());
         for (int i = 0; i < s.length()+bracket_error_i; i++){
             outputBuffer.append(" ");
         }
@@ -85,13 +88,13 @@ public class Lexer {
         tokens.clear();
         if (line == null) {
             if(st.size() > 0){
-                throw new InvalidSyntax(st.lastElement().getLine());
+                throw new InvalidSyntax(last_bracket.getLine());
             }
             return false;
         }
 
         if(!valid_brackets(line)){
-            throw new InvalidSyntax(LineErrorPrint(line, 0));
+            throw new InvalidSyntax(last_bracket.getLine());
         }
         try {
             tokens = tm.tokenizeLine(line);

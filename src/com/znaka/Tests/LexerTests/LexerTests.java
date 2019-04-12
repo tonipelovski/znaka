@@ -82,13 +82,13 @@ public class LexerTests {
     @Test
     public void TestLexerErrorMessages() {
         ErrorMessageHelper("Line(1): fun(\n" +
-                        "            ^",
+                                   "            ^",
                 "fun(");
         ErrorMessageHelper("Line(1): {\n" +
-                        "         ^",
+                                   "         ^",
                 "{");
         ErrorMessageHelper("Line(1): fun{\n" +
-                        "            ^",
+                                   "            ^",
                 "fun{");
         ErrorMessageHelper("Couldn't process line(1): ?", "?");
         ErrorMessageHelper("Couldn't process line(1): 's", "'s");
