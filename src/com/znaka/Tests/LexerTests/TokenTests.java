@@ -1,4 +1,4 @@
-package com.znaka.Tests;
+package com.znaka.Tests.LexerTests;
 import com.znaka.Tokens.*;
 //import com.znaka.Tokens.TokenIndexMatch;
 import org.junit.jupiter.api.*;

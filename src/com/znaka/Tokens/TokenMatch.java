@@ -25,7 +25,7 @@ public abstract class TokenMatch {
         /*for(int i=0; i < keywords.length; i++){
             keywords[i] = keywords[i].replaceAll("(.)", "\\\\$1");
         }*/
-        String s1 = "".join("|", keywords);
+        String s1 = String.join("|", keywords);
         return nextTokenEndIndex(Pattern.compile("^(" +s1+")\\b"), s);
     }
 

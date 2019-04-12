@@ -1,4 +1,4 @@
-package com.znaka.Tests;
+package com.znaka.Tests.ParserTests;
 
 import com.znaka.Exceptions.LexerException;
 import com.znaka.Lexer;
@@ -18,7 +18,7 @@ import java.util.ArrayList;
 public class ParserTests {
     @Test
     public void genaralBasicsTest() throws IOException, LexerException {
-        URL url = Main.class.getResource("testParserSecond");
+        URL url = ParserTests.class.getResource("testParserSecond");
         File file = new File(url.getPath());
         BufferedReader reader = new BufferedReader(new FileReader(file));
         ArrayList<Token> tokens = new ArrayList<>();
@@ -68,7 +68,7 @@ public class ParserTests {
 
     @Test
     public void testTypesASTS() throws IOException, LexerException {
-        URL url = Main.class.getResource("testTypesAST");
+        URL url = ParserTests.class.getResource("testTypesAST");
         File file = new File(url.getPath());
         BufferedReader reader = new BufferedReader(new FileReader(file));
         ArrayList<Token> tokens = new ArrayList<>();
@@ -85,7 +85,7 @@ public class ParserTests {
 
     @Test
     public void testAssignsATS() throws IOException, LexerException {
-        URL url = Main.class.getResource("testAssignsAST");
+        URL url = ParserTests.class.getResource("testAssignsAST");
         File file = new File(url.getPath());
         BufferedReader reader = new BufferedReader(new FileReader(file));
         ArrayList<Token> tokens = new ArrayList<>();
@@ -129,7 +129,7 @@ public class ParserTests {
 
     @Test
     public void testOperationsAST() throws IOException, LexerException {
-        URL url = Main.class.getResource("testOperationsAST");
+        URL url = ParserTests.class.getResource("testOperationsAST");
         File file = new File(url.getPath());
         BufferedReader reader = new BufferedReader(new FileReader(file));
         ArrayList<Token> tokens = new ArrayList<>();
@@ -162,7 +162,7 @@ public class ParserTests {
 
     @Test
     public void testConditionsAST() throws IOException, LexerException {
-        URL url = Main.class.getResource("testConditionsAST");
+        URL url = ParserTests.class.getResource("testConditionsAST");
         File file = new File(url.getPath());
         BufferedReader reader = new BufferedReader(new FileReader(file));
         ArrayList<Token> tokens = new ArrayList<>();
@@ -209,7 +209,7 @@ public class ParserTests {
 
     @Test
     public void testFunctionsAST() throws IOException, LexerException {
-        URL url = Main.class.getResource("testFunctionsAST");
+        URL url = ParserTests.class.getResource("testFunctionsAST");
         File file = new File(url.getPath());
         BufferedReader reader = new BufferedReader(new FileReader(file));
         ArrayList<Token> tokens = new ArrayList<>();

@@ -1,4 +1,4 @@
-package com.znaka.Tests;
+package com.znaka.Tests.LexerTests;
 
 import com.znaka.Tokens.Token;
 import com.znaka.Exceptions.TokenMatchException;
