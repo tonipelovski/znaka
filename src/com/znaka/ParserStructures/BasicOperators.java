@@ -4,7 +4,7 @@ import com.znaka.Parser;
 import com.znaka.Tokens.Token;
 
 import java.util.ArrayList;
-
+//TO DO create unary operator
 public abstract class BasicOperators extends DefaultAST {
     private String operator;
     private DefaultAST left;
