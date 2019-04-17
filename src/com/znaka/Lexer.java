@@ -9,8 +9,11 @@ import com.znaka.Exceptions.TokenMatchException;
 import com.znaka.Tokens.Token;
 import com.znaka.Tokens.TokenMatcher;
 
-import java.io.*;
-import java.util.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Stack;
 
 
 class Bracket{
@@ -120,10 +123,10 @@ public class Lexer {
     }
 
     public String tokensToString() {
-        String token = "";
+        StringBuilder token = new StringBuilder();
         for (int i = 0; i < tokens.size(); i++) {
-            token += tokens.get(i).toString();
+            token.append(tokens.get(i).toString());
         }
-        return token;
+        return token.toString() +'\n';
     }
 }
