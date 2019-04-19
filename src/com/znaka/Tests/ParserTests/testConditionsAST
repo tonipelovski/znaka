@@ -10,9 +10,3 @@ while(ala == bala){
 }
 
 if( ala < bala ) ala = ala + 1;
-
-a = 4 * 10;
-a * b = c * a;
-a = (a + b + c) * c;
-
-c = func(c, d);

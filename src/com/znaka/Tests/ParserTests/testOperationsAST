@@ -3,3 +3,4 @@ int b;
 b = a * 100;
 one * two = three * four * five;
 five = func(a) * 10;
+(a * b) + c = (b + d) * c;

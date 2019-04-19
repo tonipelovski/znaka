@@ -1,6 +1,7 @@
 package com.znaka;
 
 import com.znaka.Exceptions.LexerException;
+import com.znaka.Exceptions.ParserException;
 import com.znaka.ParserStructures.*;
 import com.znaka.Tokens.Token;
 
@@ -11,13 +12,15 @@ public class Parser {
     MainAST mainAST;
     int last_token = 0;
     int max_token = 0;
+    private boolean entered = false;
 
     public Parser(Lexer lexer) {
         this.lexer = lexer;
         mainAST = new MainAST(new Stack<>());
     }
 
-    public boolean parseLIne() throws IOException, LexerException {
+    public boolean parseLIne() throws IOException, LexerException, ParserException {
+        entered = false;
         last_token = 0;
         if(!lexer.readLine()){
             return false;
@@ -53,14 +56,15 @@ public class Parser {
         return true;
     }
 
-    private DefaultAST orderAST(MainAST to_order, int level, DefaultAST last, MainAST be_ordered) throws IOException, LexerException {
+    private DefaultAST orderAST(MainAST to_order, int level, DefaultAST last, MainAST be_ordered) throws IOException, LexerException, ParserException {
         /*if (last != null) {
             System.out.println(last.printAST());
-        }
-        */
+        }*/
+
 
         if(to_order.has(2)){
             if(to_order.getAll_AST().get(0).getType().equals("open_curly")){
+                entered = false;
                 DefaultAST openCurlyAST = to_order.getAll_AST().get(0);
                 to_order.popFrontAST(1);
                 ArrayAST asts = new ArrayAST(new Stack<>());
@@ -87,6 +91,7 @@ public class Parser {
 
         if(to_order.has(1)){
             if(to_order.getAll_AST().get(0).getType().equals("close_curly")){
+                entered = false;
                 DefaultAST closeCurlyAST = to_order.getAll_AST().get(0);
                 to_order.popFrontAST(1);
                 be_ordered.addAST(closeCurlyAST);
@@ -96,6 +101,7 @@ public class Parser {
 
         if(to_order.has(2)){
             if(to_order.getAll_AST().get(0).getType().equals("call")){
+
                 FunctionAST func = (FunctionAST) to_order.getAll_AST().get(0);
                 to_order.popFrontAST(2);
                 Stack<DefaultAST> args = new Stack<>();
@@ -103,6 +109,7 @@ public class Parser {
                 DefaultAST result = func;
                 DefaultAST temp = null;
                 while(true){
+                    entered = false;
 
                     result = orderAST(to_order, level + 1, result, be_ordered);
 
@@ -118,7 +125,7 @@ public class Parser {
                             }
                         }
                     }
-
+                    entered = false;
                 }
                 func.setArgs(args);
                 MainAST asts = new MainAST(new Stack<DefaultAST>());
@@ -166,6 +173,7 @@ public class Parser {
 
         if(to_order.has(2)){
             if(to_order.getAll_AST().get(0).getType().equals("conditional")){
+                entered = false;
 
                 ConditionalsAST conditionalAST = (ConditionalsAST) to_order.getAll_AST().get(0);
                 to_order.popFrontAST(2);
@@ -201,25 +209,34 @@ public class Parser {
             }
         }
 
-       if(to_order.has(2)) {
+       if(to_order.has(1)) {
+           //System.out.println("ala");
 
             if (to_order.getAll_AST().get(0).getType().equals("operator")) {
-                BasicOperators assign = (BasicOperators) to_order.getAll_AST().get(0);
-                if(assign.getOperator().equals("=")) {
-                    DefaultAST left = last;
-                    DefaultAST right = to_order.getAll_AST().get(1);
+                if(to_order.getAll_AST().get(0) instanceof UnaryOperatorAST) {
+                    //System.out.println("bala");
 
-                    assign.setLeft(left);
-                    to_order.popFrontAST(1);
-                    return getRight(to_order, level, last, be_ordered, assign, right);
+                    UnaryOperatorAST unaryOperatorAST = (UnaryOperatorAST) to_order.getAll_AST().get(0);
+                    entered = false;
+                    if(unaryOperatorAST.getOperator().equals("!")){
+                        to_order.popFrontAST(1);
+                        unaryOperatorAST.setLeft(orderAST(to_order, level + 1, to_order.getAll_AST().get(0), be_ordered));
+                        return order_redo(to_order, level, unaryOperatorAST, be_ordered);
+                    }else {
+                        DefaultAST left = last;
+                        unaryOperatorAST.setLeft(left);
+                        to_order.popFrontAST(1);
+                        return order_redo(to_order, level, unaryOperatorAST, be_ordered);
+                    }
                 }
             }
         }
 
         if(to_order.has(2)){
             if(to_order.getAll_AST().get(0).getType().equals("operator")){
+                entered = false;
                 BasicOperators operatorAST = (BasicOperators) to_order.getAll_AST().get(0);
-                if(!operatorAST.getOperator().equals("=")) {
+                //if(!operatorAST.getOperator().equals("=")) {
 
                     DefaultAST left = last;
                     DefaultAST right = to_order.getAll_AST().get(1);
@@ -228,12 +245,13 @@ public class Parser {
                     //System.out.println("debaaa" + operatorAST.printAST());
 
                     return getRight(to_order, level, last, be_ordered, operatorAST, right);
-                }
+                //}
             }
         }
 
         if(to_order.has(2)){
             if(to_order.getAll_AST().get(0).getType().equals("open_punc")){
+                entered = false;
                 to_order.popFrontAST(1);
                 DefaultAST defaultAST = null;
                 MainAST temp = new MainAST(new Stack<DefaultAST>());
@@ -255,21 +273,17 @@ public class Parser {
                     if(subAST > 0) {
                         to_order.popFrontAST(1);
                         temp.addAST(defaultAST);
+
                     }
                 }
-                //System.out.println(temp.getAll_AST().get(temp.getAll_AST().size() -1).getType());
 
                 MainAST ordered = new MainAST(new Stack<DefaultAST>());
                 orderAST(temp, 0, null, ordered);
                 //System.out.println(ordered.getAll_AST().get(0).printAST());
                 to_order.popFrontAST(1);
                 if(to_order.has(2)) {
-
                     if ("operator".equals(to_order.getAll_AST().get(0).getType())) {
-                        MainAST new_ordered = new MainAST(new Stack<DefaultAST>());
-
                         ordered.addAST(orderAST(to_order, level + 1, ordered.getAll_AST().get(0), be_ordered));
-
                         DefaultAST defaultAST1 = order_redo(to_order, level, ordered.getAll_AST().get(ordered.getAll_AST().size() - 1), be_ordered);
                         return order_redo(to_order, level, defaultAST1, be_ordered);
                     }
@@ -284,6 +298,7 @@ public class Parser {
 
         if(to_order.has(1)){
             if(to_order.getAll_AST().get(0).getType().equals("coma")){
+                entered = false;
                 DefaultAST comaAST = to_order.getAll_AST().get(0);
                 to_order.popFrontAST(1);
                 if(level == 0) {
@@ -294,16 +309,15 @@ public class Parser {
         }
 
         if(to_order.has(1)) {
-
+            if(entered){
+                String message = "Expected operator or ;";
+                throw new ParserException(message);
+            }
             DefaultAST defaultAST = to_order.getAll_AST().get(0);
-            //System.out.println(defaultAST.printAST());
-            //mainAST.addAST(defaultAST);
             to_order.popFrontAST(1);
-
+            entered = true;
             return order_redo(to_order, level, defaultAST, be_ordered);
         }else{
-            //System.out.println();
-            //printASTS();
             return null;
         }
     }
@@ -316,17 +330,18 @@ public class Parser {
     public String printASTS(){
         String output = mainAST.printAST();
         for(int i = 0; i < mainAST.getAll_AST().size(); i++){
-            if(mainAST.getAll_AST().get(i).printAST() != null) {
-                output = output.concat(mainAST.getAll_AST().get(i).printAST());
+            if(mainAST.getAll_AST().get(i) != null) {
+                if(mainAST.getAll_AST().get(i).printAST() != null) {
+                    output = output.concat(mainAST.getAll_AST().get(i).printAST());
+                }
             }
         }
         return output;
     }
-    private DefaultAST order_redo(MainAST to_order, int level, DefaultAST defaultAST, MainAST be_ordered) throws IOException, LexerException {
+    private DefaultAST order_redo(MainAST to_order, int level, DefaultAST defaultAST, MainAST be_ordered) throws IOException, LexerException, ParserException {
         if(level == 0 && to_order.getAll_AST().size() == 0){
             be_ordered.addAST(defaultAST);
             //System.out.println(printASTS());
-
         }
 
         if(level == 0) {
@@ -337,7 +352,7 @@ public class Parser {
         }
     }
 
-    private DefaultAST getRight(MainAST to_order, int level, DefaultAST last, MainAST be_ordered, BasicOperators basicOperators, DefaultAST right) throws IOException, LexerException {
+    private DefaultAST getRight(MainAST to_order, int level, DefaultAST last, MainAST be_ordered, BasicOperators basicOperators, DefaultAST right) throws IOException, LexerException, ParserException {
         if(to_order.has(2)) {
 
             if (to_order.getAll_AST().get(1).getType().equals("operator")) {
@@ -383,7 +398,7 @@ public class Parser {
     }
 
 
-    private DefaultAST getBody(MainAST to_order, int level, DefaultAST last, MainAST be_ordered, ConditionalsAST conditionalsAST, MainAST asts) throws IOException, LexerException {
+    private DefaultAST getBody(MainAST to_order, int level, DefaultAST last, MainAST be_ordered, ConditionalsAST conditionalsAST, MainAST asts) throws IOException, LexerException, ParserException {
         if(!to_order.has(2)) {
             Parser temp_parser = new Parser(lexer);
 
