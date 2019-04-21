@@ -10,3 +10,10 @@ while(ala == bala){
 }
 
 if( ala < bala ) ala = ala + 1;
+
+while(ala == bala)
+
+{
+    ala += 1;
+    c += a;
+}

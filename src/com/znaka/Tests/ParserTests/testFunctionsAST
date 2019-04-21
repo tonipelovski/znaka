@@ -3,3 +3,10 @@ void func(int a, int b){
 }
 
 a = func(c , b) * 10;
+
+int func(int a, int b)
+
+{
+    a = b;
+}
+

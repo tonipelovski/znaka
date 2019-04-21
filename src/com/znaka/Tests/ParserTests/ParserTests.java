@@ -42,10 +42,6 @@ public class ParserTests {
                 "  [operator\n" +
                 "    =\n" +
                 "     [var:int:a]\n" +
-                "     [number:10.0]][func:int:[operator:*:[var::a]:[var::c]][var::b]]\n" +
-                "  [operator\n" +
-                "    =\n" +
-                "     [var:int:a]\n" +
                 "     [number:10.0]]\n" +
                 "  [operator\n" +
                 "    =\n" +
@@ -192,7 +188,8 @@ public class ParserTests {
                 "  [operator\n" +
                 "    =\n" +
                 "     [var::ala]\n" +
-                "     [operator:+:[var::ala]:[number:1.0]]]]";
+                "     [operator:+:[var::ala]:[number:1.0]]]]\n" +
+                "[while:[operator:==:[var::ala]:[var::bala]]:[operator:+=:[var::ala]:[number:1.0]][operator:+=:[var::c]:[var::a]]]";
         Assertions.assertEquals(expected, parserOutput);
     }
 
@@ -217,7 +214,12 @@ public class ParserTests {
                 "  [operator\n" +
                 "    =\n" +
                 "     [var::a]\n" +
-                "     [operator:*:[func::[var::c][var::b]]:[number:10.0]]]";
+                "     [operator:*:[func::[var::c][var::b]]:[number:10.0]]]" +
+                "[func:int:[var:int:a][var:int:b]\n" +
+                "  [operator\n" +
+                "    =\n" +
+                "     [var::a]\n" +
+                "     [var::b]]]";
         Assertions.assertEquals(expected, parserOutput);
     }
 
