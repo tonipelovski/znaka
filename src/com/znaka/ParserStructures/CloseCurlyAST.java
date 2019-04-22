@@ -24,4 +24,9 @@ public class CloseCurlyAST extends DefaultAST {
         return null;
     }
 
+    @Override
+    public String getText() {
+        return "}";
+    }
+
 }

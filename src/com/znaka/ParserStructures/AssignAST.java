@@ -47,5 +47,10 @@ public class AssignAST extends BasicOperators {
         return "\n  [" + getType() + "\n    " + getOperator() + "\n     " + printLeft + "\n     " + printRight + "]";
     }
 
+    @Override
+    public String getText() {
+        return getOperator();
+    }
+
 
 }

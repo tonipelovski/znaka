@@ -47,4 +47,9 @@ public class IfConditionAST extends ConditionalsAST {
         return "\n[" + "if" + ":" + condition + ":" + then + "]";
     }
 
+    @Override
+    public String getText() {
+        return "if";
+    }
+
 }

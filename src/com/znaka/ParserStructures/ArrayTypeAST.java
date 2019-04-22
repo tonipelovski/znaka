@@ -82,12 +82,12 @@ public class ArrayTypeAST extends DefaultAST {
         return false;
     }
 
-    public String getName() {
+    public String getText() {
         return name;
     }
 
     @Override
     public String printAST() {
-        return "[array" + ":" + getType() + ":" + getName() + ":index:" + getSize() + "]";
+        return "[array" + ":" + getType() + ":" + getText() + ":index:" + getSize() + "]";
     }
 }

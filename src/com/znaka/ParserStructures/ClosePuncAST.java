@@ -23,4 +23,9 @@ public class ClosePuncAST extends DefaultAST{
     public String printAST() {
         return null;
     }
+
+    @Override
+    public String getText() {
+        return ")";
+    }
 }

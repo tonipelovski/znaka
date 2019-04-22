@@ -40,4 +40,9 @@ public class UnaryOperatorAST extends BasicOperators {
         }
         return "[" + getType() + ":" + getOperator() + ":" + printLeft + "]";
     }
+
+    @Override
+    public String getText() {
+        return getOperator();
+    }
 }

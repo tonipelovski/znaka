@@ -71,12 +71,12 @@ public class VarAST extends DefaultAST {
         return false;
     }
 
-    public String getName() {
+    public String getText() {
         return name;
     }
 
     @Override
     public String printAST() {
-         return "[var" + ":" + getType() + ":" + getName() + "]";
+         return "[var" + ":" + getType() + ":" + getText() + "]";
     }
 }

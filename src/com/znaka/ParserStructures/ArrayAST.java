@@ -32,6 +32,12 @@ public class ArrayAST extends DefaultAST{
         }
         return result + "}";
     }
+
+    @Override
+    public String getText() {
+        return null;
+    }
+
     public void addAST(DefaultAST ast){
         all_AST.add(ast);
     }

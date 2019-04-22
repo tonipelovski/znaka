@@ -48,4 +48,9 @@ public class LoopAST extends ConditionalsAST{
 
         return "\n[" + "while" + ":" + condition + ":" + then + "]";
     }
+
+    @Override
+    public String getText() {
+        return "while";
+    }
 }

@@ -4,16 +4,17 @@ import com.znaka.Exceptions.LexerException;
 import com.znaka.Exceptions.ParserException;
 import com.znaka.ParserStructures.*;
 import com.znaka.Tokens.Token;
-import sun.security.krb5.internal.PAEncTSEnc;
 
 import java.io.IOException;
 import java.util.*;
 public class Parser {
     Lexer lexer;
     MainAST mainAST;
-    int last_token = 0;
-    int max_token = 0;
+    private int last_token = 0;
+    private int max_token = 0;
     private boolean error = false;
+    private String line = "ls[5]= a *;";
+    private int indexOf;
 
     public Lexer getLexer() {
         return lexer;
@@ -60,10 +61,6 @@ public class Parser {
     }
 
     private DefaultAST orderAST(MainAST to_order, int level, DefaultAST last, MainAST be_ordered) throws IOException, LexerException, ParserException {
-        /*if (last != null) {
-            System.out.println(last.printAST());
-        }*/
-
 
         if(to_order.has(2)){
             if(to_order.getAll_AST().get(0).getType().equals("open_curly")){
@@ -273,23 +270,28 @@ public class Parser {
 
        if(to_order.has(1)) {
            //System.out.println("ala");
+           if(to_order.getAll_AST().get(0).getText() != null) {
+               if (line.contains(to_order.getAll_AST().get(0).getText())) {
+                   indexOf = line.indexOf(to_order.getAll_AST().get(0).getText());
+                   line = line.substring(indexOf);
+                   System.out.println(line);
+               }
+           }
 
-           if (to_order.getAll_AST().get(0).getType().equals("operator")) {
-               if (to_order.getAll_AST().get(0) instanceof UnaryOperatorAST) {
-                   //System.out.println("bala");
+           if (to_order.getAll_AST().get(0).getType().equals("operator")  && to_order.getAll_AST().get(0) instanceof UnaryOperatorAST) {
 
-                   UnaryOperatorAST unaryOperatorAST = (UnaryOperatorAST) to_order.getAll_AST().get(0);
-                   error = false;
-                   if (unaryOperatorAST.getOperator().equals("!")) {
-                       to_order.popFrontAST(1);
-                       unaryOperatorAST.setLeft(orderAST(to_order, level + 1, to_order.getAll_AST().get(0), be_ordered));
-                       return order_redo(to_order, level, unaryOperatorAST, be_ordered);
-                   } else {
-                       DefaultAST left = last;
-                       unaryOperatorAST.setLeft(left);
-                       to_order.popFrontAST(1);
-                       return order_redo(to_order, level, unaryOperatorAST, be_ordered);
-                   }
+               //System.out.println("bala");
+               UnaryOperatorAST unaryOperatorAST = (UnaryOperatorAST) to_order.getAll_AST().get(0);
+               error = false;
+               if (unaryOperatorAST.getOperator().equals("!")) {
+                   to_order.popFrontAST(1);
+                   unaryOperatorAST.setLeft(orderAST(to_order, level + 1, to_order.getAll_AST().get(0), be_ordered));
+                   return order_redo(to_order, level, unaryOperatorAST, be_ordered);
+               } else {
+                   DefaultAST left = last;
+                   unaryOperatorAST.setLeft(left);
+                   to_order.popFrontAST(1);
+                   return order_redo(to_order, level, unaryOperatorAST, be_ordered);
                }
            }
            if (to_order.getAll_AST().get(0).getType().equals("operator")) {
@@ -306,7 +308,7 @@ public class Parser {
 
                    return getRight(to_order, level, last, be_ordered, operatorAST, right);
                } else {
-                   throw new ParserException("Expected right");
+                   throw new ParserException("Expected right" +  line);
                }
                //}
            }
@@ -327,14 +329,14 @@ public class Parser {
                }
                return order_redo(to_order, level, comaAST, be_ordered);
            }
-           if(error){
-               String message = "Expected operator";
-               throw new ParserException(message);
-           }
            DefaultAST defaultAST = to_order.getAll_AST().get(0);
-           to_order.popFrontAST(1);
-           error = true;
-           return order_redo(to_order, level, defaultAST, be_ordered);
+           if(error){
+               throw new ParserException("Expected operator" + line.substring(line.indexOf(defaultAST.getText())));
+           }else {
+               to_order.popFrontAST(1);
+               error = true;
+               return order_redo(to_order, level, defaultAST, be_ordered);
+           }
         }else{
             return null;
         }
@@ -372,6 +374,7 @@ public class Parser {
     }
 
     private DefaultAST getRight(MainAST to_order, int level, DefaultAST last, MainAST be_ordered, BasicOperators basicOperators, DefaultAST right) throws IOException, LexerException, ParserException {
+
         if(to_order.has(2)) {
 
             if (to_order.getAll_AST().get(1).getType().equals("operator")) {
@@ -399,6 +402,13 @@ public class Parser {
                 basicOperators.setRight(orderAST(to_order, level + 1, basicOperators, be_ordered));
                 return order_redo(to_order, level, basicOperators, be_ordered);
 
+            }else if(to_order.getAll_AST().get(0).getType().equals("operator")){
+                String line = "a* = c*;";
+                DefaultAST defaultAST = to_order.getAll_AST().get(0);
+                if(line.contains(defaultAST.getText())) {
+
+                    throw new ParserException("Invalid syntax");
+                }
             }
             else {
                 error = true;
@@ -415,6 +425,7 @@ public class Parser {
             return order_redo(to_order, level, basicOperators, be_ordered);
 
         }
+        return null;
     }
 
 

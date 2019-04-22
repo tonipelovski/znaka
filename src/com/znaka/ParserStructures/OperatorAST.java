@@ -49,4 +49,9 @@ public class OperatorAST extends BasicOperators {
         return "[" + getType() + ":" + getOperator() + ":" + printLeft + ":" + printRight + "]";
     }
 
+    @Override
+    public String getText() {
+        return getOperator();
+    }
+
 }

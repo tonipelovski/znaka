@@ -32,6 +32,11 @@ public class MainAST extends DefaultAST{
         return result;
     }
 
+    @Override
+    public String getText() {
+        return null;
+    }
+
     public Stack<DefaultAST> getAll_AST() {
         return all_AST;
     }

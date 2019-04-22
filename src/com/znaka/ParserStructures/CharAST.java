@@ -40,4 +40,9 @@ public class CharAST extends DefaultAST {
     public String printAST() {
         return "[" + getType() + ":" + getValue() + "]";
     }
+
+    @Override
+    public String getText() {
+        return String.valueOf(getValue());
+    }
 }

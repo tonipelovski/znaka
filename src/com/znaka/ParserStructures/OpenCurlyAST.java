@@ -23,4 +23,9 @@ public class OpenCurlyAST extends DefaultAST {
     public String printAST() {
         return null;
     }
+
+    @Override
+    public String getText() {
+        return "{";
+    }
 }

@@ -1,6 +1,5 @@
 package com.znaka.ParserStructures;
 
-import com.znaka.Main;
 import com.znaka.Parser;
 import com.znaka.Tokens.Token;
 
@@ -21,7 +20,7 @@ public class FunctionAST extends DefaultAST{
         this.body = body;
     }
 
-    public String getName() {
+    public String getText() {
         return name;
     }
 
@@ -98,7 +97,7 @@ public class FunctionAST extends DefaultAST{
                 }
             }
         }
-        String output = "[" + getName() + ":" + getRet_type() + ":";
+        String output = "[" + getText() + ":" + getRet_type() + ":";
         for(int i = 0; i < getArgs().size(); i++){
             if(getArgs().get(i) != null) {
                 output = output.concat(getArgs().get(i).printAST());
