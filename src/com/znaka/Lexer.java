@@ -9,8 +9,11 @@ import com.znaka.Exceptions.TokenMatchException;
 import com.znaka.Tokens.Token;
 import com.znaka.Tokens.TokenMatcher;
 
-import java.io.*;
-import java.util.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Stack;
 
 
 class Bracket{
@@ -39,6 +42,7 @@ public class Lexer {
     private HashMap<Character, Character> mp;
     private int lineNum = 1;
     private Bracket last_bracket;
+    private String last_line;
 
     public Lexer(ArrayList<Token> tokens, BufferedReader br) {
         this.tokens = tokens;
@@ -83,22 +87,32 @@ public class Lexer {
     }
 
 
+    public String getLast_line() {
+        return last_line;
+    }
+
     public boolean readLine() throws IOException, LexerException {
         String line = br.readLine();
+        last_line = line;
         tokens.clear();
         if (line == null) {
             if(st.size() > 0){
+                br.close();
                 throw new InvalidSyntax(last_bracket.getLine());
+
             }
+            br.close();
             return false;
         }
 
         if(!valid_brackets(line)){
+            br.close();
             throw new InvalidSyntax(last_bracket.getLine());
         }
         try {
             tokens = tm.tokenizeLine(line);
         }catch (TokenMatchException tme){
+            br.close();
             throw new TokenMatchException(String.format("Couldn't process line(%d): ", lineNum)  + tme.getMessage());
         }
         lineNum++;
@@ -120,10 +134,10 @@ public class Lexer {
     }
 
     public String tokensToString() {
-        String token = "";
+        StringBuilder token = new StringBuilder();
         for (int i = 0; i < tokens.size(); i++) {
-            token += tokens.get(i).toString();
+            token.append(tokens.get(i).toString());
         }
-        return token;
+        return token.toString() +'\n';
     }
 }

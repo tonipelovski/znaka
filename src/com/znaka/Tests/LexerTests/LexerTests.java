@@ -5,7 +5,10 @@ import com.znaka.Exceptions.LexerException;
 import com.znaka.Exceptions.TokenMatchException;
 import com.znaka.Lexer;
 import com.znaka.Tokens.Token;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
 import java.io.*;
 import java.net.URL;
@@ -36,6 +39,12 @@ public class LexerTests {
         });
     }
 
+    private void LineTestHelper(String line) throws IOException, LexerException {
+        lexer.resetInput(new BufferedReader(new StringReader(line)));
+        lexer.readLine();
+        Assertions.assertEquals(line, lexer.getLast_line());
+    }
+
     private void ErrorMessageHelper(String expected, String actual) {
         lexer.resetInput(new BufferedReader(new StringReader(actual)));
         try {
@@ -55,18 +64,18 @@ public class LexerTests {
             lexerOutput = lexerOutput.concat(lexer.tokensToString());
         }
         String expected =
-                "[symbol : noType][operator : =][number : 15]" +
-                        "[type : int][symbol : a][operator : =][number : 10][punc : ;]" +
-                        "[type : bool][symbol : s][operator : =][boolean : False][punc : ;]" +
-                        "[symbol : bit_conn3ct][operator : =][number : 1337][punc : ;]" +
-                        "[type : char][symbol : c][operator : =][character : 'f'][punc : ;]" +
-                        "[type : bool][symbol : a][operator : =][boolean : True][punc : ;]" +
-                        "[type : string][symbol : alabala][operator : =][string_literal : \"kurwa\"][punc : ;]" +
-                        "[keyword : while][punc : (][symbol : a][operator : >][number : 8][punc : )][punc : {]" +
-                        "[symbol : a][operator : --][punc : ;]" +
-                        "[punc : }]" +
-                        "[symbol : ls][punc : [][number : 6][punc : ]][punc : ;]" +
-                        "[symbol : a][operator : <][number : 2][punc : ;]";
+                "[symbol : noType][operator : =][number : 15]\n" +
+                        "[type : int][symbol : a][operator : =][number : 10][punc : ;]\n" +
+                        "[type : bool][symbol : s][operator : =][boolean : False][punc : ;]\n" +
+                        "[symbol : bit_conn3ct][operator : =][number : 1337][punc : ;]\n" +
+                        "[type : char][symbol : c][operator : =][character : 'f'][punc : ;]\n" +
+                        "[type : bool][symbol : a][operator : =][boolean : True][punc : ;]\n" +
+                        "[type : string][symbol : alabala][operator : =][string_literal : \"kurwa\"][punc : ;]\n" +
+                        "[keyword : while][punc : (][symbol : a][operator : >][number : 8][punc : )][punc : {]\n" +
+                        "[symbol : a][operator : --][punc : ;]\n" +
+                        "[punc : }]\n" +
+                        "[symbol : ls][punc : [][number : 6][punc : ]][punc : ;]\n" +
+                        "[symbol : a][operator : <][number : 2][punc : ;]\n";
         Assertions.assertEquals(expected, lexerOutput);
 
     }
@@ -81,13 +90,13 @@ public class LexerTests {
 
     @Test
     public void TestLexerErrorMessages() {
-        ErrorMessageHelper("Line(1): fun(\n" +
+        ErrorMessageHelper("\nLine(1): fun(\n" +
                                    "            ^",
                 "fun(");
-        ErrorMessageHelper("Line(1): {\n" +
+        ErrorMessageHelper("\nLine(1): {\n" +
                                    "         ^",
                 "{");
-        ErrorMessageHelper("Line(1): fun{\n" +
+        ErrorMessageHelper("\nLine(1): fun{\n" +
                                    "            ^",
                 "fun{");
         ErrorMessageHelper("Couldn't process line(1): ?", "?");
@@ -107,6 +116,15 @@ public class LexerTests {
         Assertions.assertFalse(lexer.valid_brackets("f{]"));
 //        Assertions.assertFalse(lexer.valid_brackets("f{"));
 
+
+    }
+
+    @Test
+    public void TestGetLine() throws IOException, LexerException {
+        LineTestHelper("token1");
+        LineTestHelper("token8");
+        LineTestHelper("int a = 20");
+        LineTestHelper("weird()");
 
     }
 
