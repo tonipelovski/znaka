@@ -100,7 +100,9 @@ public class FunctionAST extends DefaultAST{
         }
         String output = "[" + getName() + ":" + getRet_type() + ":";
         for(int i = 0; i < getArgs().size(); i++){
-            output = output.concat(getArgs().get(i).printAST());
+            if(getArgs().get(i) != null) {
+                output = output.concat(getArgs().get(i).printAST());
+            }
         }
         output = output.concat(body);
         return output.concat("]");

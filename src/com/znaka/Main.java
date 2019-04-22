@@ -1,6 +1,7 @@
 package com.znaka;
 
 import com.znaka.Exceptions.LexerException;
+import com.znaka.Exceptions.ParserException;
 import com.znaka.Tokens.Token;
 
 import java.io.BufferedReader;
@@ -12,13 +13,14 @@ import java.util.ArrayList;
 
 public class Main {
 
-    public static void main(String[] args) throws IOException, LexerException {
+    public static void main(String[] args) throws IOException, LexerException, ParserException {
 	// write your code here
-        URL url = Main.class.getResource("testCode.txt");
+        URL url = Main.class.getResource("ParserPrinting");
         File file = new File(url.getPath());
         BufferedReader reader = new BufferedReader(new FileReader(file));
         ArrayList<Token> tokens = new ArrayList<>();
         Lexer lexer = new Lexer(tokens, reader);
+
         String lexerOutput = "";
         while (lexer.readLine()) {
             lexerOutput = lexerOutput.concat(lexer.tokensToString());

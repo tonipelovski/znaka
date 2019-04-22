@@ -4,8 +4,6 @@ int b;
 int d = c * b;
 int ala * int bala = int balaala;
 int a = 10;
-int func(a * c, b);
-int a = 10;
 char bit_conn3ct = 1337;
 char c = 'f';
 bool a = True;

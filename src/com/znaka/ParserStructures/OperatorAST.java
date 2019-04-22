@@ -16,7 +16,9 @@ public class OperatorAST extends BasicOperators {
         for(Token token: tokens){
             // System.out.println("assign: " + token.getType() + ":" + token.getValue());
 
-            if(token.getType().equals("operator") && !token.getValue().equals("=")){
+            if(token.getType().equals("operator") && !token.getValue().equals("=")  && (!token.getValue().equals("++")
+                    && !token.getValue().equals("--")
+                    && !token.getValue().equals("!"))){
                 this.setOperator(token.getValue());
                 this.setLeft(null);
                 this.setRight(null);

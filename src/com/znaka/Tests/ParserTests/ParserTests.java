@@ -1,6 +1,7 @@
 package com.znaka.Tests.ParserTests;
 
 import com.znaka.Exceptions.LexerException;
+import com.znaka.Exceptions.ParserException;
 import com.znaka.Lexer;
 import com.znaka.Main;
 import com.znaka.Parser;
@@ -17,7 +18,7 @@ import java.util.ArrayList;
 
 public class ParserTests {
     @Test
-    public void genaralBasicsTest() throws IOException, LexerException {
+    public void genaralBasicsTest() throws IOException, LexerException, ParserException {
         URL url = ParserTests.class.getResource("testParserSecond");
         File file = new File(url.getPath());
         BufferedReader reader = new BufferedReader(new FileReader(file));
@@ -38,10 +39,6 @@ public class ParserTests {
                 "    =\n" +
                 "     [operator:*:[var:int:ala]:[var:int:bala]]\n" +
                 "     [var:int:balaala]]\n" +
-                "  [operator\n" +
-                "    =\n" +
-                "     [var:int:a]\n" +
-                "     [number:10.0]][func:int:[operator:*:[var::a]:[var::c]][var::b]]\n" +
                 "  [operator\n" +
                 "    =\n" +
                 "     [var:int:a]\n" +
@@ -67,7 +64,7 @@ public class ParserTests {
     }
 
     @Test
-    public void testTypesASTS() throws IOException, LexerException {
+    public void testTypesASTS() throws IOException, LexerException, ParserException {
         URL url = ParserTests.class.getResource("testTypesAST");
         File file = new File(url.getPath());
         BufferedReader reader = new BufferedReader(new FileReader(file));
@@ -84,7 +81,7 @@ public class ParserTests {
     }
 
     @Test
-    public void testAssignsATS() throws IOException, LexerException {
+    public void testAssignsATS() throws IOException, LexerException, ParserException {
         URL url = ParserTests.class.getResource("testAssignsAST");
         File file = new File(url.getPath());
         BufferedReader reader = new BufferedReader(new FileReader(file));
@@ -119,7 +116,7 @@ public class ParserTests {
                 "  [operator\n" +
                 "    =\n" +
                 "     [var::a]\n" +
-                "     [operator:*:[var::a]:[number:10.0]]][func:char:[var:int:a]]\n" +
+                "     [operator:*:[var::a]:[number:10.0]]]\n" +
                 "  [operator\n" +
                 "    =\n" +
                 "     [var::c]\n" +
@@ -128,7 +125,7 @@ public class ParserTests {
     }
 
     @Test
-    public void testOperationsAST() throws IOException, LexerException {
+    public void testOperationsAST() throws IOException, LexerException, ParserException {
         URL url = ParserTests.class.getResource("testOperationsAST");
         File file = new File(url.getPath());
         BufferedReader reader = new BufferedReader(new FileReader(file));
@@ -155,13 +152,17 @@ public class ParserTests {
                 "  [operator\n" +
                 "    =\n" +
                 "     [var::five]\n" +
-                "     [operator:*:[func::[var::a]]:[number:10.0]]]";
+                "     [operator:*:[func::[var::a]]:[number:10.0]]]\n" +
+                "  [operator\n" +
+                "    =\n" +
+                "     [operator:+:[operator:*:[var::a]:[var::b]]:[var::c]]\n" +
+                "     [operator:*:[operator:+:[var::b]:[var::d]]:[var::c]]]";
         Assertions.assertEquals(expected, parserOutput);
     }
 
 
     @Test
-    public void testConditionsAST() throws IOException, LexerException {
+    public void testConditionsAST() throws IOException, LexerException, ParserException {
         URL url = ParserTests.class.getResource("testConditionsAST");
         File file = new File(url.getPath());
         BufferedReader reader = new BufferedReader(new FileReader(file));
@@ -188,27 +189,12 @@ public class ParserTests {
                 "    =\n" +
                 "     [var::ala]\n" +
                 "     [operator:+:[var::ala]:[number:1.0]]]]\n" +
-                "  [operator\n" +
-                "    =\n" +
-                "     [var::a]\n" +
-                "     [operator:*:[number:4.0]:[number:10.0]]]\n" +
-                "  [operator\n" +
-                "    =\n" +
-                "     [operator:*:[var::a]:[var::b]]\n" +
-                "     [operator:*:[var::c]:[var::a]]]\n" +
-                "  [operator\n" +
-                "    =\n" +
-                "     [var::a]\n" +
-                "     [operator:*:[operator:+:[var::a]:[operator:+:[var::b]:[var::c]]]:[var::c]]]\n" +
-                "  [operator\n" +
-                "    =\n" +
-                "     [var::c]\n" +
-                "     [func::[var::c][var::d]]]";
+                "[while:[operator:==:[var::ala]:[var::bala]]:[operator:+=:[var::ala]:[number:1.0]][operator:+=:[var::c]:[var::a]]]";
         Assertions.assertEquals(expected, parserOutput);
     }
 
     @Test
-    public void testFunctionsAST() throws IOException, LexerException {
+    public void testFunctionsAST() throws IOException, LexerException, ParserException {
         URL url = ParserTests.class.getResource("testFunctionsAST");
         File file = new File(url.getPath());
         BufferedReader reader = new BufferedReader(new FileReader(file));
@@ -228,7 +214,12 @@ public class ParserTests {
                 "  [operator\n" +
                 "    =\n" +
                 "     [var::a]\n" +
-                "     [operator:*:[func::[var::c][var::b]]:[number:10.0]]]";
+                "     [operator:*:[func::[var::c][var::b]]:[number:10.0]]]" +
+                "[func:int:[var:int:a][var:int:b]\n" +
+                "  [operator\n" +
+                "    =\n" +
+                "     [var::a]\n" +
+                "     [var::b]]]";
         Assertions.assertEquals(expected, parserOutput);
     }
 
