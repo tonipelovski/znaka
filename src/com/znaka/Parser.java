@@ -4,10 +4,12 @@ import com.znaka.Exceptions.LexerException;
 import com.znaka.Exceptions.ParserException;
 import com.znaka.ParserStructures.*;
 import com.znaka.Tokens.Token;
-import sun.security.krb5.internal.PAEncTSEnc;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Stack;
+
+//import sun.security.krb5.internal.PAEncTSEnc;
 public class Parser {
     Lexer lexer;
     MainAST mainAST;

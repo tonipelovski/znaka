@@ -39,6 +39,12 @@ public class LexerTests {
         });
     }
 
+    private void LineTestHelper(String line) throws IOException, LexerException {
+        lexer.resetInput(new BufferedReader(new StringReader(line)));
+        lexer.readLine();
+        Assertions.assertEquals(line, lexer.getLast_line());
+    }
+
     private void ErrorMessageHelper(String expected, String actual) {
         lexer.resetInput(new BufferedReader(new StringReader(actual)));
         try {
@@ -110,6 +116,15 @@ public class LexerTests {
         Assertions.assertFalse(lexer.valid_brackets("f{]"));
 //        Assertions.assertFalse(lexer.valid_brackets("f{"));
 
+
+    }
+
+    @Test
+    public void TestGetLine() throws IOException, LexerException {
+        LineTestHelper("token1");
+        LineTestHelper("token8");
+        LineTestHelper("int a = 20");
+        LineTestHelper("weird()");
 
     }
 
