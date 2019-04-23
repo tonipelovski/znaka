@@ -16,8 +16,9 @@ public class Parser {
     private int last_token = 0;
     private int max_token = 0;
     private boolean error = false;
-    private String line = "ls[5]= a *;";
+    private String line = "";
     private int indexOf;
+    private String last_line = "";
 
     public Lexer getLexer() {
         return lexer;
@@ -38,6 +39,9 @@ public class Parser {
         if(!lexer.readLine()){
             return false;
         }
+        line = lexer.getLast_line();
+        last_line = line;
+        indexOf = 0;
         //System.out.println(lexer.printTokens());
         ArrayList<Token> all_tokens = lexer.getTokens();
         max_token = 0;
@@ -50,7 +54,7 @@ public class Parser {
                 DefaultAST defaultAST = defaultASTMatcher.match(tokens);
                 if (defaultAST != null) {
                     to_order.addAST(defaultAST);
-                    //System.out.println(defaultAST.getType());
+                    //System.out.println(defaultAST.getText());
                     max_token--;
                 }
             }
@@ -272,12 +276,13 @@ public class Parser {
         }
 
        if(to_order.has(1)) {
-           //System.out.println("ala");
+
            if(to_order.getAll_AST().get(0).getText() != null) {
                if (line.contains(to_order.getAll_AST().get(0).getText())) {
-                   indexOf = line.indexOf(to_order.getAll_AST().get(0).getText());
-                   line = line.substring(indexOf);
-                   System.out.println(line);
+                   indexOf += line.indexOf(to_order.getAll_AST().get(0).getText());
+                   //System.out.println(line + " "  + error + " " + indexOf + " " + to_order.getAll_AST().get(0).getText());
+
+                   line = last_line.substring(indexOf);
                }
            }
 
@@ -290,7 +295,7 @@ public class Parser {
                    to_order.popFrontAST(1);
                    unaryOperatorAST.setLeft(orderAST(to_order, level + 1, to_order.getAll_AST().get(0), be_ordered));
                    return order_redo(to_order, level, unaryOperatorAST, be_ordered);
-               } else {
+               }else {
                    DefaultAST left = last;
                    unaryOperatorAST.setLeft(left);
                    to_order.popFrontAST(1);
@@ -311,7 +316,12 @@ public class Parser {
 
                    return getRight(to_order, level, last, be_ordered, operatorAST, right);
                } else {
-                   throw new ParserException("Expected right" +  line);
+                   StringBuffer outputBuffer = new StringBuffer();
+                   String message = "Expected right: ";
+                   for (int i = 0; i < indexOf + message.length() + 1; i++){
+                       outputBuffer.append(" ");
+                   }
+                   throw new ParserException("\n" + message + last_line + "\n" + outputBuffer.toString() + "^");
                }
                //}
            }
@@ -334,7 +344,12 @@ public class Parser {
            }
            DefaultAST defaultAST = to_order.getAll_AST().get(0);
            if(error){
-               throw new ParserException("Expected operator" + line.substring(line.indexOf(defaultAST.getText())));
+               StringBuffer outputBuffer = new StringBuffer();
+               String message = "Expected operator: ";
+               for (int i = 0; i < indexOf + message.length(); i++){
+                   outputBuffer.append(" ");
+               }
+               throw new ParserException("\n" + message + last_line + "\n" + outputBuffer.toString() + "^");
            }else {
                to_order.popFrontAST(1);
                error = true;

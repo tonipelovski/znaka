@@ -42,13 +42,13 @@ public class VarAST extends DefaultAST {
             i++;
 
         }
-        //System.out.println( parser.parsedAllTokens(parser.getLexer().getTokens()));
+        //System.out.println( tokens.get(i).getValue());
         if(tokens.size() > i + 1 || parser.parsedAllTokens(parser.getLexer().getTokens())) {
             for (; i < tokens.size(); i++) {
                 Token token = tokens.get(i);
                 if (token.getValue().equals("(") || token.getValue().equals("[")) {
                      return false;
-                } else if (token.getType().equals("symbol")) {
+                } else if (token.getType().equals("symbol") && !flag_symbol) {
                     flag_symbol = true;
                     value = token.getValue();
 
