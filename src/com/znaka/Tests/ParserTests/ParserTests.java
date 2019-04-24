@@ -3,7 +3,6 @@ package com.znaka.Tests.ParserTests;
 import com.znaka.Exceptions.LexerException;
 import com.znaka.Exceptions.ParserException;
 import com.znaka.Lexer;
-import com.znaka.Main;
 import com.znaka.Parser;
 import com.znaka.Tokens.Token;
 import org.junit.jupiter.api.Assertions;
@@ -26,7 +25,7 @@ public class ParserTests {
         Lexer lexer = new Lexer(tokens, reader);
 
         Parser parser = new Parser(lexer);
-        while(parser.parseLIne()){
+        while(parser.parseLine()){
 
         }
         String parserOutput = parser.printASTS();
@@ -72,7 +71,7 @@ public class ParserTests {
         Lexer lexer = new Lexer(tokens, reader);
 
         Parser parser = new Parser(lexer);
-        while(parser.parseLIne()){
+        while(parser.parseLine()){
 
         }
         String parserOutput = parser.printASTS();
@@ -89,7 +88,7 @@ public class ParserTests {
         Lexer lexer = new Lexer(tokens, reader);
 
         Parser parser = new Parser(lexer);
-        while(parser.parseLIne()){
+        while(parser.parseLine()){
 
         }
         String parserOutput = parser.printASTS();
@@ -133,7 +132,7 @@ public class ParserTests {
         Lexer lexer = new Lexer(tokens, reader);
 
         Parser parser = new Parser(lexer);
-        while(parser.parseLIne()){
+        while(parser.parseLine()){
 
         }
         String parserOutput = parser.printASTS();
@@ -170,7 +169,7 @@ public class ParserTests {
         Lexer lexer = new Lexer(tokens, reader);
 
         Parser parser = new Parser(lexer);
-        while(parser.parseLIne()){
+        while(parser.parseLine()){
 
         }
         String parserOutput = parser.printASTS();
@@ -202,7 +201,7 @@ public class ParserTests {
         Lexer lexer = new Lexer(tokens, reader);
 
         Parser parser = new Parser(lexer);
-        while(parser.parseLIne()){
+        while(parser.parseLine()){
 
         }
         String parserOutput = parser.printASTS();

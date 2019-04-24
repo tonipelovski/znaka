@@ -33,7 +33,7 @@ public class Parser {
         return tokens.size() == max_token;
     }
 
-    public boolean parseLIne() throws IOException, LexerException, ParserException {
+    public boolean parseLine() throws IOException, LexerException, ParserException {
         error = false;
         last_token = 0;
         if(!lexer.readLine()){
@@ -126,11 +126,11 @@ public class Parser {
                     if (to_order.getAll_AST().get(0).getType().equals("open_curly")) {
                         Parser temp_parser = new Parser(lexer);
 
-                        while (temp_parser.parseLIne()) {
+                        while (temp_parser.parseLine()) {
                             //System.out.println("cccc");
 
                             for (DefaultAST defaultAST1 : temp_parser.mainAST.getAll_AST()) {
-                                //System.out.println("ala: " + defaultAST1.printAST());
+                                //System.out.println("ala: " + defaultAST1.toString());
                                 if (defaultAST1.getType().equals("close_curly")) {
                                     to_order.popFrontAST(1);
                                     func.setBody(asts);
@@ -161,7 +161,7 @@ public class Parser {
                     if(!func.getRet_type().equals("")){
                         Parser temp_parser = new Parser(lexer);
                         boolean error = true;
-                        while(temp_parser.parseLIne()){
+                        while(temp_parser.parseLine()){
                             //System.out.println("cccc");
                             for(DefaultAST defaultAST1 : temp_parser.mainAST.getAll_AST()){
                                 if(defaultAST1.getType().equals("close_curly")){
@@ -184,7 +184,7 @@ public class Parser {
                                     temp_parser.mainAST.popFrontAST(1);
                                     error = false;
                                 }
-                                //System.out.println(defaultAST1.printAST());
+                                //System.out.println(defaultAST1.toString());
 
                             }
                         }
@@ -234,7 +234,7 @@ public class Parser {
                 to_order.popFrontAST(1);
                 DefaultAST defaultAST = null;
                 MainAST temp = new MainAST(new Stack<DefaultAST>());
-                //System.out.println(defaultAST.printAST() + to_order.getAll_AST().size());
+                //System.out.println(defaultAST.toString() + to_order.getAll_AST().size());
 
                 int subAST = 1;
                 while(subAST > 0){
@@ -258,7 +258,7 @@ public class Parser {
 
                 MainAST ordered = new MainAST(new Stack<DefaultAST>());
                 orderAST(temp, 0, null, ordered);
-                //System.out.println(ordered.getAll_AST().get(0).printAST());
+                //System.out.println(ordered.getAll_AST().get(0).toString());
                 to_order.popFrontAST(1);
                 if(to_order.has(2)) {
                     if (to_order.getAll_AST().get(0).getType().equals("operator")) {
@@ -312,7 +312,7 @@ public class Parser {
                if (to_order.has(1)) {
                    DefaultAST right = to_order.getAll_AST().get(0);
                    operatorAST.setLeft(left);
-                   //System.out.println("debaaa" + operatorAST.printAST());
+                   //System.out.println("debaaa" + operatorAST.toString());
 
                    return getRight(to_order, level, last, be_ordered, operatorAST, right);
                } else {
@@ -366,11 +366,11 @@ public class Parser {
     }
 
     public String printASTS(){
-        String output = mainAST.printAST();
+        String output = mainAST.toString();
         for(int i = 0; i < mainAST.getAll_AST().size(); i++){
             if(mainAST.getAll_AST().get(i) != null) {
-                if(mainAST.getAll_AST().get(i).printAST() != null) {
-                    output = output.concat(mainAST.getAll_AST().get(i).printAST());
+                if(mainAST.getAll_AST().get(i).toString() != null) {
+                    output = output.concat(mainAST.getAll_AST().get(i).toString());
                 }
             }
         }
@@ -451,7 +451,7 @@ public class Parser {
         if(!to_order.has(2)) {
             Parser temp_parser = new Parser(lexer);
 
-            while(temp_parser.parseLIne()){
+            while(temp_parser.parseLine()){
                 //System.out.println("cccc");
                 for(DefaultAST defaultAST1 : temp_parser.mainAST.getAll_AST()){
                     if(defaultAST1.getType().equals("close_curly")){
@@ -470,7 +470,7 @@ public class Parser {
                     }else if(defaultAST1.getType().equals("open_curly")){
                         temp_parser.mainAST.popFrontAST(1);
                     }
-                    //System.out.println(defaultAST1.printAST());
+                    //System.out.println(defaultAST1.toString());
 
                 }
             }

@@ -32,7 +32,7 @@ public abstract class BasicOperators extends DefaultAST {
     abstract boolean matchAST(ArrayList<Token> tokens, Parser parsesr);
 
     @Override
-    abstract public String printAST();
+    abstract public String toString();
 
     public void setOperator(String operator) {
         this.operator = operator;

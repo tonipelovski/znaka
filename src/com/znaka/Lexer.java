@@ -54,6 +54,16 @@ public class Lexer {
         mp.put('{', '}');
     }
 
+    public Lexer(BufferedReader br) {
+        this.tokens = new ArrayList<>();
+        this.br = br;
+        this.tm = new TokenMatcher();
+        this.mp = new HashMap<>();
+        mp.put('(', ')');
+        mp.put('[', ']');
+        mp.put('{', '}');
+    }
+
     public boolean valid_brackets(String input) {
         char opening_bracket;
         int i=0;

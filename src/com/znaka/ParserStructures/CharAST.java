@@ -37,7 +37,7 @@ public class CharAST extends DefaultAST {
     }
 
     @Override
-    public String printAST() {
+    public String toString() {
         return "[" + getType() + ":" + getValue() + "]";
     }
 

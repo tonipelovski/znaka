@@ -18,7 +18,7 @@ public abstract class DefaultAST {
 
     abstract boolean matchAST(ArrayList<Token> tokens, Parser parsesr);
 
-    public abstract String printAST();
+    public abstract String toString();
 
     public abstract String getText();
 }

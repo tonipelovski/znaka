@@ -1,6 +1,5 @@
 package com.znaka.ParserStructures;
 
-import com.znaka.Main;
 import com.znaka.Parser;
 import com.znaka.Tokens.Token;
 
@@ -26,7 +25,7 @@ public class MainAST extends DefaultAST{
     }
 
     @Override
-    public String printAST() {
+    public String toString() {
         String result = "";
 
         return result;

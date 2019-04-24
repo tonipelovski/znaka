@@ -9,7 +9,10 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 
@@ -24,7 +27,7 @@ public class ParserExceptionsTests {
         Lexer lexer = new Lexer(tokens, reader);
 
         Parser parser = new Parser(lexer);
-        while(parser.parseLIne()){
+        while(parser.parseLine()){
 
         }
     }
@@ -38,7 +41,7 @@ public class ParserExceptionsTests {
         Lexer lexer = new Lexer(tokens, reader);
 
         Parser parser = new Parser(lexer);
-        while(parser.parseLIne()){
+        while(parser.parseLine()){
 
         }
     }
@@ -57,7 +60,7 @@ public class ParserExceptionsTests {
         Lexer lexer = new Lexer(tokens, reader);
 
         Parser parser = new Parser(lexer);
-        while(parser.parseLIne()){
+        while(parser.parseLine()){
 
         }
     }

@@ -31,12 +31,12 @@ public class UnaryOperatorAST extends BasicOperators {
     }
 
     @Override
-    public String printAST() {
+    public String toString() {
         String printLeft = "";
         if(getLeft() == null){
             printLeft = "null";
         }else{
-            printLeft = getLeft().printAST();
+            printLeft = getLeft().toString();
         }
         return "[" + getType() + ":" + getOperator() + ":" + printLeft + "]";
     }

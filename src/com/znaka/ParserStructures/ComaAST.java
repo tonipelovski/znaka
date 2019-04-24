@@ -25,7 +25,7 @@ public class ComaAST extends DefaultAST{
     }
 
     @Override
-    public String printAST() {
+    public String toString() {
         return null;
     }
 

@@ -34,5 +34,5 @@ public abstract class ConditionalsAST extends DefaultAST {
     abstract boolean matchAST(ArrayList<Token> tokens, Parser parsesr);
 
     @Override
-    abstract public String printAST();
+    abstract public String toString();
 }

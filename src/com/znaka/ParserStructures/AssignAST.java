@@ -31,18 +31,18 @@ public class AssignAST extends BasicOperators {
     }
 
     @Override
-    public String printAST() {
+    public String toString() {
         String printLeft = "";
         String printRight = "";
         if(getLeft() == null){
             printLeft = "null";
         }else{
-            printLeft = getLeft().printAST();
+            printLeft = getLeft().toString();
         }
         if(getRight() == null){
             printRight = "null";
         }else {
-            printRight = getRight().printAST();
+            printRight = getRight().toString();
         }
         return "\n  [" + getType() + "\n    " + getOperator() + "\n     " + printLeft + "\n     " + printRight + "]";
     }

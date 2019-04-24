@@ -29,7 +29,7 @@ public class Main {
         lexer.resetInput(new BufferedReader(new FileReader(file)));
         System.out.println(lexer.tokensToString());
         Parser parser = new Parser(lexer);
-        while(parser.parseLIne()){
+        while(parser.parseLine()){
         }
 
         System.out.println(parser.printASTS());

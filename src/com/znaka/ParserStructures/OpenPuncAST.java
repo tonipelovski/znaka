@@ -20,7 +20,7 @@ public class OpenPuncAST extends DefaultAST {
     }
 
     @Override
-    public String printAST() {
+    public String toString() {
         return null;
     }
 
