@@ -23,6 +23,8 @@ public class DefaultASTMatcher {
         asts.add(new UnaryOperatorAST(null));
         asts.add(new OperatorAST(null, null));
         asts.add(new IfConditionAST(null, null));
+        asts.add(new ElseConditionAST(null, null));
+
         asts.add(new LoopAST(null, null));
 
         asts.add(new NumberAST(0));

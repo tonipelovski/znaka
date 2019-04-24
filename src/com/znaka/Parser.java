@@ -198,33 +198,38 @@ public class Parser {
                 error = false;
 
                 ConditionalsAST conditionalAST = (ConditionalsAST) to_order.getAll_AST().get(0);
-                to_order.popFrontAST(2);
-                DefaultAST defaultAST = null;
+                to_order.popFrontAST(1);
+                DefaultAST defaultAST = to_order.getAll_AST().get(0);
                 MainAST temp = new MainAST(new Stack<DefaultAST>());
-                int subAST = 1;
-                while(subAST > 0){
-                    defaultAST = to_order.getAll_AST().get(0);
-                    if(defaultAST.getType().equals("open_punc")){
-                        subAST++;
-                    }
+                //System.out.println(defaultAST.getType());
 
-                    if(defaultAST.getType().equals("close_punc")){
-                        subAST--;
-                    }
-                    if(subAST > 0) {
-                        to_order.popFrontAST(1);
-                        temp.addAST(defaultAST);
-                        //System.out.println(defaultAST.getType() + subAST);
+                if(defaultAST.getType().equals("open_punc")) {
+                    int subAST = 1;
+                    to_order.popFrontAST(1);
 
+                    while (subAST > 0) {
+                        defaultAST = to_order.getAll_AST().get(0);
+                        if (defaultAST.getType().equals("open_punc")) {
+                            subAST++;
+                        }
+
+                        if (defaultAST.getType().equals("close_punc")) {
+                            subAST--;
+                        }
+                        if (subAST > 0) {
+                            to_order.popFrontAST(1);
+                            temp.addAST(defaultAST);
+                            //System.out.println(defaultAST.getType() + subAST);
+
+                        }
                     }
-                }
 //                temp.addAST(defaultAST);
 
-                MainAST ordered = new MainAST(new Stack<DefaultAST>());
-                orderAST(temp, 0, null, ordered);
-                to_order.popFrontAST(1);
-                conditionalAST.setCond(ordered);
-
+                    MainAST ordered = new MainAST(new Stack<DefaultAST>());
+                    orderAST(temp, 0, null, ordered);
+                    to_order.popFrontAST(1);
+                    conditionalAST.setCond(ordered);
+                }
                 MainAST asts = new MainAST(new Stack<>());
                 return getBody(to_order, level, last, be_ordered, conditionalAST, asts);
 

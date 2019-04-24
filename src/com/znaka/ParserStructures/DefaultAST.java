@@ -21,4 +21,5 @@ public abstract class DefaultAST {
     public abstract String printAST();
 
     public abstract String getText();
+
 }
