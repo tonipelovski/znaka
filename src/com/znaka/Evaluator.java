@@ -3,6 +3,7 @@ package com.znaka;
 import com.znaka.Exceptions.LexerException;
 import com.znaka.Exceptions.ParserException;
 import com.znaka.ParserStructures.DefaultAST;
+import com.znaka.ParserStructures.Expression.ExpressionAST;
 
 import java.io.IOException;
 
@@ -17,12 +18,14 @@ public class Evaluator {
         while(parser.parseLine()){
         }
 
-        System.out.println(parser.printASTS());
+        System.out.println(parser);
     }
 
     public void EvaluateLine() throws ParserException, IOException, LexerException {
         parser.parseLine();
         DefaultAST ast = parser.mainAST.getAll_AST().peek();
         System.out.println(ast);
+        System.out.println(ast instanceof ExpressionAST);
+        System.out.println(ast.getText());
     }
 }

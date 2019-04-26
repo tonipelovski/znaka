@@ -36,7 +36,7 @@ public class Parser {
         return tokens.size() == max_token;
     }
 
-    public boolean parseLIne() throws IOException, LexerException, ParserException {
+    public boolean parseLine() throws IOException, LexerException, ParserException {
         error = false;
         last_token = 0;
         if(!lexer.readLine()){
@@ -129,7 +129,7 @@ public class Parser {
                     if (to_order.getAll_AST().get(0).getType().equals("open_curly")) {
                         Parser temp_parser = new Parser(lexer);
 
-                        while (temp_parser.parseLIne()) {
+                        while (temp_parser.parseLine()) {
                             //System.out.println("cccc");
 
                             for (DefaultAST defaultAST1 : temp_parser.mainAST.getAll_AST()) {
@@ -164,7 +164,7 @@ public class Parser {
                     if(!func.getRet_type().equals("")){
                         Parser temp_parser = new Parser(lexer);
                         boolean error = true;
-                        while(temp_parser.parseLIne()){
+                        while(temp_parser.parseLine()){
                             //System.out.println("cccc");
                             for(DefaultAST defaultAST1 : temp_parser.mainAST.getAll_AST()){
                                 if(defaultAST1.getType().equals("close_curly")){
@@ -449,7 +449,7 @@ public class Parser {
         if(!to_order.has(2)) {
             Parser temp_parser = new Parser(lexer);
 
-            while(temp_parser.parseLIne()){
+            while(temp_parser.parseLine()){
                 //System.out.println("cccc");
                 for(DefaultAST defaultAST1 : temp_parser.mainAST.getAll_AST()){
                     if(defaultAST1.getType().equals("close_curly")){
