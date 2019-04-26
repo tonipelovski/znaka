@@ -3,6 +3,9 @@ package com.znaka;
 import com.znaka.Exceptions.LexerException;
 import com.znaka.Exceptions.ParserException;
 import com.znaka.ParserStructures.*;
+import com.znaka.ParserStructures.Expression.BasicOperators;
+import com.znaka.ParserStructures.Expression.FunctionAST;
+import com.znaka.ParserStructures.Statement.ConditionalsAST;
 import com.znaka.Tokens.Token;
 
 import java.io.IOException;
@@ -284,10 +287,10 @@ public class Parser {
 
            if(to_order.getAll_AST().get(0).getText() != null) {
                if (line.contains(to_order.getAll_AST().get(0).getText())) {
-                   indexOf += line.indexOf(to_order.getAll_AST().get(0).getText());
+                   indexOf += line.indexOf(to_order.getAll_AST().get(0).getText()) + 1;
+                   line = last_line.substring(indexOf);
                    //System.out.println(line + " "  + error + " " + indexOf + " " + to_order.getAll_AST().get(0).getText());
 
-                   line = last_line.substring(indexOf);
                }
            }
 
@@ -323,7 +326,7 @@ public class Parser {
                } else {
                    StringBuffer outputBuffer = new StringBuffer();
                    String message = "Expected right: ";
-                   for (int i = 0; i < indexOf + message.length() + 1; i++){
+                   for (int i = 0; i < indexOf + message.length(); i++){
                        outputBuffer.append(" ");
                    }
                    throw new ParserException("\n" + message + last_line + "\n" + outputBuffer.toString() + "^");
@@ -351,7 +354,7 @@ public class Parser {
            if(error){
                StringBuffer outputBuffer = new StringBuffer();
                String message = "Expected operator: ";
-               for (int i = 0; i < indexOf + message.length(); i++){
+               for (int i = 0; i < indexOf + message.length() - 1; i++){
                    outputBuffer.append(" ");
                }
                throw new ParserException("\n" + message + last_line + "\n" + outputBuffer.toString() + "^");
@@ -413,20 +416,11 @@ public class Parser {
 
                     return order_redo(to_order, level, basicOperators, be_ordered);
                 }
-            }else if(to_order.getAll_AST().get(0).getType().equals("call")){
-                basicOperators.setRight(orderAST(to_order, level + 1, basicOperators, be_ordered));
-                return order_redo(to_order, level, basicOperators, be_ordered);
-
-            }else if(to_order.getAll_AST().get(0).getType().equals("open_punc")){
-                basicOperators.setRight(orderAST(to_order, level + 1, basicOperators, be_ordered));
-                return order_redo(to_order, level, basicOperators, be_ordered);
-
-            }else if(to_order.getAll_AST().get(0).getType().equals("open_curly")){
+            }else if(!to_order.getAll_AST().get(0).getType().equals("operator")){
                 basicOperators.setRight(orderAST(to_order, level + 1, basicOperators, be_ordered));
                 return order_redo(to_order, level, basicOperators, be_ordered);
 
             }else if(to_order.getAll_AST().get(0).getType().equals("operator")){
-                String line = "a* = c*;";
                 DefaultAST defaultAST = to_order.getAll_AST().get(0);
                 if(line.contains(defaultAST.getText())) {
 
@@ -435,15 +429,14 @@ public class Parser {
             }
             else {
                 error = true;
-                basicOperators.setRight(right);
+                basicOperators.setRight(orderAST(to_order, level + 1, basicOperators, be_ordered));
                 to_order.popFrontAST(1);
 
                 return order_redo(to_order, level, basicOperators, be_ordered);
 
             }
         }else {
-            error = true;
-            basicOperators.setRight(right);
+            basicOperators.setRight(orderAST(to_order, level + 1, basicOperators, be_ordered));
             to_order.popFrontAST(1);
             return order_redo(to_order, level, basicOperators, be_ordered);
 

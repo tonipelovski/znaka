@@ -21,7 +21,7 @@ public class MainAST extends DefaultAST{
     }
 
     @Override
-    boolean matchAST(ArrayList<Token> tokens, Parser parsesr) {
+    protected boolean matchAST(ArrayList<Token> tokens, Parser parsesr) {
         return false;
     }
 

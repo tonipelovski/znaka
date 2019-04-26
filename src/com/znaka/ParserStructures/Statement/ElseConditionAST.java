@@ -1,6 +1,9 @@
-package com.znaka.ParserStructures;
+package com.znaka.ParserStructures.Statement;
 
 import com.znaka.Parser;
+import com.znaka.ParserStructures.DefaultAST;
+import com.znaka.ParserStructures.MainAST;
+import com.znaka.ParserStructures.Statement.ConditionalsAST;
 import com.znaka.Tokens.Token;
 
 import java.util.ArrayList;
@@ -11,7 +14,7 @@ public class ElseConditionAST extends ConditionalsAST {
     }
 
     @Override
-    boolean matchAST(ArrayList<Token> tokens, Parser parsesr) {
+    protected boolean matchAST(ArrayList<Token> tokens, Parser parsesr) {
         for(Token token: tokens){
             if(token.getType().equals("keyword") && token.getValue().equals("else")){
                 this.setBody(null);

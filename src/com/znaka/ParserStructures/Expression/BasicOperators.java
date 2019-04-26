@@ -1,11 +1,12 @@
-package com.znaka.ParserStructures;
+package com.znaka.ParserStructures.Expression;
 
 import com.znaka.Parser;
+import com.znaka.ParserStructures.DefaultAST;
 import com.znaka.Tokens.Token;
 
 import java.util.ArrayList;
 //TO DO create unary operator
-public abstract class BasicOperators extends DefaultAST {
+public abstract class BasicOperators extends ExpressionAST {
     private String operator;
     private DefaultAST left;
     private DefaultAST right;
@@ -29,7 +30,7 @@ public abstract class BasicOperators extends DefaultAST {
     }
 
     @Override
-    abstract boolean matchAST(ArrayList<Token> tokens, Parser parsesr);
+    protected abstract boolean matchAST(ArrayList<Token> tokens, Parser parsesr);
 
     @Override
     abstract public String printAST();

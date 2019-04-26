@@ -1,6 +1,12 @@
 package com.znaka.ParserStructures;
 
 import com.znaka.Parser;
+import com.znaka.ParserStructures.Expression.AssignAST;
+import com.znaka.ParserStructures.Expression.FunctionAST;
+import com.znaka.ParserStructures.Expression.OperatorAST;
+import com.znaka.ParserStructures.Statement.ElseConditionAST;
+import com.znaka.ParserStructures.Statement.IfConditionAST;
+import com.znaka.ParserStructures.Statement.LoopAST;
 import com.znaka.Tokens.Token;
 
 import java.util.ArrayList;
