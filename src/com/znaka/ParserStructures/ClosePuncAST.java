@@ -11,7 +11,7 @@ public class ClosePuncAST extends DefaultAST{
     }
 
     @Override
-    boolean matchAST(ArrayList<Token> tokens, Parser parser) {
+    protected boolean matchAST(ArrayList<Token> tokens, Parser parser) {
         if(tokens.get(0).getType().equals("punc") && tokens.get(0).getValue().equals(")")){
             parser.next(1);
             return true;

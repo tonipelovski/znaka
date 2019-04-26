@@ -1,18 +1,20 @@
-package com.znaka.ParserStructures;
+package com.znaka.ParserStructures.Statement;
 
 import com.znaka.Parser;
+import com.znaka.ParserStructures.DefaultAST;
+import com.znaka.ParserStructures.MainAST;
 import com.znaka.Tokens.Token;
 
 import java.util.ArrayList;
 
-public class LoopAST extends ConditionalsAST{
+public class LoopAST extends ConditionalsAST {
 
     public LoopAST(MainAST condition, MainAST body) {
         super(condition, body);
     }
 
     @Override
-    boolean matchAST(ArrayList<Token> tokens, Parser parsesr) {
+    protected boolean matchAST(ArrayList<Token> tokens, Parser parsesr) {
         for(Token token: tokens){
             if(token.getType().equals("keyword") && token.getValue().equals("while")){
                 this.setCond(null);

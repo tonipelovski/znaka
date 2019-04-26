@@ -16,9 +16,8 @@ public abstract class DefaultAST {
         return type;
     }
 
-    abstract boolean matchAST(ArrayList<Token> tokens, Parser parsesr);
-
-    public abstract String toString();
+    protected abstract boolean matchAST(ArrayList<Token> tokens, Parser parsesr);
 
     public abstract String getText();
+
 }

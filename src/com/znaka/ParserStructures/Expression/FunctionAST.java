@@ -1,12 +1,14 @@
-package com.znaka.ParserStructures;
+package com.znaka.ParserStructures.Expression;
 
 import com.znaka.Parser;
+import com.znaka.ParserStructures.DefaultAST;
+import com.znaka.ParserStructures.MainAST;
 import com.znaka.Tokens.Token;
 
 import java.util.ArrayList;
 import java.util.Stack;
 //add arg_count
-public class FunctionAST extends DefaultAST{
+public class FunctionAST extends ExpressionAST {
     private String ret_type;
     private String name;
     private Stack<DefaultAST> args;
@@ -53,7 +55,7 @@ public class FunctionAST extends DefaultAST{
     }
 
     @Override
-    boolean matchAST(ArrayList<Token> tokens, Parser parser) {
+    protected boolean matchAST(ArrayList<Token> tokens, Parser parser) {
         boolean flag = false;
         String type = "";
         String func_name = "";

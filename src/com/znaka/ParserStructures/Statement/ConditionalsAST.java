@@ -1,11 +1,12 @@
-package com.znaka.ParserStructures;
+package com.znaka.ParserStructures.Statement;
 
 import com.znaka.Parser;
+import com.znaka.ParserStructures.MainAST;
 import com.znaka.Tokens.Token;
 
 import java.util.ArrayList;
 
-public abstract class ConditionalsAST extends DefaultAST {
+public abstract class ConditionalsAST extends StatementAST {
     private MainAST cond;
     private MainAST body;
 
@@ -31,8 +32,6 @@ public abstract class ConditionalsAST extends DefaultAST {
         this.body = body;
     }
 
-    abstract boolean matchAST(ArrayList<Token> tokens, Parser parsesr);
+    protected abstract boolean matchAST(ArrayList<Token> tokens, Parser parsesr);
 
-    @Override
-    abstract public String toString();
 }

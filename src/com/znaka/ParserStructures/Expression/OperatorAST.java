@@ -1,31 +1,34 @@
-package com.znaka.ParserStructures;
+package com.znaka.ParserStructures.Expression;
 
 import com.znaka.Parser;
+import com.znaka.ParserStructures.DefaultAST;
 import com.znaka.Tokens.Token;
 
 import java.util.ArrayList;
 
-public class AssignAST extends BasicOperators {
+public class OperatorAST extends BasicOperators {
 
-    public AssignAST(DefaultAST l, DefaultAST r) {
+    public OperatorAST(DefaultAST l, DefaultAST r) {
         super(l, r);
     }
 
     @Override
-    boolean matchAST(ArrayList<Token> tokens, Parser parser) {
+    protected boolean matchAST(ArrayList<Token> tokens, Parser parser) {
         for(Token token: tokens){
-           // System.out.println("assign: " + token.getType() + ":" + token.getValue());
+            // System.out.println("assign: " + token.getType() + ":" + token.getValue());
 
-            if(token.getType().equals("operator") && token.getValue().equals("=")){
-                this.setOperator("=");
+            if(token.getType().equals("operator") && !token.getValue().equals("=")  && (!token.getValue().equals("++")
+                    && !token.getValue().equals("--")
+                    && !token.getValue().equals("!"))){
+                this.setOperator(token.getValue());
                 this.setLeft(null);
                 this.setRight(null);
                 parser.next(1);
-                //System.out.println("assigning");
                 return true;
             }else{
                 return false;
             }
+
         }
         return false;
     }
@@ -44,13 +47,12 @@ public class AssignAST extends BasicOperators {
         }else {
             printRight = getRight().toString();
         }
-        return "\n  [" + getType() + "\n    " + getOperator() + "\n     " + printLeft + "\n     " + printRight + "]";
+        return "[" + getType() + ":" + getOperator() + ":" + printLeft + ":" + printRight + "]";
     }
 
     @Override
     public String getText() {
         return getOperator();
     }
-
 
 }

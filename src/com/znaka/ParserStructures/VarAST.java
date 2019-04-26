@@ -29,7 +29,7 @@ public class VarAST extends DefaultAST {
     }
 
     @Override
-    boolean matchAST(ArrayList<Token> tokens, Parser parser) {
+    protected boolean matchAST(ArrayList<Token> tokens, Parser parser) {
         boolean flag_punc = false;
         boolean flag_symbol = false;
         String value = "";

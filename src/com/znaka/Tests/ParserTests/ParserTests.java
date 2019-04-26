@@ -28,7 +28,7 @@ public class ParserTests {
         while(parser.parseLine()){
 
         }
-        String parserOutput = parser.printASTS();
+        String parserOutput = parser.toString();
         String expected = "[var:int:c][var:int:a][var:int:b]\n" +
                 "  [operator\n" +
                 "    =\n" +
@@ -74,7 +74,7 @@ public class ParserTests {
         while(parser.parseLine()){
 
         }
-        String parserOutput = parser.printASTS();
+        String parserOutput = parser.toString();
         String expected = "[var:int:a][var:char:c][var:bool:b][var:string:alabala]";
         Assertions.assertEquals(expected, parserOutput);
     }
@@ -91,7 +91,7 @@ public class ParserTests {
         while(parser.parseLine()){
 
         }
-        String parserOutput = parser.printASTS();
+        String parserOutput = parser.toString();
         String expected = "\n  [operator\n" +
                 "    =\n" +
                 "     [var:int:a]\n" +
@@ -135,7 +135,7 @@ public class ParserTests {
         while(parser.parseLine()){
 
         }
-        String parserOutput = parser.printASTS();
+        String parserOutput = parser.toString();
         String expected = "\n  [operator\n" +
                 "    =\n" +
                 "     [var:int:a]\n" +
@@ -172,7 +172,7 @@ public class ParserTests {
         while(parser.parseLine()){
 
         }
-        String parserOutput = parser.printASTS();
+        String parserOutput = parser.toString();
         String expected = "\n[if:[operator:>:[var::ala]:[var::bala]]:\n" +
                 "  [operator\n" +
                 "    =\n" +
@@ -204,7 +204,7 @@ public class ParserTests {
         while(parser.parseLine()){
 
         }
-        String parserOutput = parser.printASTS();
+        String parserOutput = parser.toString();
         String expected = "[func::[var:int:a][var:int:b]\n" +
                 "  [operator\n" +
                 "    =\n" +

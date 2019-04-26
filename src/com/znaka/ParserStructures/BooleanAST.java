@@ -14,7 +14,7 @@ public class BooleanAST extends DefaultAST{
     }
 
     @Override
-    boolean matchAST(ArrayList<Token> tokens, Parser parser) {
+    protected boolean matchAST(ArrayList<Token> tokens, Parser parser) {
         for(Token token: tokens){
             //System.out.println(token.getType() + ":" + token.getValue());
             if(token.getType().equals("boolean")){

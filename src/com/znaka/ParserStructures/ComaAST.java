@@ -11,7 +11,7 @@ public class ComaAST extends DefaultAST{
     }
 
     @Override
-    boolean matchAST(ArrayList<Token> tokens, Parser parser) {
+    protected boolean matchAST(ArrayList<Token> tokens, Parser parser) {
         for(Token token : tokens){
             //System.out.println(token.getType());
             if(token.getType().equals("punc") && token.getValue().equals(",")){

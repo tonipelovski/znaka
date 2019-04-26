@@ -1,6 +1,12 @@
 package com.znaka.ParserStructures;
 
 import com.znaka.Parser;
+import com.znaka.ParserStructures.Expression.AssignAST;
+import com.znaka.ParserStructures.Expression.FunctionAST;
+import com.znaka.ParserStructures.Expression.OperatorAST;
+import com.znaka.ParserStructures.Statement.ElseConditionAST;
+import com.znaka.ParserStructures.Statement.IfConditionAST;
+import com.znaka.ParserStructures.Statement.LoopAST;
 import com.znaka.Tokens.Token;
 
 import java.util.ArrayList;
@@ -23,6 +29,8 @@ public class DefaultASTMatcher {
         asts.add(new UnaryOperatorAST(null));
         asts.add(new OperatorAST(null, null));
         asts.add(new IfConditionAST(null, null));
+        asts.add(new ElseConditionAST(null, null));
+
         asts.add(new LoopAST(null, null));
 
         asts.add(new NumberAST(0));

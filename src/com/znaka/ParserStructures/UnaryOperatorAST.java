@@ -1,6 +1,7 @@
 package com.znaka.ParserStructures;
 
 import com.znaka.Parser;
+import com.znaka.ParserStructures.Expression.BasicOperators;
 import com.znaka.Tokens.Token;
 
 import java.util.ArrayList;
@@ -12,7 +13,7 @@ public class UnaryOperatorAST extends BasicOperators {
     }
 
     @Override
-    boolean matchAST(ArrayList<Token> tokens, Parser parser) {
+    protected boolean matchAST(ArrayList<Token> tokens, Parser parser) {
         for(Token token: tokens){
             if(token.getType().equals("operator") && (token.getValue().equals("++")
                     || token.getValue().equals("--")
