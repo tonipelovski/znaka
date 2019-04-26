@@ -90,19 +90,19 @@ public class FunctionAST extends ExpressionAST {
     }
 
     @Override
-    public String printAST() {
+    public String toString() {
         String body = "";
         if (getBody() != null) {
             for (DefaultAST defaultAST : getBody().getAll_AST()) {
                 if (defaultAST != null) {
-                    body = body.concat(defaultAST.printAST());
+                    body = body.concat(defaultAST.toString());
                 }
             }
         }
         String output = "[" + getText() + ":" + getRet_type() + ":";
         for(int i = 0; i < getArgs().size(); i++){
             if(getArgs().get(i) != null) {
-                output = output.concat(getArgs().get(i).printAST());
+                output = output.concat(getArgs().get(i).toString());
             }
         }
         output = output.concat(body);

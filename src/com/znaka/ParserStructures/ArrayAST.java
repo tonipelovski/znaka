@@ -25,10 +25,10 @@ public class ArrayAST extends DefaultAST{
     }
 
     @Override
-    public String printAST() {
+    public String toString() {
         String result = "{";
         for(DefaultAST defaultAST : all_AST){
-            result = result.concat(defaultAST.printAST());
+            result = result.concat(defaultAST.toString());
         }
         return result + "}";
     }

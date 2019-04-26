@@ -76,7 +76,7 @@ public class VarAST extends DefaultAST {
     }
 
     @Override
-    public String printAST() {
+    public String toString() {
          return "[var" + ":" + getType() + ":" + getText() + "]";
     }
 }

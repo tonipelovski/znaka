@@ -3,7 +3,6 @@ package com.znaka.ParserStructures.Statement;
 import com.znaka.Parser;
 import com.znaka.ParserStructures.DefaultAST;
 import com.znaka.ParserStructures.MainAST;
-import com.znaka.ParserStructures.Statement.ConditionalsAST;
 import com.znaka.Tokens.Token;
 
 import java.util.ArrayList;
@@ -29,12 +28,12 @@ public class LoopAST extends ConditionalsAST {
         return false;    }
 
     @Override
-    public String printAST() {
+    public String toString() {
         String condition = "";
         if (getCond() != null) {
             for (DefaultAST defaultAST : getCond().getAll_AST()) {
                 if (defaultAST != null) {
-                    condition = condition.concat(defaultAST.printAST());
+                    condition = condition.concat(defaultAST.toString());
                 }
             }
         }
@@ -43,7 +42,7 @@ public class LoopAST extends ConditionalsAST {
         if (getBody() != null) {
             for (DefaultAST defaultAST : getBody().getAll_AST()) {
                 if (defaultAST != null) {
-                    then = then.concat(defaultAST.printAST());
+                    then = then.concat(defaultAST.toString());
                 }
             }
         }

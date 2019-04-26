@@ -87,7 +87,7 @@ public class ArrayTypeAST extends DefaultAST {
     }
 
     @Override
-    public String printAST() {
+    public String toString() {
         return "[array" + ":" + getType() + ":" + getText() + ":index:" + getSize() + "]";
     }
 }

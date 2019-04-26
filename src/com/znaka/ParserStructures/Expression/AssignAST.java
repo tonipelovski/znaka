@@ -2,7 +2,6 @@ package com.znaka.ParserStructures.Expression;
 
 import com.znaka.Parser;
 import com.znaka.ParserStructures.DefaultAST;
-import com.znaka.ParserStructures.Expression.BasicOperators;
 import com.znaka.Tokens.Token;
 
 import java.util.ArrayList;
@@ -33,18 +32,18 @@ public class AssignAST extends BasicOperators {
     }
 
     @Override
-    public String printAST() {
+    public String toString() {
         String printLeft = "";
         String printRight = "";
         if(getLeft() == null){
             printLeft = "null";
         }else{
-            printLeft = getLeft().printAST();
+            printLeft = getLeft().toString();
         }
         if(getRight() == null){
             printRight = "null";
         }else {
-            printRight = getRight().printAST();
+            printRight = getRight().toString();
         }
         return "\n  [" + getType() + "\n    " + getOperator() + "\n     " + printLeft + "\n     " + printRight + "]";
     }

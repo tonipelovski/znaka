@@ -32,6 +32,6 @@ public class Main {
         while(parser.parseLIne()){
         }
 
-        System.out.println(parser.printASTS());
+        System.out.println(parser.toString());
     }
 }
