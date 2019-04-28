@@ -17,7 +17,7 @@ public class EvaluatorTests {
     @BeforeEach
     public void setUp() throws FileNotFoundException {
 
-        URL url = EvaluatorTests.class.getResource("test.txt");
+        URL url = EvaluatorTests.class.getResource("test.zk");
         File file = new File(url.getPath());
         BufferedReader reader = new BufferedReader(new FileReader(file));
         Lexer lexer = new Lexer(reader);
@@ -31,4 +31,5 @@ public class EvaluatorTests {
 //        evaluator.run();
         evaluator.EvaluateLine();
     }
+
 }
