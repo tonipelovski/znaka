@@ -10,7 +10,6 @@ import com.znaka.Lexer;
 import com.znaka.Parser;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.io.*;
@@ -31,13 +30,20 @@ public class EvaluatorTests {
         evaluator = new Evaluator(parser);
     }
 
-    @Disabled
     @Test
     public void GeneralTest() throws ParserException, IOException, LexerException, EvaluatorException {
 
 //        evaluator.run();
-        evaluator.ProcessLine();
-        evaluator.ProcessLine();
+//        evaluator.ProcessLine();
+//        evaluator.ProcessLine();
+        ExecuteString("h = True");
+        ExecuteString("h = 10 + 20.7");
+        ExecuteString("a = 2");
+        ExecuteString("d = 2.6");
+        ExecuteString("double g = 2.234");
+        ExecuteString("b = 'c'");
+        ExecuteString("c = \"Hi\"");
+        ExecuteString("c = a");
     }
 
     private void ExecuteString(String s1) throws LexerException, ParserException, IOException, EvaluatorException {

@@ -3,9 +3,11 @@ package com.znaka.EvaluatorStructures.ExecuteOperations;
 import com.znaka.Evaluator;
 import com.znaka.EvaluatorStructures.DataVal;
 import com.znaka.EvaluatorStructures.Variable;
+import com.znaka.Exceptions.CannotEvaluate;
+import com.znaka.Exceptions.UnknownVariable;
 import com.znaka.ParserStructures.DefaultAST;
 import com.znaka.ParserStructures.Expression.AssignAST;
-import com.znaka.ParserStructures.NumberAST;
+import com.znaka.ParserStructures.VarAST;
 
 import java.util.HashSet;
 
@@ -16,41 +18,45 @@ public class AssignOper extends BaseExecuteOper {
     }
 
     @Override
-    public DataVal exec(DefaultAST ast) {
+    public DataVal exec(DefaultAST ast) throws CannotEvaluate, UnknownVariable {
         DataVal ret = null;
         //System.out.println("Executing assign operation...");
         AssignAST ast1 = (AssignAST)ast;
         //System.out.println("Operator: " + ast1.getOperator());
         //System.out.println("Left side: " + ast1.getLeft());
         //System.out.println("Right side: " + ast1.getRight());
-        String rightType = ast1.getRight().getType();
-        String rightVal = ast1.getRight().getText();
-        String leftType = ast1.getLeft().getType();
+        DataVal rightSide = getEvaluator().Eval(ast1.getRight());
+
+        String rightType = rightSide.getType();
+        String rightVal = rightSide.toString();
+        String leftType = ((VarAST)ast1.getLeft()).getVariableType();
         String varName = ast1.getLeft().getText();
         HashSet<Variable> vars = getEvaluator().getVariables();
 
-        if(rightType.equals("number")){
-            rightType = ((NumberAST)ast1.getRight()).getNumberType();
+
+
+//            rightType = rightSide.getType();
             //ret = new DataVal<>(Float.parseFloat(ast1.getRight().getText()));
-            double nm = Double.parseDouble(rightVal);
+//            double nm = Double.parseDouble(rightVal);
             if(leftType.equals("int") || rightType.equals("integer")){
-                ret = new DataVal<>((int)nm);
+                ret = new DataVal<>(rightSide.getVal(), "integer");
             }
             else if(leftType.equals("double")){
-                ret = new DataVal<>(nm);
+                ret = new DataVal<>(Double.parseDouble(rightSide.toString()), "double");
             }
             else if(leftType.equals("float") || rightType.equals("float")){
-                ret = new DataVal<>((float)nm);
+                ret = new DataVal<>(Float.parseFloat(rightSide.toString()), "float");
             }
-        }
+
 
         if(rightType.equals("char") || leftType.equals("char")){
-            ret = new DataVal<>(rightVal.charAt(0));
+            ret = new DataVal<>(rightVal.charAt(0), "char");
         }
 
         if(rightType.equals("string_literal") || leftType.equals("string")){
-            ret = new DataVal<>(rightVal);
+            ret = new DataVal<>(rightVal, "string");
         }
+
         Variable var = new Variable<>(varName, ret, false);
         vars.remove(var);
         vars.add(var);

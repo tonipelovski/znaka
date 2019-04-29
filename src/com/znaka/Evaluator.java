@@ -1,11 +1,8 @@
 package com.znaka;
 
 import com.znaka.EvaluatorStructures.DataVal;
-import com.znaka.EvaluatorStructures.ExecuteOperations.AssignOper;
-import com.znaka.EvaluatorStructures.ExecuteOperations.BaseExecuteOper;
+import com.znaka.EvaluatorStructures.ExecuteOperations.*;
 import com.znaka.EvaluatorStructures.ExecuteOperations.BinaryOper.BinaryOper;
-import com.znaka.EvaluatorStructures.ExecuteOperations.IfOper;
-import com.znaka.EvaluatorStructures.ExecuteOperations.VarGetOper;
 import com.znaka.EvaluatorStructures.Variable;
 import com.znaka.Exceptions.CannotEvaluate;
 import com.znaka.Exceptions.LexerException;
@@ -39,6 +36,7 @@ public class Evaluator {
         operations.add(new AssignOper(this));
         operations.add(new IfOper(this));
         operations.add(new VarGetOper(this));
+        operations.add(new LiterValueOper(this));
         operations.add(new BinaryOper(this));
 
     }
@@ -84,13 +82,12 @@ public class Evaluator {
         DataVal returned = Eval(ast);
         if(returned != null){ // if there is a return type (no return type are: statements and void)
             lastReturnedValue = returned;
-            System.out.println(lastReturnedValue.getVal());
         }
     }
 
     public DataVal Eval(DefaultAST ast) throws CannotEvaluate, UnknownVariable {
         for (BaseExecuteOper oper : operations) {
-            if(ast.getClass().isAssignableFrom(oper.getMatchClass())){ // can it be casted to the oper MatchClass
+            if(ast.getClass().isAssignableFrom(oper.getMatchClass()) || oper.getMatchClass().isAssignableFrom(ast.getClass())){ // can it be casted to the oper MatchClass
                 return oper.exec(ast);
             }
         }

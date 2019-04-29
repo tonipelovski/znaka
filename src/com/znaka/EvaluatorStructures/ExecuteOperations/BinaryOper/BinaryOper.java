@@ -7,7 +7,6 @@ import com.znaka.EvaluatorStructures.Variable;
 import com.znaka.Exceptions.CannotEvaluate;
 import com.znaka.Exceptions.UnknownVariable;
 import com.znaka.ParserStructures.DefaultAST;
-import com.znaka.ParserStructures.Expression.AssignAST;
 import com.znaka.ParserStructures.Expression.OperatorAST;
 import com.znaka.ParserStructures.NumberAST;
 import com.znaka.ParserStructures.VarAST;
@@ -49,13 +48,13 @@ public class BinaryOper extends BaseExecuteOper {
                 //ret = new DataVal<>(Float.parseFloat(ast1.getRight().getText()));
                 double rv = Double.parseDouble(rightVal);
                 if(rightType.equals("int") || rightType.equals("integer")){
-                    right_result = new DataVal<>((int) rv);
+                    right_result = new DataVal<>((int) rv, "integer");
                 }
                 else if(rightType.equals("double")){
-                    right_result = new DataVal<>(rv);
+                    right_result = new DataVal<>(rv, "double");
                 }
                 else if(rightType.equals("float")){
-                    right_result = new DataVal<>((float) rv);
+                    right_result = new DataVal<>((float) rv, "float");
                 }
             }
 
@@ -79,11 +78,11 @@ public class BinaryOper extends BaseExecuteOper {
                 //ret = new DataVal<>(Float.parseFloat(ast1.getRight().getText()));
                 double lv = Double.parseDouble(leftVal);
                 if (leftType.equals("int") || rightType.equals("integer")) {
-                    left_result = new DataVal<>((int) lv);
+                    left_result = new DataVal<>((int) lv, "integer");
                 } else if (leftType.equals("double")) {
-                    left_result = new DataVal<>(lv);
+                    left_result = new DataVal<>(lv, "double");
                 } else if (leftType.equals("float")) {
-                    left_result = new DataVal<>((float) lv);
+                    left_result = new DataVal<>((float) lv, "float");
                 }
             }
 
@@ -118,13 +117,13 @@ public class BinaryOper extends BaseExecuteOper {
     public DataVal div(DataVal left, DataVal other){
 
         if(left.getVal() instanceof Integer && other.getVal() instanceof Integer){
-            return new DataVal<Integer>((Integer)left.getVal() / (Integer)other.getVal());
+            return new DataVal<Integer>((Integer)left.getVal() / (Integer)other.getVal(), "integer");
         }
         if(left.getVal() instanceof Double && other.getVal() instanceof Double){
-            return new DataVal<Double>((Double) left.getVal() / (Double) other.getVal());
+            return new DataVal<Double>((Double) left.getVal() / (Double) other.getVal(), "double");
         }
         if(left.getVal() instanceof Float && other.getVal() instanceof Float){
-            return new DataVal<Float>((Float) left.getVal() / (Float) other.getVal());
+            return new DataVal<Float>((Float) left.getVal() / (Float) other.getVal(), "float");
         }
         return null;
     }
@@ -132,13 +131,13 @@ public class BinaryOper extends BaseExecuteOper {
     public DataVal sub(DataVal left, DataVal other){
 
         if(left.getVal() instanceof Integer && other.getVal() instanceof Integer){
-            return new DataVal<Integer>((Integer)left.getVal() - (Integer)other.getVal());
+            return new DataVal<Integer>((Integer)left.getVal() - (Integer)other.getVal(), "integer");
         }
         if(left.getVal() instanceof Double && other.getVal() instanceof Double){
-            return new DataVal<Double>((Double) left.getVal() - (Double) other.getVal());
+            return new DataVal<Double>((Double) left.getVal() - (Double) other.getVal(), "double");
         }
         if(left.getVal() instanceof Float && other.getVal() instanceof Float){
-            return new DataVal<Float>((Float) left.getVal() - (Float) other.getVal());
+            return new DataVal<Float>((Float) left.getVal() - (Float) other.getVal(), "float");
         }
         return null;
     }
@@ -146,13 +145,13 @@ public class BinaryOper extends BaseExecuteOper {
     public DataVal add(DataVal left, DataVal other){
 
         if(left.getVal() instanceof Integer && other.getVal() instanceof Integer){
-            return new DataVal<Integer>((Integer)left.getVal() + (Integer)other.getVal());
+            return new DataVal<Integer>((Integer)left.getVal() + (Integer)other.getVal(), "integer");
         }
         if(left.getVal() instanceof Double && other.getVal() instanceof Double){
-            return new DataVal<Double>((Double) left.getVal() + (Double) other.getVal());
+            return new DataVal<Double>((Double) left.getVal() + (Double) other.getVal(), "double");
         }
         if(left.getVal() instanceof Float && other.getVal() instanceof Float){
-            return new DataVal<Float>((Float) left.getVal() + (Float) other.getVal());
+            return new DataVal<Float>((Float) left.getVal() + (Float) other.getVal(), "float");
         }
         return null;
     }
@@ -160,13 +159,13 @@ public class BinaryOper extends BaseExecuteOper {
     public DataVal mul(DataVal left, DataVal other){
 
         if(left.getVal() instanceof Integer && other.getVal() instanceof Integer){
-            return new DataVal<Integer>((Integer)left.getVal() * (Integer)other.getVal());
+            return new DataVal<Integer>((Integer)left.getVal() * (Integer)other.getVal(), "integer");
         }
         if(left.getVal() instanceof Double && other.getVal() instanceof Double){
-            return new DataVal<Double>((Double) left.getVal() * (Double) other.getVal());
+            return new DataVal<Double>((Double) left.getVal() * (Double) other.getVal(), "double");
         }
         if(left.getVal() instanceof Float && other.getVal() instanceof Float){
-            return new DataVal<Float>((Float) left.getVal() * (Float) other.getVal());
+            return new DataVal<Float>((Float) left.getVal() * (Float) other.getVal(), "float");
         }
         return null;
     }
