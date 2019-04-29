@@ -4,6 +4,7 @@ import com.znaka.Evaluator;
 import com.znaka.EvaluatorStructures.DataVal;
 import com.znaka.ParserStructures.DefaultAST;
 import com.znaka.ParserStructures.Expression.AssignAST;
+import com.znaka.ParserStructures.NumberAST;
 
 public class AssignOper extends BaseExecuteOper {
 
@@ -24,20 +25,21 @@ public class AssignOper extends BaseExecuteOper {
         String leftType = ast1.getLeft().getType();
 
         if(rightType.equals("number")){
+            rightType = ((NumberAST)ast1.getRight()).getNumberType();
             //ret = new DataVal<>(Float.parseFloat(ast1.getRight().getText()));
             double nm = Float.parseFloat(rightVal);
-            if(leftType.equals("int")){
+            if(leftType.equals("int") || rightType.equals("integer")){
                 ret = new DataVal<>((int)nm);
-            }
-            else if(leftType.equals("float")){
-                ret = new DataVal<>((float)nm);
             }
             else if(leftType.equals("double")){
                 ret = new DataVal<>(nm);
             }
+            else if(leftType.equals("float") || rightType.equals("float")){
+                ret = new DataVal<>((float)nm);
+            }
         }
 
-        if(rightType.equals("character") || leftType.equals("char")){
+        if(rightType.equals("char") || leftType.equals("char")){
             ret = new DataVal<>(rightVal.charAt(0));
         }
 

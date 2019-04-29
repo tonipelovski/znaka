@@ -66,7 +66,8 @@ public class LexerTests {
         String expected =
                 "[symbol : noType][operator : =][integer : 15]\n" +
                         "[type : int][symbol : a][operator : =][integer : 10][punc : ;]\n" +
-                        "[symbol : b][operator : =][operator : -][float : 20.5][punc : ;]\n" +
+                        "[symbol : b][operator : =][float : -20.5][punc : ;]\n" +
+                        "[type : float][symbol : abc][operator : =][float : -20.0]\n" +
                         "[type : bool][symbol : s][operator : =][boolean : False][punc : ;]\n" +
                         "[symbol : bit_conn3ct][operator : =][integer : 1337][punc : ;]\n" +
                         "[type : char][symbol : c][operator : =][character : 'f'][punc : ;]\n" +

@@ -1,6 +1,7 @@
 noType = 15
 int a = 10;
 b = -20.5;
+float abc = -20.0
 bool s = False;
 bit_conn3ct = 1337;
 char c = 'f';
