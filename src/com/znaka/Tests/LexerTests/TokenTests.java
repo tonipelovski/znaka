@@ -1,10 +1,10 @@
 package com.znaka.Tests.LexerTests;
-import com.znaka.Tokens.*;
-//import com.znaka.Tokens.TokenIndexMatch;
-import org.junit.jupiter.api.*;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import com.znaka.Tokens.*;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+
+//import com.znaka.Tokens.TokenIndexMatch;
 
 public class TokenTests {
 
@@ -37,6 +37,28 @@ public class TokenTests {
         Assertions.assertEquals(4, nm.nextTokenEndIndex("12.3"));
         Assertions.assertEquals(0, nm.nextTokenEndIndex(".12"));
 
+    }
+
+    @Test
+    void TestIntegerMatch(){
+        TokenIntegerMatch im = new TokenIntegerMatch();
+        Assertions.assertEquals(2, im.nextTokenEndIndex("20"));
+        Assertions.assertEquals(1, im.nextTokenEndIndex("2"));
+        Assertions.assertEquals(2, im.nextTokenEndIndex("-2"));
+        Assertions.assertEquals(2, im.nextTokenEndIndex("-2.6"));
+        Assertions.assertEquals(1, im.nextTokenEndIndex("2.633"));
+    }
+
+    @Test
+    void TestFloatMatch(){
+        TokenFloatMatch fm = new TokenFloatMatch();
+        Assertions.assertEquals(4, fm.nextTokenEndIndex("10.5"));
+        Assertions.assertEquals(5, fm.nextTokenEndIndex("-10.5"));
+        Assertions.assertEquals(7, fm.nextTokenEndIndex("-10.512"));
+        Assertions.assertEquals(6, fm.nextTokenEndIndex("30.512"));
+        Assertions.assertEquals(0, fm.nextTokenEndIndex("10"));
+        Assertions.assertEquals(0, fm.nextTokenEndIndex("200"));
+        Assertions.assertEquals(0, fm.nextTokenEndIndex("200/"));
     }
 
     @Test
