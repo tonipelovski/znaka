@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class TokenTypeMatch extends TokenMatch {
-    private static final String[] types = {"char", "int", "bool", "string", "float"};
+    private static final String[] types = {"char", "int", "bool", "string", "float", "double"};
 
     public TokenTypeMatch() {
         super("type");

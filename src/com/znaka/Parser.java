@@ -135,7 +135,7 @@ public class Parser {
                             for (DefaultAST defaultAST1 : temp_parser.mainAST.getAll_AST()) {
                                 //System.out.println("ala: " + defaultAST1.toString());
                                 if (defaultAST1.getType().equals("close_curly")) {
-                                    to_order.popFrontAST(1);
+                                    temp_parser.mainAST.popFrontAST(1);
                                     func.setBody(asts);
                                     be_ordered.addAST(func);
                                     be_ordered.addAST(temp_parser.mainAST);
@@ -168,7 +168,7 @@ public class Parser {
                             //System.out.println("cccc");
                             for(DefaultAST defaultAST1 : temp_parser.mainAST.getAll_AST()){
                                 if(defaultAST1.getType().equals("close_curly")){
-                                    //to_order.popFrontAST(1);
+                                    temp_parser.mainAST.popFrontAST(1);
                                     //System.out.println(asts.getAll_AST().get(1));
 
                                     func.setBody(asts);
@@ -453,7 +453,7 @@ public class Parser {
                 //System.out.println("cccc");
                 for(DefaultAST defaultAST1 : temp_parser.mainAST.getAll_AST()){
                     if(defaultAST1.getType().equals("close_curly")){
-                        //to_order.popFrontAST(1);
+                        temp_parser.mainAST.popFrontAST(1);
                         //System.out.println(asts.getAll_AST().get(1));
 
                         conditionalsAST.setBody(asts);

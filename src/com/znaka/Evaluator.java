@@ -23,9 +23,11 @@ public class Evaluator {
 
     public void EvaluateLine() throws ParserException, IOException, LexerException {
         parser.parseLine();
-        DefaultAST ast = parser.mainAST.getAll_AST().peek();
-        System.out.println(ast);
-        System.out.println(ast instanceof ExpressionAST);
-        System.out.println(ast.getText());
+        //DefaultAST ast = parser.mainAST.getAll_AST().get(0);
+        for(DefaultAST ast : parser.mainAST.getAll_AST()) {
+            System.out.println(ast);
+            System.out.println(ast instanceof ExpressionAST);
+            System.out.println(ast.getText());
+        }
     }
 }

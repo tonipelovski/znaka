@@ -4,11 +4,12 @@ import com.znaka.Parser;
 import com.znaka.Tokens.Token;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Stack;
 
 public class MainAST extends DefaultAST{
     private String type;
-    private Stack<DefaultAST> all_AST;
+    private List<DefaultAST> all_AST;
 
     public MainAST(Stack<DefaultAST> all_AST) {
         super("main");
@@ -36,7 +37,7 @@ public class MainAST extends DefaultAST{
         return null;
     }
 
-    public Stack<DefaultAST> getAll_AST() {
+    public List<DefaultAST> getAll_AST() {
         return all_AST;
     }
 
@@ -51,9 +52,9 @@ public class MainAST extends DefaultAST{
     }
 
     public void popFrontAST(int to_pop) {
-        Stack<DefaultAST> tmpStack = new Stack<>();
+        List<DefaultAST> tmpStack = new ArrayList<>();
         for(int i = to_pop; i < all_AST.size(); i++){
-            tmpStack.push(all_AST.get(i));
+            tmpStack.add(all_AST.get(i));
         }
         all_AST = tmpStack;
     }
