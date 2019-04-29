@@ -27,7 +27,9 @@ public class MainAST extends DefaultAST{
     @Override
     public String toString() {
         String result = "";
-
+        /*List<DefaultAST> defaultASTS = List.copyOf(all_AST);
+        result = defaultASTS.stream().map(DefaultAST::toString)
+                .collect(Collectors.joining("\n", "MainAST: ", ""));*/
         return result;
     }
 

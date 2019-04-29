@@ -4,6 +4,7 @@ import com.znaka.EvaluatorStructures.DataVal;
 import com.znaka.EvaluatorStructures.ExecuteOperations.AssignOper;
 import com.znaka.EvaluatorStructures.ExecuteOperations.BaseExecuteOper;
 import com.znaka.EvaluatorStructures.ExecuteOperations.IfOper;
+import com.znaka.Exceptions.CannotEvaluate;
 import com.znaka.Exceptions.LexerException;
 import com.znaka.Exceptions.ParserException;
 import com.znaka.ParserStructures.DefaultAST;
@@ -35,9 +36,9 @@ public class Evaluator {
         System.out.println(parser);
     }
 
-    public void EvaluateLine() throws ParserException, IOException, LexerException {
+    public void EvaluateLine() throws ParserException, IOException, LexerException, CannotEvaluate {
         parser.parseLine();
-        DefaultAST ast = parser.mainAST.getAll_AST().peek();
+        DefaultAST ast = parser.mainAST.getAll_AST().firstElement(); // needs to be changed....
 
         /*lastReturnedValue = new DataVal<>(2);
         System.out.println(lastReturnedValue.getVal());
@@ -52,21 +53,25 @@ public class Evaluator {
         System.out.println(ast1.getOperator());
         System.out.println(ast1.getLeft());
         System.out.println(ast1.getRight());*/
+
         ExecLine(ast);
         System.out.println(lastReturnedValue);
     }
 
-    private void ExecLine(DefaultAST ast){
+    public void ExecLine(DefaultAST ast) throws CannotEvaluate {
+        DataVal returned = EvalLine(ast);
+        if(returned != null){ // if there is a return type (no return type are: statements and void)
+            lastReturnedValue = returned;
+        }
+    }
+
+    public DataVal EvalLine(DefaultAST ast) throws CannotEvaluate {
         for (BaseExecuteOper oper : operations) {
             if(ast.getClass().isAssignableFrom(oper.getMatchClass())){ // can it be casted to the oper MatchClass
-                DataVal returned =  oper.exec(ast);
-
-                if(returned != null){ // if there is a return type (no return type are: statements and void)
-                    lastReturnedValue = returned;
-                }
-                break;
+                return oper.exec(ast);
             }
         }
+        throw new CannotEvaluate();
     }
 
 
