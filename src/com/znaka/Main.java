@@ -33,7 +33,8 @@ public class Main {
         Parser parser = new Parser(lexer);
         Evaluator evaluator = new Evaluator(parser);
         evaluator.ProcessLine();
-
+        evaluator.ProcessLine();
+        evaluator.ProcessLine();
         //System.out.println(parser.toString());
     }
 }

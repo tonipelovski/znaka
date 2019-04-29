@@ -37,6 +37,35 @@ public class BinaryOper extends BaseExecuteOper {
         DataVal left_result = null;
         HashSet<Variable> vars = getEvaluator().getVariables();
 
+        if(left instanceof OperatorAST || left instanceof VarAST){
+            //System.out.println("true");
+            left_result = this.getEvaluator().Eval(left);
+            if(left_result != null){
+                getEvaluator().setLastReturnedValue(left_result);
+            }
+        }else {
+            if (leftType.equals("number")) {
+                leftType = ((NumberAST) binaryOper.getLeft()).getNumberType();
+                //ret = new DataVal<>(Float.parseFloat(ast1.getRight().getText()));
+                double lv = Double.parseDouble(leftVal);
+                if (leftType.equals("integer")) {
+                    left_result = new DataVal<>((int) lv, "integer");
+                } else if (leftType.equals("double")) {
+                    left_result = new DataVal<>(lv, "double");
+                } else if (leftType.equals("float")) {
+                    left_result = new DataVal<>((float) lv, "float");
+                }
+            }
+
+            if (leftType.equals("char")) {
+                //error
+            }
+
+            if (leftType.equals("string_literal")) {
+                //error
+            }
+        }
+
         if(right instanceof OperatorAST || right instanceof VarAST){
             right_result = this.getEvaluator().Eval(right);
             if(right_result != null){
@@ -67,106 +96,60 @@ public class BinaryOper extends BaseExecuteOper {
             }
 
         }
-        if(left instanceof OperatorAST || left instanceof VarAST){
-            left_result = this.getEvaluator().Eval(left);
-            if(left_result != null){
-                getEvaluator().setLastReturnedValue(left_result);
-            }
-        }else {
-            if (leftType.equals("number")) {
-                leftType = ((NumberAST) binaryOper.getRight()).getNumberType();
-                //ret = new DataVal<>(Float.parseFloat(ast1.getRight().getText()));
-                double lv = Double.parseDouble(leftVal);
-                if (leftType.equals("int") || rightType.equals("integer")) {
-                    left_result = new DataVal<>((int) lv, "integer");
-                } else if (leftType.equals("double")) {
-                    left_result = new DataVal<>(lv, "double");
-                } else if (leftType.equals("float")) {
-                    left_result = new DataVal<>((float) lv, "float");
-                }
-            }
-
-            if (leftType.equals("char")) {
-                //error
-            }
-
-            if (leftType.equals("string_literal")) {
-                //error
-            }
-        }
 
         return calculate(left_result, right_result, binaryOper);
     }
 
     protected DataVal calculate(DataVal left, DataVal right, OperatorAST operatorAST) throws CannotEvaluate, UnknownVariable{
+        Double left_num = Double.parseDouble(String.valueOf(left.getVal()));
+        Double right_num = Double.parseDouble(String.valueOf(right.getVal()));
+        if(left.getType().equals("integer")){
+            left_num = (double) left_num.intValue();
+        }else if(left.getType().equals("float")){
+            left_num = (double) left_num.floatValue();
+        }
+        if(right.getType().equals("integer")){
+            right_num = (double) right_num.intValue();
+        }else if(right.getType().equals("float")){
+            right_num = (double) right_num.floatValue();
+        }
+        Double result = null;
         if(operatorAST.getOperator().equals("+")){
-            return add(left,right);
+            result = add(left_num,right_num);
         }
         if(operatorAST.getOperator().equals("-")){
-            return sub(left,right);
+            result = sub(left_num,right_num);
         }
         if(operatorAST.getOperator().equals("*")){
-            return mul(left,right);
+            result = mul(left_num,right_num);
         }
         if(operatorAST.getOperator().equals("/")){
-            return div(left,right);
+            result = div(left_num,right_num);
         }
-        return null;
+        //System.out.println("real: " + 10/3);
+        if(left.getType().equals("integer") && right.getType().equals("integer")) {
+            return new DataVal(result.intValue(), "integer");
+        }
+        if(left.getType().equals("float") || right.getType().equals("float")) {
+            return new DataVal(result.floatValue(), "float");
+        }
+
+        return new DataVal(result, "double");
     }
 
-    public DataVal div(DataVal left, DataVal other){
-
-        if(left.getVal() instanceof Integer && other.getVal() instanceof Integer){
-            return new DataVal<Integer>((Integer)left.getVal() / (Integer)other.getVal(), "integer");
-        }
-        if(left.getVal() instanceof Double && other.getVal() instanceof Double){
-            return new DataVal<Double>((Double) left.getVal() / (Double) other.getVal(), "double");
-        }
-        if(left.getVal() instanceof Float && other.getVal() instanceof Float){
-            return new DataVal<Float>((Float) left.getVal() / (Float) other.getVal(), "float");
-        }
-        return null;
+    public double div(double left, double other){
+        return left/other;
     }
 
-    public DataVal sub(DataVal left, DataVal other){
-
-        if(left.getVal() instanceof Integer && other.getVal() instanceof Integer){
-            return new DataVal<Integer>((Integer)left.getVal() - (Integer)other.getVal(), "integer");
-        }
-        if(left.getVal() instanceof Double && other.getVal() instanceof Double){
-            return new DataVal<Double>((Double) left.getVal() - (Double) other.getVal(), "double");
-        }
-        if(left.getVal() instanceof Float && other.getVal() instanceof Float){
-            return new DataVal<Float>((Float) left.getVal() - (Float) other.getVal(), "float");
-        }
-        return null;
+    public double sub(double left, double other){
+        return left - other;
     }
 
-    public DataVal add(DataVal left, DataVal other){
-
-        if(left.getVal() instanceof Integer && other.getVal() instanceof Integer){
-            return new DataVal<Integer>((Integer)left.getVal() + (Integer)other.getVal(), "integer");
-        }
-        if(left.getVal() instanceof Double && other.getVal() instanceof Double){
-            return new DataVal<Double>((Double) left.getVal() + (Double) other.getVal(), "double");
-        }
-        if(left.getVal() instanceof Float && other.getVal() instanceof Float){
-            return new DataVal<Float>((Float) left.getVal() + (Float) other.getVal(), "float");
-        }
-        return null;
+    public double add(double left, double other){
+        return left + other;
     }
 
-    public DataVal mul(DataVal left, DataVal other){
-
-        if(left.getVal() instanceof Integer && other.getVal() instanceof Integer){
-            return new DataVal<Integer>((Integer)left.getVal() * (Integer)other.getVal(), "integer");
-        }
-        if(left.getVal() instanceof Double && other.getVal() instanceof Double){
-            return new DataVal<Double>((Double) left.getVal() * (Double) other.getVal(), "double");
-        }
-        if(left.getVal() instanceof Float && other.getVal() instanceof Float){
-            return new DataVal<Float>((Float) left.getVal() * (Float) other.getVal(), "float");
-        }
-        return null;
+    public double mul(double left, double other){
+        return left*other;
     }
 }
