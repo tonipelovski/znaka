@@ -36,9 +36,9 @@ public class Evaluator {
         System.out.println(parser);
     }
 
-    public void EvaluateLine() throws ParserException, IOException, LexerException, CannotEvaluate {
+    public void ProcessLine() throws ParserException, IOException, LexerException, CannotEvaluate {
         parser.parseLine();
-        DefaultAST ast = parser.mainAST.getAll_AST().firstElement(); // needs to be changed....
+        DefaultAST ast = parser.mainAST.getAll_AST().lastElement(); // needs to be changed....
 
         /*lastReturnedValue = new DataVal<>(2);
         System.out.println(lastReturnedValue.getVal());
@@ -55,17 +55,21 @@ public class Evaluator {
         System.out.println(ast1.getRight());*/
 
         ExecLine(ast);
-        System.out.println(lastReturnedValue);
+//        System.out.println("Last expression returned: " + lastReturnedValue);
+    }
+
+    public DataVal getLastReturnedValue() {
+        return lastReturnedValue;
     }
 
     public void ExecLine(DefaultAST ast) throws CannotEvaluate {
-        DataVal returned = EvalLine(ast);
+        DataVal returned = Eval(ast);
         if(returned != null){ // if there is a return type (no return type are: statements and void)
             lastReturnedValue = returned;
         }
     }
 
-    public DataVal EvalLine(DefaultAST ast) throws CannotEvaluate {
+    public DataVal Eval(DefaultAST ast) throws CannotEvaluate {
         for (BaseExecuteOper oper : operations) {
             if(ast.getClass().isAssignableFrom(oper.getMatchClass())){ // can it be casted to the oper MatchClass
                 return oper.exec(ast);
