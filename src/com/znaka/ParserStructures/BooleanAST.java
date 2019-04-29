@@ -5,7 +5,7 @@ import com.znaka.Tokens.Token;
 
 import java.util.ArrayList;
 
-public class BooleanAST extends DefaultAST{
+public class BooleanAST extends LiteralTypesAST{
     private boolean value;
 
     public BooleanAST(boolean value) {

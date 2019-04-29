@@ -19,12 +19,11 @@ public class VarAST extends DefaultAST {
 
     }
 
-    @Override
-    public String getType() {
+    public String getVariableType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setVariableType(String type) {
         this.type = type;
     }
 
@@ -59,7 +58,7 @@ public class VarAST extends DefaultAST {
             //System.out.println("end");
 
             this.setName(value);
-            this.setType(t);
+            this.setVariableType(t);
             if(!t.equals("")) {
                 parser.next(2);
             }else{
@@ -77,6 +76,6 @@ public class VarAST extends DefaultAST {
 
     @Override
     public String toString() {
-         return "[var" + ":" + getType() + ":" + getText() + "]";
+         return "[var" + ":" + getVariableType() + ":" + getText() + "]";
     }
 }

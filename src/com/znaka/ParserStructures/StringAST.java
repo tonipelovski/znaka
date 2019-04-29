@@ -5,7 +5,7 @@ import com.znaka.Tokens.Token;
 
 import java.util.ArrayList;
 
-public class StringAST extends DefaultAST {
+public class StringAST extends LiteralTypesAST {
     private String value;
 
     public String getValue() {

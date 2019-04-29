@@ -4,6 +4,7 @@ import com.znaka.Parser;
 import com.znaka.ParserStructures.Expression.AssignAST;
 import com.znaka.ParserStructures.Expression.FunctionAST;
 import com.znaka.ParserStructures.Expression.OperatorAST;
+import com.znaka.ParserStructures.Expression.UnaryOperatorAST;
 import com.znaka.ParserStructures.Statement.ElseConditionAST;
 import com.znaka.ParserStructures.Statement.IfConditionAST;
 import com.znaka.ParserStructures.Statement.LoopAST;

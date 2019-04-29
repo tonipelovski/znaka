@@ -1,6 +1,7 @@
-package com.znaka.ParserStructures;
+package com.znaka.ParserStructures.Expression;
 
 import com.znaka.Parser;
+import com.znaka.ParserStructures.DefaultAST;
 import com.znaka.ParserStructures.Expression.BasicOperators;
 import com.znaka.Tokens.Token;
 

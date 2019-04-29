@@ -3,9 +3,10 @@ package com.znaka.ParserStructures;
 import com.znaka.Parser;
 import com.znaka.Tokens.Token;
 
+import java.awt.*;
 import java.util.ArrayList;
 
-public class NumberAST extends DefaultAST{
+public class NumberAST extends LiteralTypesAST {
     private String value;
     private String numberType;
 

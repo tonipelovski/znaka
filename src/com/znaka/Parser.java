@@ -5,6 +5,7 @@ import com.znaka.Exceptions.ParserException;
 import com.znaka.ParserStructures.*;
 import com.znaka.ParserStructures.Expression.BasicOperators;
 import com.znaka.ParserStructures.Expression.FunctionAST;
+import com.znaka.ParserStructures.Expression.UnaryOperatorAST;
 import com.znaka.ParserStructures.Statement.ConditionalsAST;
 import com.znaka.Tokens.Token;
 

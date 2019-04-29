@@ -1,7 +1,9 @@
 package com.znaka;
 
+import com.znaka.Exceptions.CannotEvaluate;
 import com.znaka.Exceptions.LexerException;
 import com.znaka.Exceptions.ParserException;
+import com.znaka.Exceptions.UnknownVariable;
 import com.znaka.Tokens.Token;
 
 import java.io.BufferedReader;
@@ -13,7 +15,7 @@ import java.util.ArrayList;
 
 public class Main {
 
-    public static void main(String[] args) throws IOException, LexerException, ParserException {
+    public static void main(String[] args) throws IOException, LexerException, ParserException, CannotEvaluate, UnknownVariable {
 	// write your code here
         URL url = Main.class.getResource("ParserPrinting");
         File file = new File(url.getPath());
@@ -29,8 +31,8 @@ public class Main {
         lexer.resetInput(new BufferedReader(new FileReader(file)));
         System.out.println(lexer.tokensToString());
         Parser parser = new Parser(lexer);
-        //Evaluator evaluator = new Evaluator(parser);
-        //evaluator.EvaluateLine();
+        Evaluator evaluator = new Evaluator(parser);
+        evaluator.ProcessLine();
 
         //System.out.println(parser.toString());
     }

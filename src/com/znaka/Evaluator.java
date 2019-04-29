@@ -3,6 +3,7 @@ package com.znaka;
 import com.znaka.EvaluatorStructures.DataVal;
 import com.znaka.EvaluatorStructures.ExecuteOperations.AssignOper;
 import com.znaka.EvaluatorStructures.ExecuteOperations.BaseExecuteOper;
+import com.znaka.EvaluatorStructures.ExecuteOperations.BinaryOper.BinaryOper;
 import com.znaka.EvaluatorStructures.ExecuteOperations.IfOper;
 import com.znaka.EvaluatorStructures.ExecuteOperations.VarGetOper;
 import com.znaka.EvaluatorStructures.Variable;
@@ -38,6 +39,8 @@ public class Evaluator {
         operations.add(new AssignOper(this));
         operations.add(new IfOper(this));
         operations.add(new VarGetOper(this));
+        operations.add(new BinaryOper(this));
+
     }
 
     public void run() throws ParserException, IOException, LexerException {
@@ -73,10 +76,15 @@ public class Evaluator {
         return lastReturnedValue;
     }
 
+    public void setLastReturnedValue(DataVal lastReturnedValue) {
+        this.lastReturnedValue = lastReturnedValue;
+    }
+
     public void ExecLine(DefaultAST ast) throws CannotEvaluate, UnknownVariable {
         DataVal returned = Eval(ast);
         if(returned != null){ // if there is a return type (no return type are: statements and void)
             lastReturnedValue = returned;
+            System.out.println(lastReturnedValue.getVal());
         }
     }
 
