@@ -1,17 +1,32 @@
 package com.znaka;
 
+import com.znaka.EvaluatorStructures.DataVal;
+import com.znaka.EvaluatorStructures.ExecuteOperations.AssignOper;
+import com.znaka.EvaluatorStructures.ExecuteOperations.BaseExecuteOper;
+import com.znaka.EvaluatorStructures.ExecuteOperations.IfOper;
+import com.znaka.Exceptions.CannotEvaluate;
 import com.znaka.Exceptions.LexerException;
 import com.znaka.Exceptions.ParserException;
 import com.znaka.ParserStructures.DefaultAST;
-import com.znaka.ParserStructures.Expression.ExpressionAST;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Evaluator {
     private Parser parser;
+    private List<BaseExecuteOper> operations;
+    private DataVal lastReturnedValue;
 
     public Evaluator(Parser parser) {
         this.parser = parser;
+        addAllOperations();
+    }
+
+    private void addAllOperations() {
+        operations = new ArrayList<>();
+        operations.add(new AssignOper(this));
+        operations.add(new IfOper(this));
     }
 
     public void run() throws ParserException, IOException, LexerException {
@@ -21,13 +36,48 @@ public class Evaluator {
         System.out.println(parser);
     }
 
-    public void EvaluateLine() throws ParserException, IOException, LexerException {
+    public void ProcessLine() throws ParserException, IOException, LexerException, CannotEvaluate {
         parser.parseLine();
-        //DefaultAST ast = parser.mainAST.getAll_AST().get(0);
-        for(DefaultAST ast : parser.mainAST.getAll_AST()) {
-            System.out.println(ast);
-            System.out.println(ast instanceof ExpressionAST);
-            System.out.println(ast.getText());
+        DefaultAST ast = parser.mainAST.getAll_AST().get(parser.mainAST.getAll_AST().size() - 1); // needs to be changed....
+
+        /*lastReturnedValue = new DataVal<>(2);
+        System.out.println(lastReturnedValue.getVal());
+        lastReturnedValue = new DataVal<>("Asd");
+        System.out.println(lastReturnedValue.getVal());*/
+
+        /*System.out.println(ast);
+        System.out.println(ast instanceof AssignAST);
+        System.out.println(ast.getText());
+        AssignAST ast1 = (AssignAST)ast;
+
+        System.out.println(ast1.getOperator());
+        System.out.println(ast1.getLeft());
+        System.out.println(ast1.getRight());*/
+
+        ExecLine(ast);
+//        System.out.println("Last expression returned: " + lastReturnedValue);
+    }
+
+    public DataVal getLastReturnedValue() {
+        return lastReturnedValue;
+    }
+
+    public void ExecLine(DefaultAST ast) throws CannotEvaluate {
+        DataVal returned = Eval(ast);
+        if(returned != null){ // if there is a return type (no return type are: statements and void)
+            lastReturnedValue = returned;
         }
     }
+
+    public DataVal Eval(DefaultAST ast) throws CannotEvaluate {
+        for (BaseExecuteOper oper : operations) {
+            if(ast.getClass().isAssignableFrom(oper.getMatchClass())){ // can it be casted to the oper MatchClass
+                return oper.exec(ast);
+            }
+        }
+        throw new CannotEvaluate(String.format("Couldn't evaluate(%d): %s", parser.getLexer().getLineNum(),
+                parser.getLexer().getLast_line()));
+    }
+
+
 }

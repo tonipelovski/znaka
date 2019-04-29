@@ -127,6 +127,9 @@ public class Parser {
                 //System.out.println(func.getRet_type());
                 if(to_order.has(1)) {
                     if (to_order.getAll_AST().get(0).getType().equals("open_curly")) {
+                        if(func.getRet_type().equals("")){
+                            //Exception
+                        }
                         Parser temp_parser = new Parser(lexer);
 
                         while (temp_parser.parseLine()) {

@@ -6,17 +6,17 @@ import com.znaka.Tokens.Token;
 import java.util.ArrayList;
 
 public class NumberAST extends DefaultAST{
-    private double value;
+    private String value;
 
-    public NumberAST(double value) {
+    public NumberAST(String value) {
         super("number");
         this.value = value;
     }
-    public double getValue() {
+    public String getValue() {
         return value;
     }
 
-    public void setValue(double value) {
+    public void setValue(String value) {
         this.value = value;
     }
 
@@ -24,7 +24,7 @@ public class NumberAST extends DefaultAST{
     protected boolean matchAST(ArrayList<Token> tokens, Parser parser) {
         for(Token token: tokens){
             if(token.getType().equals("number")){
-                this.setValue(Double.parseDouble(token.getValue()));
+                this.setValue(token.getValue());
                 parser.next(1);
                 return true;
             }else{

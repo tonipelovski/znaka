@@ -64,6 +64,10 @@ public class Lexer {
         mp.put('{', '}');
     }
 
+    public int getLineNum() {
+        return lineNum;
+    }
+
     public boolean valid_brackets(String input) {
         char opening_bracket;
         int i=0;

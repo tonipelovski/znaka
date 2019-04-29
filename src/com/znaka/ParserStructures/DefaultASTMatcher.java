@@ -33,7 +33,7 @@ public class DefaultASTMatcher {
 
         asts.add(new LoopAST(null, null));
 
-        asts.add(new NumberAST(0));
+        asts.add(new NumberAST(""));
         asts.add(new CharAST(' '));
         asts.add(new BooleanAST(false));
         asts.add(new StringAST(""));
