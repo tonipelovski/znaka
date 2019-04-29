@@ -29,8 +29,8 @@ public class Main {
         lexer.resetInput(new BufferedReader(new FileReader(file)));
         System.out.println(lexer.tokensToString());
         Parser parser = new Parser(lexer);
-        Evaluator evaluator = new Evaluator(parser);
-        evaluator.EvaluateLine();
+        //Evaluator evaluator = new Evaluator(parser);
+        //evaluator.EvaluateLine();
 
         //System.out.println(parser.toString());
     }

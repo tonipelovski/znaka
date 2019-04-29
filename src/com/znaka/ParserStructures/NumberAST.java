@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 public class NumberAST extends DefaultAST{
     private String value;
+    private String numberType;
 
     public NumberAST(String value) {
         super("number");
@@ -20,14 +21,29 @@ public class NumberAST extends DefaultAST{
         this.value = value;
     }
 
+    public String getNumberType() {
+        return numberType;
+    }
+
+    public void setNumberType(String numberType) {
+        this.numberType = numberType;
+    }
+
     @Override
     protected boolean matchAST(ArrayList<Token> tokens, Parser parser) {
         for(Token token: tokens){
-            if(token.getType().equals("number")){
+            if(token.getType().equals("integer")){
                 this.setValue(token.getValue());
+                this.setNumberType("integer");
                 parser.next(1);
                 return true;
-            }else{
+            }else if(token.getType().equals("float")){
+                this.setValue(token.getValue());
+                this.setNumberType("float");
+                parser.next(1);
+                return true;
+            }
+            else{
                 return false;
             }
         }
@@ -36,7 +52,7 @@ public class NumberAST extends DefaultAST{
 
     @Override
     public String toString() {
-        return "[" + getType() + ":" + getValue() + "]";
+        return "[" + getNumberType() + ":" + getValue() + "]";
     }
 
     @Override
