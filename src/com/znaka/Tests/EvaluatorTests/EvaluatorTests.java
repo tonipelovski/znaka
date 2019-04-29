@@ -42,6 +42,7 @@ public class EvaluatorTests {
         evaluator.ProcessLine();
     }
 
+    @Disabled // waiting for changes of lexer and parser
     @Test
     public void VariableReturnTest() throws LexerException, ParserException, CannotEvaluate, IOException {
         final String wrongExpressionRet = "Expression returns incorrect";
