@@ -2,6 +2,7 @@ package com.znaka.EvaluatorStructures.ExecuteOperations;
 
 import com.znaka.Evaluator;
 import com.znaka.EvaluatorStructures.DataVal;
+import com.znaka.Exceptions.UnknownVariable;
 import com.znaka.ParserStructures.DefaultAST;
 
 public abstract class BaseExecuteOper {
@@ -21,5 +22,5 @@ public abstract class BaseExecuteOper {
         return eval;
     }
 
-    public abstract DataVal exec(DefaultAST ast);
+    public abstract DataVal exec(DefaultAST ast) throws UnknownVariable;
 }

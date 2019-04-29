@@ -1,12 +1,26 @@
-package com.znaka.EvaluatorStructures.ExecuteOperations;
+package com.znaka.EvaluatorStructures;
 
-import com.znaka.EvaluatorStructures.DataVal;
 import com.znaka.Exceptions.CannotModifyConstant;
+
+import java.util.Objects;
 
 public class Variable<T> {
     private String name;
     private DataVal<T> val;
     private boolean isConst;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Variable<?> variable = (Variable<?>) o;
+        return name.equals(variable.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name);
+    }
 
     public Variable(String name, DataVal<T> val, boolean constant) {
         this.name = name;

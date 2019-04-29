@@ -2,9 +2,12 @@ package com.znaka.EvaluatorStructures.ExecuteOperations;
 
 import com.znaka.Evaluator;
 import com.znaka.EvaluatorStructures.DataVal;
+import com.znaka.EvaluatorStructures.Variable;
 import com.znaka.ParserStructures.DefaultAST;
 import com.znaka.ParserStructures.Expression.AssignAST;
 import com.znaka.ParserStructures.NumberAST;
+
+import java.util.HashSet;
 
 public class AssignOper extends BaseExecuteOper {
 
@@ -23,11 +26,13 @@ public class AssignOper extends BaseExecuteOper {
         String rightType = ast1.getRight().getType();
         String rightVal = ast1.getRight().getText();
         String leftType = ast1.getLeft().getType();
+        String varName = ast1.getLeft().getText();
+        HashSet<Variable> vars = getEvaluator().getVariables();
 
         if(rightType.equals("number")){
             rightType = ((NumberAST)ast1.getRight()).getNumberType();
             //ret = new DataVal<>(Float.parseFloat(ast1.getRight().getText()));
-            double nm = Float.parseFloat(rightVal);
+            double nm = Double.parseDouble(rightVal);
             if(leftType.equals("int") || rightType.equals("integer")){
                 ret = new DataVal<>((int)nm);
             }
@@ -46,6 +51,9 @@ public class AssignOper extends BaseExecuteOper {
         if(rightType.equals("string_literal") || leftType.equals("string")){
             ret = new DataVal<>(rightVal);
         }
+        Variable var = new Variable<>(varName, ret, false);
+        vars.remove(var);
+        vars.add(var);
 
         // create variable if not defined before
         // evaluate right side

@@ -4,29 +4,40 @@ import com.znaka.EvaluatorStructures.DataVal;
 import com.znaka.EvaluatorStructures.ExecuteOperations.AssignOper;
 import com.znaka.EvaluatorStructures.ExecuteOperations.BaseExecuteOper;
 import com.znaka.EvaluatorStructures.ExecuteOperations.IfOper;
+import com.znaka.EvaluatorStructures.ExecuteOperations.VarGetOper;
+import com.znaka.EvaluatorStructures.Variable;
 import com.znaka.Exceptions.CannotEvaluate;
 import com.znaka.Exceptions.LexerException;
 import com.znaka.Exceptions.ParserException;
+import com.znaka.Exceptions.UnknownVariable;
 import com.znaka.ParserStructures.DefaultAST;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 public class Evaluator {
     private Parser parser;
     private List<BaseExecuteOper> operations;
     private DataVal lastReturnedValue;
+    private HashSet<Variable> variables;
 
     public Evaluator(Parser parser) {
         this.parser = parser;
+        variables = new HashSet<>();
         addAllOperations();
+    }
+
+    public HashSet<Variable> getVariables() {
+        return variables;
     }
 
     private void addAllOperations() {
         operations = new ArrayList<>();
         operations.add(new AssignOper(this));
         operations.add(new IfOper(this));
+        operations.add(new VarGetOper(this));
     }
 
     public void run() throws ParserException, IOException, LexerException {
@@ -36,7 +47,7 @@ public class Evaluator {
         System.out.println(parser);
     }
 
-    public void ProcessLine() throws ParserException, IOException, LexerException, CannotEvaluate {
+    public void ProcessLine() throws ParserException, IOException, LexerException, CannotEvaluate, UnknownVariable {
         parser.parseLine();
         DefaultAST ast = parser.mainAST.getAll_AST().get(parser.mainAST.getAll_AST().size() - 1); // needs to be changed....
 
@@ -62,14 +73,14 @@ public class Evaluator {
         return lastReturnedValue;
     }
 
-    public void ExecLine(DefaultAST ast) throws CannotEvaluate {
+    public void ExecLine(DefaultAST ast) throws CannotEvaluate, UnknownVariable {
         DataVal returned = Eval(ast);
         if(returned != null){ // if there is a return type (no return type are: statements and void)
             lastReturnedValue = returned;
         }
     }
 
-    public DataVal Eval(DefaultAST ast) throws CannotEvaluate {
+    public DataVal Eval(DefaultAST ast) throws CannotEvaluate, UnknownVariable {
         for (BaseExecuteOper oper : operations) {
             if(ast.getClass().isAssignableFrom(oper.getMatchClass())){ // can it be casted to the oper MatchClass
                 return oper.exec(ast);
