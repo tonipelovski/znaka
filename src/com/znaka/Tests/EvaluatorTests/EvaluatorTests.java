@@ -44,27 +44,49 @@ public class EvaluatorTests {
 
      // waiting for changes of lexer and parser
     @Test
-    public void VariableReturnTest() throws LexerException, ParserException, CannotEvaluate, IOException {
+    public void VariableWithTypesReturnTest() throws LexerException, ParserException, CannotEvaluate, IOException {
         final String wrongExpressionRet = "Expression returns incorrect";
 
         ExecuteString("int abc = 2");
         Assertions.assertEquals(2, evaluator.getLastReturnedValue().getVal(), wrongExpressionRet);
         ExecuteString("float abc = -20.0");
         Assertions.assertEquals(Float.parseFloat("-20.0"), evaluator.getLastReturnedValue().getVal(), wrongExpressionRet);
-        ExecuteString("fl1 = 29.0");
-        Assertions.assertEquals(Float.parseFloat("29.0"), evaluator.getLastReturnedValue().getVal(), wrongExpressionRet);
         ExecuteString("double abc = 2.0");
         Assertions.assertEquals(2.0, evaluator.getLastReturnedValue().getVal(), wrongExpressionRet);
 
         ExecuteString("char a = 's'");
         Assertions.assertEquals('s', evaluator.getLastReturnedValue().getVal(), wrongExpressionRet);
+
+
+        ExecuteString("string a = \"Hello\"");
+        Assertions.assertEquals("\"Hello\"", evaluator.getLastReturnedValue().getVal(), wrongExpressionRet);
+        ExecuteString("string s1 = \"Hello\"");
+        Assertions.assertEquals("\"Hello\"", evaluator.getLastReturnedValue().getVal(), wrongExpressionRet);
+        ExecuteString("string s2 = \"Hello World!\"");
+        Assertions.assertEquals("\"Hello World!\"", evaluator.getLastReturnedValue().getVal(), wrongExpressionRet);
+        ExecuteString("string s3 = \"I am working correctly.\"");
+        Assertions.assertEquals("\"I am working correctly.\"", evaluator.getLastReturnedValue().getVal(), wrongExpressionRet);
+
+    }
+
+    @Test
+    public void VariableAutoResloveReturnTest() throws LexerException, ParserException, CannotEvaluate, IOException {
+        final String wrongExpressionRet = "Expression returns incorrect";
+
+        ExecuteString("abc = 2");
+        Assertions.assertEquals(2, evaluator.getLastReturnedValue().getVal(), wrongExpressionRet);
+        ExecuteString("fl1 = 29.0");
+        Assertions.assertEquals(Float.parseFloat("29.0"), evaluator.getLastReturnedValue().getVal(), wrongExpressionRet);
+
+
         ExecuteString("a = 's'");
         Assertions.assertEquals('s', evaluator.getLastReturnedValue().getVal(), wrongExpressionRet);
         ExecuteString("b = 'G'");
         Assertions.assertEquals('G', evaluator.getLastReturnedValue().getVal(), wrongExpressionRet);
+        ExecuteString("b = 'G'");
+        Assertions.assertEquals('G', evaluator.getLastReturnedValue().getVal(), wrongExpressionRet);
 
-        ExecuteString("string a = \"Hello\"");
-        Assertions.assertEquals("\"Hello\"", evaluator.getLastReturnedValue().getVal(), wrongExpressionRet);
+
         ExecuteString("s1 = \"Hello\"");
         Assertions.assertEquals("\"Hello\"", evaluator.getLastReturnedValue().getVal(), wrongExpressionRet);
         ExecuteString("s2 = \"Hello World!\"");

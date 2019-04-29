@@ -103,6 +103,7 @@ public class LexerTests {
                 "fun{");
         ErrorMessageHelper("Couldn't process line(1): ?", "?");
         ErrorMessageHelper("Couldn't process line(1): 's", "'s");
+        ErrorMessageHelper("Couldn't process line(1): 'hello'", "'hello'");
     }
 
     @Test
