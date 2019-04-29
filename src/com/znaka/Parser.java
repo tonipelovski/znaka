@@ -23,10 +23,6 @@ public class Parser {
     private int indexOf;
     private String last_line = "";
 
-    public String getLast_line() {
-        return last_line;
-    }
-
     public Lexer getLexer() {
         return lexer;
     }

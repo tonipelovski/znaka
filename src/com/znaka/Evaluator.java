@@ -71,7 +71,7 @@ public class Evaluator {
                 return oper.exec(ast);
             }
         }
-        throw new CannotEvaluate();
+        throw new CannotEvaluate("Couldn't evaluate: " + parser.getLexer().getLast_line());
     }
 
 

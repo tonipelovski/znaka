@@ -1,6 +1,7 @@
 package com.znaka.Tests.EvaluatorTests;
 
 import com.znaka.Evaluator;
+import com.znaka.Exceptions.CannotEvaluate;
 import com.znaka.Exceptions.LexerException;
 import com.znaka.Exceptions.ParserException;
 import com.znaka.Lexer;
@@ -26,7 +27,7 @@ public class EvaluatorTests {
     }
 
     @Test
-    public void GeneralTest() throws ParserException, IOException, LexerException {
+    public void GeneralTest() throws ParserException, IOException, LexerException, CannotEvaluate {
 
 //        evaluator.run();
         evaluator.EvaluateLine();
