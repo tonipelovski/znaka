@@ -70,7 +70,7 @@ public class EvaluatorTests {
     }
 
     @Test
-    public void VariableAutoResloveReturnTest() throws LexerException, ParserException, CannotEvaluate, IOException {
+    public void VariableAutoResolveReturnTest() throws LexerException, ParserException, CannotEvaluate, IOException {
         final String wrongExpressionRet = "Expression returns incorrect";
 
         ExecuteString("abc = 2");
