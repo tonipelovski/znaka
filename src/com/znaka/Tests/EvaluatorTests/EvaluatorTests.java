@@ -6,10 +6,12 @@ import com.znaka.EvaluatorStructures.Variable;
 import com.znaka.Exceptions.EvaluatorException;
 import com.znaka.Exceptions.LexerException;
 import com.znaka.Exceptions.ParserException;
+import com.znaka.Exceptions.WrongType;
 import com.znaka.Lexer;
 import com.znaka.Parser;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.io.*;
@@ -59,6 +61,12 @@ public class EvaluatorTests {
     private <T> void checkLastValAndType(T val, String type){
         Assertions.assertEquals(val, evaluator.getLastReturnedValue().getVal());
         Assertions.assertEquals(type, evaluator.getLastReturnedValue().getType());
+    }
+
+    private <T extends Throwable> void ErrorTypeHelper(String s1, Class<T> exception) throws LexerException, ParserException, EvaluatorException, IOException {
+        Assertions.assertThrows(exception, () -> {
+            ExecuteString(s1);
+        });
     }
 
      // waiting for changes of lexer and parser
@@ -125,6 +133,16 @@ public class EvaluatorTests {
         ExecuteString("string s1 = \"Hey\"");
         ExecuteString("f1 = 15.7");
         Assertions.assertEquals(4, evaluator.getVariables().size());
+    }
+
+    @Disabled
+    @Test
+    public void VariableCorrectTypeForce() throws LexerException, ParserException, EvaluatorException, IOException {
+        ErrorTypeHelper("int b = 20.8", WrongType.class);
+        ErrorTypeHelper("string a = 5", WrongType.class);
+        ErrorTypeHelper("int a = 5.9", WrongType.class);
+        checkLastValAndType(5, "integer");
+        ErrorTypeHelper("char a = 95", WrongType.class);
     }
 
     @Test

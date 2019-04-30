@@ -4,6 +4,7 @@ import com.znaka.Evaluator;
 import com.znaka.EvaluatorStructures.DataVal;
 import com.znaka.Exceptions.CannotEvaluate;
 import com.znaka.Exceptions.UnknownVariable;
+import com.znaka.Exceptions.WrongType;
 import com.znaka.ParserStructures.DefaultAST;
 
 public abstract class BaseExecuteOper {
@@ -23,5 +24,5 @@ public abstract class BaseExecuteOper {
         return eval;
     }
 
-    public abstract DataVal exec(DefaultAST ast) throws UnknownVariable, CannotEvaluate;
+    public abstract DataVal exec(DefaultAST ast) throws UnknownVariable, CannotEvaluate, WrongType;
 }

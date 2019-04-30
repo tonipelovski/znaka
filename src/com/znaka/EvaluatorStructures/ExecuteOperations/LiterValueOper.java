@@ -19,7 +19,7 @@ public class LiterValueOper extends BaseExecuteOper {
         if(ast1.getType().equals("number")){
             NumberAST num = (NumberAST)ast1;
             if(num.getNumberType().equals("integer")){
-                return new DataVal(Integer.parseInt(ast1.getText()), num.getNumberType());
+                return new DataVal(Integer.parseInt(ast1.getText()), "int");
             }
             if(num.getNumberType().equals("float")){
                 return new DataVal(Double.parseDouble(ast1.getText()), num.getNumberType());
@@ -32,10 +32,10 @@ public class LiterValueOper extends BaseExecuteOper {
             return new DataVal(ast1.getText().charAt(0), ast1.getType());
         }
         if(ast1.getType().equals("string_literal")){
-            return new DataVal(ast1.getText(), ast1.getType());
+            return new DataVal(ast1.getText(), "string");
         }
         if(ast1.getType().equals("boolean")){
-            return new DataVal(Boolean.parseBoolean(ast1.getText()), ast1.getType());
+            return new DataVal(Boolean.parseBoolean(ast1.getText()), "bool");
         }
         /*if(ast1.getNumberType().equals("double")){
             return new DataVal(Double.parseDouble(ast1.getText()), ast1.getNumberType());
