@@ -22,10 +22,12 @@ public class LiterValueOper extends BaseExecuteOper {
                 return new DataVal(Integer.parseInt(ast1.getText()), num.getNumberType());
             }
             if(num.getNumberType().equals("float")){
-                return new DataVal(ast1.getText(), num.getNumberType());
+                return new DataVal(Double.parseDouble(ast1.getText()), num.getNumberType());
             }
+            //return new DataVal(ast1.getText(), num.getNumberType());
         }
 
+        //return new DataVal(ast1.getText(), ast1.getType());
         if(ast1.getType().equals("char")){
             return new DataVal(ast1.getText().charAt(0), ast1.getType());
         }
@@ -39,6 +41,6 @@ public class LiterValueOper extends BaseExecuteOper {
             return new DataVal(Double.parseDouble(ast1.getText()), ast1.getNumberType());
         }*/
 
-        return null;
+        return new DataVal(ast1.getText(), ast1.getType());
     }
 }

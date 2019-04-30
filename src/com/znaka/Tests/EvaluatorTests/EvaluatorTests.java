@@ -20,7 +20,7 @@ public class EvaluatorTests {
     private Lexer lexer;
 
     @BeforeEach
-    public void setUp() throws FileNotFoundException {
+    public void setUp() throws IOException {
 
         URL url = EvaluatorTests.class.getResource("test.zk");
         File file = new File(url.getPath());
@@ -28,6 +28,7 @@ public class EvaluatorTests {
         this.lexer = new Lexer(reader);
         Parser parser = new Parser(lexer);
         evaluator = new Evaluator(parser);
+        reader.close();
     }
 
     @Test
@@ -55,11 +56,18 @@ public class EvaluatorTests {
         return VarGetOper.findVar(evaluator.getVariables(), varName);
     }
 
+    private <T> void checkLastValAndType(T val, String type){
+        Assertions.assertEquals(val, evaluator.getLastReturnedValue().getVal());
+        Assertions.assertEquals(type, evaluator.getLastReturnedValue().getType());
+    }
+
      // waiting for changes of lexer and parser
     @Test
     public void VariableWithTypesReturnTest() throws LexerException, ParserException,  IOException, EvaluatorException {
         final String wrongExpressionRet = "Expression returns incorrect";
 
+        ExecuteString("int abc1 = -2");
+        Assertions.assertEquals(-2, evaluator.getLastReturnedValue().getVal(), wrongExpressionRet);
         ExecuteString("int abc = 2");
         Assertions.assertEquals(2, evaluator.getLastReturnedValue().getVal(), wrongExpressionRet);
         ExecuteString("float abc = -20.0");
@@ -137,6 +145,39 @@ public class EvaluatorTests {
         Assertions.assertEquals("c1", findVar("c1").getName());
         Assertions.assertEquals('f', findVar("c1").getVal().getVal());
 
+    }
+
+    @Test
+    public void VariableGetTest() throws LexerException, ParserException, EvaluatorException, IOException {
+        ExecuteString("int a = 10");
+        checkLastValAndType(10, "integer");
+        ExecuteString("a  ");
+        checkLastValAndType(10, "integer");
+
+        ExecuteString("float a = 10.5");
+        checkLastValAndType(Float.parseFloat("10.5"), "float");
+        ExecuteString("a  ");
+        checkLastValAndType(Float.parseFloat("10.5"), "float");
+
+        ExecuteString("double a = 23.678");
+        checkLastValAndType(23.678, "double");
+        ExecuteString("a  ");
+        checkLastValAndType(23.678, "double");
+
+        ExecuteString("bool a = True");
+        checkLastValAndType(true, "boolean");
+        ExecuteString("a  ");
+        checkLastValAndType(true, "boolean");
+
+        ExecuteString("a = 'c'");
+        checkLastValAndType('c', "char");
+        ExecuteString("a  ");
+        checkLastValAndType('c', "char");
+
+        ExecuteString("a = \"Hey\"");
+        checkLastValAndType("\"Hey\"", "string");
+        ExecuteString("a  ");
+        checkLastValAndType("\"Hey\"", "string");
     }
 
 }
