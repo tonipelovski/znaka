@@ -44,8 +44,8 @@ public class TokenTests {
         TokenIntegerMatch im = new TokenIntegerMatch();
         Assertions.assertEquals(2, im.nextTokenEndIndex("20"));
         Assertions.assertEquals(1, im.nextTokenEndIndex("2"));
-        Assertions.assertEquals(2, im.nextTokenEndIndex("-2"));
-        Assertions.assertEquals(2, im.nextTokenEndIndex("-2.6"));
+        Assertions.assertEquals(0, im.nextTokenEndIndex("-2"));
+        Assertions.assertEquals(0, im.nextTokenEndIndex("-2.6"));
         Assertions.assertEquals(1, im.nextTokenEndIndex("2.633"));
     }
 
@@ -53,8 +53,8 @@ public class TokenTests {
     void TestFloatMatch(){
         TokenFloatMatch fm = new TokenFloatMatch();
         Assertions.assertEquals(4, fm.nextTokenEndIndex("10.5"));
-        Assertions.assertEquals(5, fm.nextTokenEndIndex("-10.5"));
-        Assertions.assertEquals(7, fm.nextTokenEndIndex("-10.512"));
+        Assertions.assertEquals(4, fm.nextTokenEndIndex("10.5"));
+        Assertions.assertEquals(6, fm.nextTokenEndIndex("10.512"));
         Assertions.assertEquals(6, fm.nextTokenEndIndex("30.512"));
         Assertions.assertEquals(0, fm.nextTokenEndIndex("10"));
         Assertions.assertEquals(0, fm.nextTokenEndIndex("200"));

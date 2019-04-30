@@ -66,6 +66,8 @@ public class ExpressionsTest {
         ExecuteString("a = 20");
         ExecuteString("a + 5 + 3");
         Assertions.assertEquals(28, evaluator.getLastReturnedValue().getVal());
+        ExecuteString("5 + a + a");
+        Assertions.assertEquals(45, evaluator.getLastReturnedValue().getVal());
         ExecuteString("b = 20");
         ExecuteString("a + b");
         Assertions.assertEquals(40, evaluator.getLastReturnedValue().getVal());

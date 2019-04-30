@@ -2,7 +2,7 @@ package com.znaka.Tokens;
 
 import java.util.regex.Pattern;
 
-public class TokenNumberMatch extends TokenMatch {
+public class TokenNumberMatch extends TokenMatch { // deprecated since creation of integer and float
     public TokenNumberMatch() {
         super("number");
     }

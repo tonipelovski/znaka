@@ -17,13 +17,15 @@ public class TestTokenMatcher {
             Assertions.assertEquals("[type : int]", tokens.get(0).toString(), "Testing float");
             Assertions.assertEquals("[symbol : a]", tokens.get(1).toString());
             Assertions.assertEquals("[operator : =]", tokens.get(2).toString());
-            Assertions.assertEquals("[float : -10.2]", tokens.get(3).toString());
+            Assertions.assertEquals("[operator : -]", tokens.get(3).toString());
+            Assertions.assertEquals("[float : 10.2]", tokens.get(4).toString());
 
             tokens = tm.tokenizeLine("int a = -5");
             Assertions.assertEquals("[type : int]", tokens.get(0).toString(), "Testing int");
             Assertions.assertEquals("[symbol : a]", tokens.get(1).toString());
             Assertions.assertEquals("[operator : =]", tokens.get(2).toString());
-            Assertions.assertEquals("[integer : -5]", tokens.get(3).toString());
+            Assertions.assertEquals("[operator : -]", tokens.get(3).toString());
+            Assertions.assertEquals("[integer : 5]", tokens.get(4).toString());
         }
         catch (TokenMatchException te){
             System.out.println(te.getMessage());

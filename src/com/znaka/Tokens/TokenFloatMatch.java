@@ -9,6 +9,6 @@ public class TokenFloatMatch extends TokenMatch {
 
     @Override
     public int nextTokenEndIndex(String s) {
-        return nextTokenEndIndex(Pattern.compile("^-?\\d+(\\.\\d+)"), s);
+        return nextTokenEndIndex(Pattern.compile("^\\d+(\\.\\d+)"), s);
     }
 }

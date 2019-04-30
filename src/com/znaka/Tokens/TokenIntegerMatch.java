@@ -9,6 +9,6 @@ public class TokenIntegerMatch extends TokenMatch {
 
     @Override
     public int nextTokenEndIndex(String s) {
-        return nextTokenEndIndex(Pattern.compile("^-?\\d+"), s);
+        return nextTokenEndIndex(Pattern.compile("^\\d+"), s);
     }
 }
