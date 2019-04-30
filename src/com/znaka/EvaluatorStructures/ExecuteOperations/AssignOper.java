@@ -42,19 +42,23 @@ public class AssignOper extends BaseExecuteOper {
                 ret = new DataVal<>(rightSide.getVal(), "integer");
             }
             else if(leftType.equals("double")){
-                ret = new DataVal<>(Double.parseDouble(rightSide.toString()), "double");
+                ret = new DataVal<>(rightSide.getVal(), "double");
             }
             else if(leftType.equals("float") || rightType.equals("float")){
-                ret = new DataVal<>(Float.parseFloat(rightSide.toString()), "float");
+                ret = new DataVal<>(Float.parseFloat(rightVal), "float");
             }
 
 
         if(rightType.equals("char") || leftType.equals("char")){
-            ret = new DataVal<>(rightVal.charAt(0), "char");
+            ret = new DataVal<>(rightSide.getVal(), "char");
         }
 
         if(rightType.equals("string_literal") || leftType.equals("string")){
-            ret = new DataVal<>(rightVal, "string");
+            ret = new DataVal<>(rightSide.getVal(), "string");
+        }
+
+        if(rightType.equals("boolean") || leftType.equals("boolean")){
+            ret = new DataVal<>(rightSide.getVal(), "boolean");
         }
 
         Variable var = new Variable<>(varName, ret, false);

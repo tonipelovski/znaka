@@ -20,8 +20,8 @@ public class TokenMatcher {
         ls.add(new TokenSymbolMatch());
 //        ls.add(new TokenNumberMatch());
         ls.add(new TokenFloatMatch());
-        ls.add(new TokenOperatorMatch());
         ls.add(new TokenIntegerMatch());
+        ls.add(new TokenOperatorMatch());
         ls.add(new TokenCharMatch());
         ls.add(new TokenStringMatch());
     }
