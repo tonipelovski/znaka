@@ -96,7 +96,7 @@ public class UnaryOper extends BaseExecuteOper {
 
     private DataVal calculate(DataVal left, UnaryOperatorAST unaryOperatorAST) {
         Double left_num = Double.parseDouble(String.valueOf(left.getVal()));
-        if(left.getType().equals("integer")){
+        if(left.getType().equals("int")){
             left_num = (double) left_num.intValue();
         }else if(left.getType().equals("float")){
             left_num = (double) left_num.floatValue();
@@ -110,8 +110,8 @@ public class UnaryOper extends BaseExecuteOper {
         }
 
         //System.out.println("real: " + 10/3);
-        if(left.getType().equals("integer")) {
-            return new DataVal(result.intValue(), "integer");
+        if(left.getType().equals("int")) {
+            return new DataVal(result.intValue(), "int");
         }
         if(left.getType().equals("float")) {
             return new DataVal(result.floatValue(), "float");

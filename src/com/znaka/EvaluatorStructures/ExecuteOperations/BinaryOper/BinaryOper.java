@@ -61,7 +61,7 @@ public class BinaryOper extends BaseExecuteOper {
                 //ret = new DataVal<>(Float.parseFloat(ast1.getRight().getText()));
                 double lv = Double.parseDouble(leftVal);
                 if (leftType.equals("integer")) {
-                    left_result = new DataVal<>((int) lv, "integer");
+                    left_result = new DataVal<>((int) lv, "int");
                 } else if (leftType.equals("double")) {
                     left_result = new DataVal<>(lv, "double");
                 } else if (leftType.equals("float")) {
@@ -94,8 +94,8 @@ public class BinaryOper extends BaseExecuteOper {
                 rightType = ((NumberAST)binaryOper.getRight()).getNumberType();
                 //ret = new DataVal<>(Float.parseFloat(ast1.getRight().getText()));
                 double rv = Double.parseDouble(rightVal);
-                if(rightType.equals("int") || rightType.equals("integer")){
-                    right_result = new DataVal<>((int) rv, "integer");
+                if(rightType.equals("integer")){
+                    right_result = new DataVal<>((int) rv, "int");
                 }
                 else if(rightType.equals("double")){
                     right_result = new DataVal<>(rv, "double");
@@ -177,16 +177,21 @@ public class BinaryOper extends BaseExecuteOper {
     private DataVal calculate(DataVal left, DataVal right, OperatorAST operatorAST) throws CannotEvaluate, UnknownVariable{
         Double left_num = Double.parseDouble(String.valueOf(left.getVal()));
         Double right_num = Double.parseDouble(String.valueOf(right.getVal()));
-        if(left.getType().equals("integer")){
+
+        if(left.getType().equals("int")){
             left_num = (double) left_num.intValue();
         }else if(left.getType().equals("float")){
             left_num = (double) left_num.floatValue();
         }
-        if(right.getType().equals("integer")){
+        if(right.getType().equals("int")){
             right_num = (double) right_num.intValue();
         }else if(right.getType().equals("float")){
             right_num = (double) right_num.floatValue();
         }
+        System.out.println("real: " + left.getType() + left.getVal());
+        System.out.println("real: " + right.getType() + right.getVal());
+
+
         Double result = null;
 
         if(operatorAST.getOperator().equals("+")){
@@ -203,8 +208,8 @@ public class BinaryOper extends BaseExecuteOper {
         }
 
         //System.out.println("real: " + 10/3);
-        if(left.getType().equals("integer") && right.getType().equals("integer")) {
-            return new DataVal(result.intValue(), "integer");
+        if(left.getType().equals("int") && right.getType().equals("int")) {
+            return new DataVal(result.intValue(), "int");
         }
         if(left.getType().equals("float") || right.getType().equals("float")) {
             return new DataVal(result.floatValue(), "float");
