@@ -288,6 +288,7 @@ public class Parser {
         }
 
        if(to_order.has(1)) {
+           //System.out.println(to_order.getAll_AST().get(0).getType());
 
            if(to_order.getAll_AST().get(0).getText() != null) {
                if (line.contains(to_order.getAll_AST().get(0).getText())) {
@@ -317,6 +318,7 @@ public class Parser {
            if (to_order.getAll_AST().get(0).getType().equals("operator")) {
                error = false;
                BasicOperators operatorAST = (BasicOperators) to_order.getAll_AST().get(0);
+
                to_order.popFrontAST(1);
                //if(!operatorAST.getOperator().equals("=")) {
 
@@ -411,9 +413,12 @@ public class Parser {
     private DefaultAST getRight(MainAST to_order, int level, DefaultAST last, MainAST be_ordered, BasicOperators basicOperators, DefaultAST right) throws IOException, LexerException, ParserException {
 
         if(to_order.has(2)) {
+            //System.out.println("ala" + to_order.getAll_AST().get(1).getType());
 
             if (to_order.getAll_AST().get(1).getType().equals("operator")) {
+
                 BasicOperators next = (BasicOperators) to_order.getAll_AST().get(1);
+
                 if(!next.getOperator().equals("=")) {
                     to_order.popFrontAST(1);
                     basicOperators.setRight(orderAST(to_order, level + 1, right, be_ordered));
@@ -425,18 +430,13 @@ public class Parser {
 
                     return order_redo(to_order, level, basicOperators, be_ordered);
                 }
-            }else if(!to_order.getAll_AST().get(0).getType().equals("operator")){
-                basicOperators.setRight(orderAST(to_order, level + 1, basicOperators, be_ordered));
+            }else if(to_order.getAll_AST().get(0).getType().equals("operator")) {
+                //BasicOperators defaultAST = (BasicOperators) to_order.getAll_AST().get(0);
+                basicOperators.setRight(orderAST(to_order, level + 1, null, be_ordered));
+                //System.out.println("operator" + basicOperators.toString());
+                //to_order.popFrontAST(1);
                 return order_redo(to_order, level, basicOperators, be_ordered);
-
-            }else if(to_order.getAll_AST().get(0).getType().equals("operator")){
-                DefaultAST defaultAST = to_order.getAll_AST().get(0);
-                if(line.contains(defaultAST.getText())) {
-
-                    throw new ParserException("Invalid syntax");
-                }
-            }
-            else {
+            }else {
                 error = true;
                 basicOperators.setRight(orderAST(to_order, level + 1, basicOperators, be_ordered));
                 to_order.popFrontAST(1);
@@ -450,7 +450,6 @@ public class Parser {
             return order_redo(to_order, level, basicOperators, be_ordered);
 
         }
-        return null;
     }
 
 

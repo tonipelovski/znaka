@@ -65,7 +65,7 @@ public class ExpressionsTest {
     public void OperatorsWithVariables() throws LexerException, ParserException, EvaluatorException, IOException {
         ExecuteString("a = 20");
         ExecuteString("-a + -5 + 3");
-        Assertions.assertEquals(-12, evaluator.getLastReturnedValue().getVal());
+        Assertions.assertEquals(-22, evaluator.getLastReturnedValue().getVal());
         ExecuteString("5 + a + a");
         Assertions.assertEquals(45, evaluator.getLastReturnedValue().getVal());
         ExecuteString("b = 20");
