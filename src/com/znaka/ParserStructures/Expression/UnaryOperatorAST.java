@@ -19,7 +19,7 @@ public class UnaryOperatorAST extends BasicOperators {
             if(token.getType().equals("operator") && (token.getValue().equals("++")
                     || token.getValue().equals("--")
                     || token.getValue().equals("!"))){
-                System.out.println("unary: " + token.getType() + ":" + token.getValue());
+                //System.out.println("unary: " + token.getType() + ":" + token.getValue());
                 this.setOperator(token.getValue());
                 this.setLeft(null);
                 parser.next(1);

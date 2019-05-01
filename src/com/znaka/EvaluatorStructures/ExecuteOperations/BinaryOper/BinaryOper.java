@@ -11,7 +11,10 @@ import com.znaka.ParserStructures.Expression.OperatorAST;
 import com.znaka.ParserStructures.NumberAST;
 import com.znaka.ParserStructures.VarAST;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 
 public class BinaryOper extends BaseExecuteOper {
     public BinaryOper(Evaluator eval) {
@@ -25,14 +28,22 @@ public class BinaryOper extends BaseExecuteOper {
 
         DefaultAST right = binaryOper.getRight();
         DefaultAST left = binaryOper.getLeft();
-        String rightType = "";
-        String rightVal = "";
         String leftType = "";
         String leftVal = "";
-        rightType = binaryOper.getRight().getType();
-        rightVal = binaryOper.getRight().getText();
+        if(left == null){
+            NumberAST numberAST = new NumberAST("0");
+            numberAST.setNumberType("integer");
+            binaryOper.setLeft(numberAST);
+        }
         leftType = binaryOper.getLeft().getType();
         leftVal = binaryOper.getLeft().getText();
+
+        String rightType = "";
+        String rightVal = "";
+
+        rightType = binaryOper.getRight().getType();
+        rightVal = binaryOper.getRight().getText();
+
         DataVal right_result = null;
         DataVal left_result = null;
         HashSet<Variable> vars = getEvaluator().getVariables();
@@ -56,7 +67,13 @@ public class BinaryOper extends BaseExecuteOper {
                     left_result = new DataVal<>((float) lv, "float");
                 }
             }
-
+            if(leftType.equals("boolean")){
+                if(leftVal.equals("true")){
+                    left_result = new DataVal<>((int) 1, "int");
+                }else{
+                    left_result = new DataVal<>((int) 0, "int");
+                }
+            }
             if (leftType.equals("char")) {
                 //error
             }
@@ -86,7 +103,13 @@ public class BinaryOper extends BaseExecuteOper {
                     right_result = new DataVal<>((float) rv, "float");
                 }
             }
-
+            if(rightType.equals("boolean")){
+                if(rightVal.equals("true")){
+                    right_result = new DataVal<>((int) 1, "int");
+                }else{
+                    right_result = new DataVal<>((int) 0, "int");
+                }
+            }
             if(rightType.equals("char")){
                 //error
             }
@@ -96,11 +119,61 @@ public class BinaryOper extends BaseExecuteOper {
             }
 
         }
+        List<String> compares = Arrays.asList(">", ">=", "<", "<=", "==");
+        List<String> booleans = Arrays.asList("||", "&&");
 
+        if(compares.contains(binaryOper.getOperator())){
+            return compare(left_result, right_result, binaryOper);
+        }else if (booleans.contains(binaryOper.getOperator())){
+            return boolean_calculation(left_result, right_result, binaryOper);
+        }
         return calculate(left_result, right_result, binaryOper);
     }
 
-    protected DataVal calculate(DataVal left, DataVal right, OperatorAST operatorAST) throws CannotEvaluate, UnknownVariable{
+    private DataVal boolean_calculation(DataVal left_result, DataVal right_result, OperatorAST binaryOper) {
+        Integer left_num = Integer.parseInt(String.valueOf(left_result.getVal()));
+        Integer right_num = Integer.parseInt(String.valueOf(right_result.getVal()));
+        if(binaryOper.getOperator().equals("&&")){
+            return new DataVal(and(left_num, right_num), "boolean");
+        }else if(binaryOper.getOperator().equals("||")){
+            return new DataVal(or(left_num, right_num), "boolean");
+        }
+        return null;
+    }
+
+    private DataVal compare(DataVal left_result, DataVal right_result, OperatorAST binaryOper) {
+        Double left_num = Double.parseDouble(String.valueOf(left_result.getVal()));
+        Double right_num = Double.parseDouble(String.valueOf(right_result.getVal()));
+        switch (binaryOper.getOperator()) {
+            case ">":
+                return new DataVal(greater(left_num, right_num), "boolean");
+            case "<":
+                return new DataVal(smaller(left_num, right_num), "boolean");
+            case "<=":
+                return new DataVal(smaller_equal(left_num, right_num), "boolean");
+            case ">=":
+                return new DataVal(greater_equal(left_num, right_num), "boolean");
+        }
+        return null;
+    }
+
+    private Boolean greater_equal(Double left_num, Double right_num) {
+        return left_num >= right_num;
+    }
+
+    private Boolean smaller_equal(Double left_num, Double right_num) {
+        return left_num <= right_num;
+    }
+
+    private Boolean smaller(Double left_num, Double right_num) {
+        return left_num < right_num;
+    }
+
+    private Boolean greater(Double left_num, Double right_num) {
+        return left_num > right_num;
+    }
+
+    private DataVal calculate(DataVal left, DataVal right, OperatorAST operatorAST) throws CannotEvaluate, UnknownVariable{
         Double left_num = Double.parseDouble(String.valueOf(left.getVal()));
         Double right_num = Double.parseDouble(String.valueOf(right.getVal()));
         if(left.getType().equals("integer")){
@@ -114,6 +187,7 @@ public class BinaryOper extends BaseExecuteOper {
             right_num = (double) right_num.floatValue();
         }
         Double result = null;
+
         if(operatorAST.getOperator().equals("+")){
             result = add(left_num,right_num);
         }
@@ -126,6 +200,7 @@ public class BinaryOper extends BaseExecuteOper {
         if(operatorAST.getOperator().equals("/")){
             result = div(left_num,right_num);
         }
+
         //System.out.println("real: " + 10/3);
         if(left.getType().equals("integer") && right.getType().equals("integer")) {
             return new DataVal(result.intValue(), "integer");
@@ -135,6 +210,30 @@ public class BinaryOper extends BaseExecuteOper {
         }
 
         return new DataVal(result, "double");
+    }
+
+    private Boolean and(Integer left_num, Integer right_num) {
+        Boolean left_bool = false;
+        if(left_num == 1){
+            left_bool = true;
+        }
+        Boolean right_bool = false;
+        if(right_num == 1){
+            right_bool = true;
+        }
+        return left_bool && right_bool;
+    }
+
+    private Boolean or(Integer left_num, Integer right_num) {
+        Boolean left_bool = false;
+        if(left_num == 1){
+            left_bool = true;
+        }
+        Boolean right_bool = false;
+        if(right_num == 1){
+            right_bool = true;
+        }
+        return left_bool || right_bool;
     }
 
     public double div(double left, double other){

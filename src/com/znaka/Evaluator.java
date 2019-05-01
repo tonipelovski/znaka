@@ -3,6 +3,7 @@ package com.znaka;
 import com.znaka.EvaluatorStructures.DataVal;
 import com.znaka.EvaluatorStructures.ExecuteOperations.*;
 import com.znaka.EvaluatorStructures.ExecuteOperations.BinaryOper.BinaryOper;
+import com.znaka.EvaluatorStructures.ExecuteOperations.UnaryOper.UnaryOper;
 import com.znaka.EvaluatorStructures.Variable;
 import com.znaka.Exceptions.CannotEvaluate;
 import com.znaka.Exceptions.LexerException;
@@ -38,6 +39,7 @@ public class Evaluator {
         operations.add(new VarGetOper(this));
         operations.add(new LiterValueOper(this));
         operations.add(new BinaryOper(this));
+        operations.add(new UnaryOper(this));
 
     }
 

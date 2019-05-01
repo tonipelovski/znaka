@@ -35,6 +35,9 @@ public class Main {
         evaluator.ProcessLine();
         evaluator.ProcessLine();
         evaluator.ProcessLine();
-        //System.out.println(parser.toString());
+        //while(parser.parseLine()){
+
+        //}
+        System.out.println(parser.toString());
     }
 }

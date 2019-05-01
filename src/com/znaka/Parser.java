@@ -321,19 +321,24 @@ public class Parser {
                //if(!operatorAST.getOperator().equals("=")) {
 
                DefaultAST left = last;
-               if (to_order.has(1)) {
-                   DefaultAST right = to_order.getAll_AST().get(0);
-                   operatorAST.setLeft(left);
-                   //System.out.println("debaaa" + operatorAST.toString());
+               if(left != null) {
+                   if (to_order.has(1)) {
+                       DefaultAST right = to_order.getAll_AST().get(0);
+                       operatorAST.setLeft(left);
+                       //System.out.println("debaaa" + operatorAST.toString());
 
-                   return getRight(to_order, level, last, be_ordered, operatorAST, right);
-               } else {
-                   StringBuffer outputBuffer = new StringBuffer();
-                   String message = "Expected right: ";
-                   for (int i = 0; i < indexOf + message.length(); i++){
-                       outputBuffer.append(" ");
+                       return getRight(to_order, level, last, be_ordered, operatorAST, right);
+                   } else {
+                       StringBuffer outputBuffer = new StringBuffer();
+                       String message = "Expected right: ";
+                       for (int i = 0; i < indexOf + message.length(); i++) {
+                           outputBuffer.append(" ");
+                       }
+                       throw new ParserException("\n" + message + last_line + "\n" + outputBuffer.toString() + "^");
                    }
-                   throw new ParserException("\n" + message + last_line + "\n" + outputBuffer.toString() + "^");
+               }else{
+                   operatorAST.setRight(orderAST(to_order, level + 1, operatorAST, be_ordered));
+                   return order_redo(to_order, level, operatorAST, be_ordered);
                }
                //}
            }
