@@ -168,9 +168,9 @@ public class EvaluatorTests {
     @Test
     public void VariableGetTest() throws LexerException, ParserException, EvaluatorException, IOException {
         ExecuteString("int a = 10");
-        checkLastValAndType(10, "integer");
+        checkLastValAndType(10, "int");
         ExecuteString("a  ");
-        checkLastValAndType(10, "integer");
+        checkLastValAndType(10, "int");
 
         ExecuteString("float a = 10.5");
         checkLastValAndType(Float.parseFloat("10.5"), "float");
@@ -183,9 +183,9 @@ public class EvaluatorTests {
         checkLastValAndType(23.678, "double");
 
         ExecuteString("bool a = True");
-        checkLastValAndType(true, "boolean");
+        checkLastValAndType(true, "bool");
         ExecuteString("a  ");
-        checkLastValAndType(true, "boolean");
+        checkLastValAndType(true, "bool");
 
         ExecuteString("a = 'c'");
         checkLastValAndType('c', "char");

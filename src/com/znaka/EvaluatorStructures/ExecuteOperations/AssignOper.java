@@ -2,6 +2,7 @@ package com.znaka.EvaluatorStructures.ExecuteOperations;
 
 import com.znaka.Evaluator;
 import com.znaka.EvaluatorStructures.DataVal;
+import com.znaka.EvaluatorStructures.ExecuteOperations.TypeConversionOperations.*;
 import com.znaka.EvaluatorStructures.Variable;
 import com.znaka.Exceptions.CannotEvaluate;
 import com.znaka.Exceptions.UnknownVariable;
@@ -10,12 +11,23 @@ import com.znaka.ParserStructures.DefaultAST;
 import com.znaka.ParserStructures.Expression.AssignAST;
 import com.znaka.ParserStructures.VarAST;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 
 public class AssignOper extends BaseExecuteOper {
 
+    private List<BasicOperation> ls;
+
     public AssignOper(Evaluator eval) {
         super(AssignAST.class, eval);
+        ls = new ArrayList<>();
+        ls.add(new IntOper());
+        ls.add(new DoubleOper());
+        ls.add(new FloatOper());
+        ls.add(new CharOper());
+        ls.add(new StringOper());
+        ls.add(new BoolOper());
     }
 
     @Override
@@ -28,6 +40,7 @@ public class AssignOper extends BaseExecuteOper {
         //System.out.println("Right side: " + ast1.getRight());
         DataVal rightSide = getEvaluator().Eval(ast1.getRight());
 
+
         final String rightType = rightSide.getType();
         final String rightVal = rightSide.toString();
         String leftType = ((VarAST)ast1.getLeft()).getVariableType();
@@ -37,33 +50,14 @@ public class AssignOper extends BaseExecuteOper {
 
 
 
+
 //            rightType = rightSide.getType();
             //ret = new DataVal<>(Float.parseFloat(ast1.getRight().getText()));
 //            double nm = Double.parseDouble(rightVal);
-            if(leftType.equals("int")){
-                /*if(!leftType.equals(rightType)){
-                    throw new WrongType("Cannot assign " + rightType + " to int");
-                }*/
-                ret = new DataVal<>(rightSide.getVal(), "integer");
-            }
-            else if(leftType.equals("double")){
-                ret = new DataVal<>(rightSide.getVal(), "double");
-            }
-            else if(leftType.equals("float")){
-                ret = new DataVal<>(Float.parseFloat(rightVal), "float");
-            }
+        ret = evalRightSide(leftType, rightSide);
 
-
-        else if(leftType.equals("char")){
-            ret = new DataVal<>(rightSide.getVal(), "char");
-        }
-
-        else if(leftType.equals("string")){
-            ret = new DataVal<>(rightSide.getVal(), "string");
-        }
-
-        else if(leftType.equals("bool")){
-            ret = new DataVal<>(rightSide.getVal(), "boolean");
+        if(ret == null){
+            throw new CannotEvaluate("Cannot evaluate right side");
         }
 
         Variable var = new Variable<>(varName, ret, false);
@@ -75,5 +69,14 @@ public class AssignOper extends BaseExecuteOper {
         // assign right side to variable
 
         return ret; // return right side
+    }
+
+    private DataVal evalRightSide(String type, DataVal right){
+        for (BasicOperation operation : ls) {
+            if(operation.getType().equals(type)){
+                return operation.convert(right);
+            }
+        }
+        return null;
     }
 }
