@@ -9,6 +9,6 @@ public class DoubleOper extends BasicOperation {
 
     @Override
     public DataVal convert(DataVal right) {
-        return new DataVal<>(right.getVal(), "double");
+        return new DataVal<>(Double.parseDouble(right.toString()), "double");
     }
 }

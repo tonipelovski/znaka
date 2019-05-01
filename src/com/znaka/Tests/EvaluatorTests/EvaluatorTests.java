@@ -157,7 +157,7 @@ public class EvaluatorTests {
 
         ExecuteString("double d2 = -6.7");
         Assertions.assertEquals("d2", findVar("d2").getName());
-        Assertions.assertEquals(Double.parseDouble("-6.7"), findVar("d2").getVal().getVal());
+        Assertions.assertEquals(-6.7, findVar("d2").getVal().getVal());
 
         ExecuteString("c1 = 'f'");
         Assertions.assertEquals("c1", findVar("c1").getName());
