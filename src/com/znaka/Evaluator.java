@@ -5,10 +5,7 @@ import com.znaka.EvaluatorStructures.ExecuteOperations.*;
 import com.znaka.EvaluatorStructures.ExecuteOperations.BinaryOper.BinaryOper;
 import com.znaka.EvaluatorStructures.ExecuteOperations.UnaryOper.UnaryOper;
 import com.znaka.EvaluatorStructures.Variable;
-import com.znaka.Exceptions.CannotEvaluate;
-import com.znaka.Exceptions.LexerException;
-import com.znaka.Exceptions.ParserException;
-import com.znaka.Exceptions.UnknownVariable;
+import com.znaka.Exceptions.*;
 import com.znaka.ParserStructures.DefaultAST;
 
 import java.io.IOException;
@@ -50,7 +47,7 @@ public class Evaluator {
         System.out.println(parser);
     }
 
-    public void ProcessLine() throws ParserException, IOException, LexerException, CannotEvaluate, UnknownVariable {
+    public void ProcessLine() throws ParserException, IOException, LexerException, CannotEvaluate, UnknownVariable, WrongType {
         parser.parseLine();
         DefaultAST ast = parser.mainAST.getAll_AST().get(parser.mainAST.getAll_AST().size() - 1); // needs to be changed....
 
@@ -80,7 +77,7 @@ public class Evaluator {
         this.lastReturnedValue = lastReturnedValue;
     }
 
-    public void ExecLine(DefaultAST ast) throws CannotEvaluate, UnknownVariable {
+    public void ExecLine(DefaultAST ast) throws CannotEvaluate, UnknownVariable, WrongType {
         DataVal returned = Eval(ast);
         if(returned != null){ // if there is a return type (no return type are: statements and void)
             lastReturnedValue = returned;
@@ -88,7 +85,7 @@ public class Evaluator {
        System.out.println(lastReturnedValue);
     }
 
-    public DataVal Eval(DefaultAST ast) throws CannotEvaluate, UnknownVariable {
+    public DataVal Eval(DefaultAST ast) throws CannotEvaluate, UnknownVariable, WrongType {
         for (BaseExecuteOper oper : operations) {
             if(ast.getClass().isAssignableFrom(oper.getMatchClass()) || oper.getMatchClass().isAssignableFrom(ast.getClass())){ // can it be casted to the oper MatchClass
                 return oper.exec(ast);

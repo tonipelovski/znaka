@@ -6,10 +6,12 @@ import com.znaka.EvaluatorStructures.Variable;
 import com.znaka.Exceptions.EvaluatorException;
 import com.znaka.Exceptions.LexerException;
 import com.znaka.Exceptions.ParserException;
+import com.znaka.Exceptions.WrongType;
 import com.znaka.Lexer;
 import com.znaka.Parser;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.io.*;
@@ -59,6 +61,12 @@ public class EvaluatorTests {
     private <T> void checkLastValAndType(T val, String type){
         Assertions.assertEquals(val, evaluator.getLastReturnedValue().getVal());
         Assertions.assertEquals(type, evaluator.getLastReturnedValue().getType());
+    }
+
+    private <T extends Throwable> void ErrorTypeHelper(String s1, Class<T> exception) throws LexerException, ParserException, EvaluatorException, IOException {
+        Assertions.assertThrows(exception, () -> {
+            ExecuteString(s1);
+        });
     }
 
      // waiting for changes of lexer and parser
@@ -127,6 +135,16 @@ public class EvaluatorTests {
         Assertions.assertEquals(4, evaluator.getVariables().size());
     }
 
+    @Disabled
+    @Test
+    public void VariableCorrectTypeForce() throws LexerException, ParserException, EvaluatorException, IOException {
+        ErrorTypeHelper("int b = 20.8", WrongType.class);
+        ErrorTypeHelper("string a = 5", WrongType.class);
+        ErrorTypeHelper("int a = 5.9", WrongType.class);
+        checkLastValAndType(5, "integer");
+        ErrorTypeHelper("char a = 95", WrongType.class);
+    }
+
     @Test
     public void VariableCreationCorrectNamesAndValues() throws LexerException, ParserException, EvaluatorException, IOException {
         ExecuteString("int a = 20");
@@ -150,9 +168,9 @@ public class EvaluatorTests {
     @Test
     public void VariableGetTest() throws LexerException, ParserException, EvaluatorException, IOException {
         ExecuteString("int a = 10");
-        checkLastValAndType(10, "integer");
+        checkLastValAndType(10, "int");
         ExecuteString("a  ");
-        checkLastValAndType(10, "integer");
+        checkLastValAndType(10, "int");
 
         ExecuteString("float a = 10.5");
         checkLastValAndType(Float.parseFloat("10.5"), "float");
@@ -165,9 +183,9 @@ public class EvaluatorTests {
         checkLastValAndType(23.678, "double");
 
         ExecuteString("bool a = True");
-        checkLastValAndType(true, "boolean");
+        checkLastValAndType(true, "bool");
         ExecuteString("a  ");
-        checkLastValAndType(true, "boolean");
+        checkLastValAndType(true, "bool");
 
         ExecuteString("a = 'c'");
         checkLastValAndType('c', "char");

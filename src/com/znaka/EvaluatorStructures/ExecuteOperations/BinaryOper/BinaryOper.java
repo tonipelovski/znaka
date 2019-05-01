@@ -6,6 +6,7 @@ import com.znaka.EvaluatorStructures.ExecuteOperations.BaseExecuteOper;
 import com.znaka.EvaluatorStructures.Variable;
 import com.znaka.Exceptions.CannotEvaluate;
 import com.znaka.Exceptions.UnknownVariable;
+import com.znaka.Exceptions.WrongType;
 import com.znaka.ParserStructures.DefaultAST;
 import com.znaka.ParserStructures.Expression.OperatorAST;
 import com.znaka.ParserStructures.NumberAST;
@@ -22,7 +23,7 @@ public class BinaryOper extends BaseExecuteOper {
     }
 
     @Override
-    public DataVal exec(DefaultAST ast) throws CannotEvaluate, UnknownVariable {
+    public DataVal exec(DefaultAST ast) throws CannotEvaluate, UnknownVariable, WrongType {
         DataVal ret = null;
         OperatorAST binaryOper = (OperatorAST) ast;
 
