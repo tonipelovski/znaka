@@ -4,7 +4,7 @@ import com.znaka.Exceptions.InvalidSyntax;
 import com.znaka.Exceptions.LexerException;
 import com.znaka.Exceptions.TokenMatchException;
 import com.znaka.Lexer;
-import com.znaka.Tokens.Token;
+import com.znaka.Tokens.TokenMatches.Token;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

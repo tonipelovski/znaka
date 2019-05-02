@@ -1,9 +1,8 @@
 package com.znaka.ParserStructures;
 
 import com.znaka.Parser;
-import com.znaka.Tokens.Token;
+import com.znaka.Tokens.TokenMatches.Token;
 
-import java.awt.*;
 import java.util.ArrayList;
 
 public class NumberAST extends LiteralTypesAST {

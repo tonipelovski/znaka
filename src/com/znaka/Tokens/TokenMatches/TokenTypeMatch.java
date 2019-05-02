@@ -1,4 +1,4 @@
-package com.znaka.Tokens;
+package com.znaka.Tokens.TokenMatches;
 
 public class TokenTypeMatch extends TokenMatch {
     private static final String[] types = {"char", "int", "bool", "string", "float", "double"};

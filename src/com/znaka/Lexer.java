@@ -6,8 +6,8 @@ package com.znaka;
 import com.znaka.Exceptions.InvalidSyntax;
 import com.znaka.Exceptions.LexerException;
 import com.znaka.Exceptions.TokenMatchException;
-import com.znaka.Tokens.Token;
 import com.znaka.Tokens.TokenMatcher;
+import com.znaka.Tokens.TokenMatches.Token;
 
 import java.io.BufferedReader;
 import java.io.IOException;

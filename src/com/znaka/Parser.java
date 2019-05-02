@@ -2,12 +2,15 @@ package com.znaka;
 
 import com.znaka.Exceptions.LexerException;
 import com.znaka.Exceptions.ParserException;
-import com.znaka.ParserStructures.*;
+import com.znaka.ParserStructures.ArrayAST;
+import com.znaka.ParserStructures.DefaultAST;
+import com.znaka.ParserStructures.DefaultASTMatcher;
 import com.znaka.ParserStructures.Expression.BasicOperators;
 import com.znaka.ParserStructures.Expression.FunctionAST;
 import com.znaka.ParserStructures.Expression.UnaryOperatorAST;
+import com.znaka.ParserStructures.MainAST;
 import com.znaka.ParserStructures.Statement.ConditionalsAST;
-import com.znaka.Tokens.Token;
+import com.znaka.Tokens.TokenMatches.Token;
 
 import java.io.IOException;
 import java.util.ArrayList;

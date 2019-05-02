@@ -1,6 +1,7 @@
 package com.znaka.Tokens;
 
 import com.znaka.Exceptions.TokenMatchException;
+import com.znaka.Tokens.TokenMatches.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +33,7 @@ public class TokenMatcher {
         for(TokenMatch tm : ls){
             ind = tm.nextTokenEndIndex(inp_string);
             if(ind > 0){
-                token = new Token(tm.key, inp_string.substring(0, ind));
+                token = new Token(tm.getKey(), inp_string.substring(0, ind));
                 inp_string = inp_string.substring(ind);
                 inp_string = inp_string.trim();
                 return token;

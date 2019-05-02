@@ -65,8 +65,13 @@ public class Evaluator {
         System.out.println(ast1.getLeft());
         System.out.println(ast1.getRight());*/
 
-        ExecLine(ast);
+            ExecLine(ast);
 //        System.out.println("Last expression returned: " + lastReturnedValue);
+    }
+
+    private void ErrorMessagePrint(Throwable exc){
+        System.out.printf("%d: %s\n  error: %s",
+                parser.getLexer().getLineNum(), parser.getLexer().getLast_line(), exc.getMessage());
     }
 
     public DataVal getLastReturnedValue() {

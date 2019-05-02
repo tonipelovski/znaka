@@ -1,7 +1,7 @@
 package com.znaka;
 
 import com.znaka.Exceptions.*;
-import com.znaka.Tokens.Token;
+import com.znaka.Tokens.TokenMatches.Token;
 
 import java.io.BufferedReader;
 import java.io.File;

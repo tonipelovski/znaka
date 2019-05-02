@@ -1,11 +1,14 @@
-package com.znaka.Tokens;
+package com.znaka.Tokens.TokenMatches;
 
-import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public abstract class TokenMatch {
-    String key;
+    public String getKey() {
+        return key;
+    }
+
+    private String key;
 
 
     public TokenMatch(String key) {

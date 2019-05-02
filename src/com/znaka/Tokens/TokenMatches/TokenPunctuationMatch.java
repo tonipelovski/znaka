@@ -1,6 +1,4 @@
-package com.znaka.Tokens;
-
-import java.util.regex.Pattern;
+package com.znaka.Tokens.TokenMatches;
 
 public class TokenPunctuationMatch extends TokenMatch {
     private static String punc =  ",;(){}[]";

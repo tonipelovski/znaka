@@ -8,7 +8,7 @@ import com.znaka.ParserStructures.Expression.UnaryOperatorAST;
 import com.znaka.ParserStructures.Statement.ElseConditionAST;
 import com.znaka.ParserStructures.Statement.IfConditionAST;
 import com.znaka.ParserStructures.Statement.LoopAST;
-import com.znaka.Tokens.Token;
+import com.znaka.Tokens.TokenMatches.Token;
 
 import java.util.ArrayList;
 

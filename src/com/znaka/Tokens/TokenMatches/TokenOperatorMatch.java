@@ -1,8 +1,7 @@
-package com.znaka.Tokens;
+package com.znaka.Tokens.TokenMatches;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.regex.Pattern;
 
 public class TokenOperatorMatch extends TokenMatch{
     final List<String> operators = Arrays.asList("<=", ">=", "==", "!=", "--", "++", "+=", "-=", "/=", "*=",

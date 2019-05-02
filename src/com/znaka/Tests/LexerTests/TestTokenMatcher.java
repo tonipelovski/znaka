@@ -1,8 +1,8 @@
 package com.znaka.Tests.LexerTests;
 
 import com.znaka.Exceptions.TokenMatchException;
-import com.znaka.Tokens.Token;
 import com.znaka.Tokens.TokenMatcher;
+import com.znaka.Tokens.TokenMatches.Token;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

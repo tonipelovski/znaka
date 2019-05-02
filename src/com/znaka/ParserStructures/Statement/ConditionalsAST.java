@@ -2,7 +2,7 @@ package com.znaka.ParserStructures.Statement;
 
 import com.znaka.Parser;
 import com.znaka.ParserStructures.MainAST;
-import com.znaka.Tokens.Token;
+import com.znaka.Tokens.TokenMatches.Token;
 
 import java.util.ArrayList;
 

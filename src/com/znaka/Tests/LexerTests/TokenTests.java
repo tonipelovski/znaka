@@ -1,10 +1,10 @@
 package com.znaka.Tests.LexerTests;
 
-import com.znaka.Tokens.*;
+import com.znaka.Tokens.TokenMatches.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-//import com.znaka.Tokens.TokenIndexMatch;
+//import com.znaka.Tokens.TokenMatches.TokenIndexMatch;
 
 public class TokenTests {
 

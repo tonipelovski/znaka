@@ -1,4 +1,4 @@
-package com.znaka.Tokens;
+package com.znaka.Tokens.TokenMatches;
 
 import java.util.regex.Pattern;
 
