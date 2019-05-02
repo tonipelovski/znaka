@@ -1,4 +1,4 @@
-package com.znaka.Tests.EvaluatorTests;
+package EvaluatorTests;
 
 import com.znaka.Evaluator;
 import com.znaka.EvaluatorStructures.ExecuteOperations.VarGetOper;

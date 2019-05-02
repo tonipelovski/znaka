@@ -1,4 +1,4 @@
-package com.znaka.Tests.LexerTests;
+package LexerTests;
 
 import com.znaka.Exceptions.InvalidSyntax;
 import com.znaka.Exceptions.LexerException;

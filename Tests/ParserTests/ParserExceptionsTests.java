@@ -1,4 +1,4 @@
-package com.znaka.Tests.ParserTests;
+package ParserTests;
 
 import com.znaka.Exceptions.LexerException;
 import com.znaka.Exceptions.ParserException;
