@@ -44,8 +44,14 @@ public abstract class EvaluatorTest {
         Assertions.assertEquals(type, evaluator.getLastReturnedValue().getType());
     }
 
-    protected  <T extends Throwable> void ErrorTypeHelper(String s1, Class<T> exception) throws LexerException, ParserException, EvaluatorException, IOException {
+    protected  <T extends Throwable> void ExecuteAndCheckThrows(String s1, Class<T> exception) {
         Assertions.assertThrows(exception, () -> {
+            ExecuteString(s1);
+        });
+    }
+
+    protected void ExecuteStringNoExceptions(String s1) {
+        Assertions.assertDoesNotThrow(() -> {
             ExecuteString(s1);
         });
     }

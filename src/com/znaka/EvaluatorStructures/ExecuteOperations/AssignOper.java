@@ -4,8 +4,7 @@ import com.znaka.Evaluator;
 import com.znaka.EvaluatorStructures.DataVal;
 import com.znaka.EvaluatorStructures.ExecuteOperations.TypeConversionOperations.*;
 import com.znaka.EvaluatorStructures.Variable;
-import com.znaka.Exceptions.CannotEvaluate;
-import com.znaka.Exceptions.UnknownVariable;
+import com.znaka.Exceptions.EvaluatorException;
 import com.znaka.Exceptions.WrongType;
 import com.znaka.ParserStructures.DefaultAST;
 import com.znaka.ParserStructures.Expression.AssignAST;
@@ -31,7 +30,7 @@ public class AssignOper extends BaseExecuteOper {
     }
 
     @Override
-    public DataVal exec(DefaultAST ast) throws CannotEvaluate, UnknownVariable, WrongType {
+    public DataVal exec(DefaultAST ast) throws EvaluatorException {
         DataVal ret = null;
         AssignAST ast1 = (AssignAST)ast;
         DataVal rightSide = getEvaluator().Eval(ast1.getRight());
@@ -53,10 +52,21 @@ public class AssignOper extends BaseExecuteOper {
             //throw new CannotEvaluate("Cannot evaluate right side");
             ret = rightSide;
         }
+        Variable var = VarGetOper.findVar(vars, varName);
+        if(var  == null){
+            var = new Variable<>(varName, ret, false);
+            vars.add(var);
+        }
+        else{
+            if(!((VarAST)ast1.getLeft()).getVariableType().isEmpty()){
+                var = new Variable<>(varName, ret, false);
+                vars.remove(var);
+                vars.add(var);
+            }else {
+                var.setVal(ret);
+            }
 
-        Variable var = new Variable<>(varName, ret, false);
-        vars.remove(var);
-        vars.add(var);
+        }
 
 
 

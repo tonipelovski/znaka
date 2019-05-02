@@ -5,14 +5,13 @@ import com.znaka.EvaluatorStructures.DataVal;
 import com.znaka.EvaluatorStructures.ExecuteOperations.BaseExecuteOper;
 import com.znaka.EvaluatorStructures.Variable;
 import com.znaka.Exceptions.CannotEvaluate;
+import com.znaka.Exceptions.EvaluatorException;
 import com.znaka.Exceptions.UnknownVariable;
-import com.znaka.Exceptions.WrongType;
 import com.znaka.ParserStructures.DefaultAST;
 import com.znaka.ParserStructures.Expression.OperatorAST;
 import com.znaka.ParserStructures.NumberAST;
 import com.znaka.ParserStructures.VarAST;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -23,7 +22,7 @@ public class BinaryOper extends BaseExecuteOper {
     }
 
     @Override
-    public DataVal exec(DefaultAST ast) throws CannotEvaluate, UnknownVariable, WrongType {
+    public DataVal exec(DefaultAST ast) throws EvaluatorException {
         DataVal ret = null;
         OperatorAST binaryOper = (OperatorAST) ast;
 

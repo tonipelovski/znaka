@@ -18,13 +18,13 @@ public class AssignmentTests extends EvaluatorTest {
 //        evaluator.ProcessLine();
 //        evaluator.ProcessLine();
         ExecuteString("h = True");
-        ExecuteString("h = 10 + 20.7");
+        ExecuteString("j = 10 + 20.7");
         ExecuteString("a = 2");
         ExecuteString("d = 2.6");
         ExecuteString("double g = 2.234");
         ExecuteString("b = 'c'");
         ExecuteString("c = \"Hi\"");
-        ExecuteString("c = a");
+        ExecuteString("int c = a");
     }
 
      // waiting for changes of lexer and parser
@@ -95,18 +95,32 @@ public class AssignmentTests extends EvaluatorTest {
 
     @Test
     public void VariableCorrectTypeException() throws LexerException, ParserException, EvaluatorException, IOException {
-        ExecuteString("double d = 20.8");
+        ExecuteStringNoExceptions("double d = 20.8");
         checkLastValAndType(20.8, "double");
-        ExecuteString("float d = 20.8");
+        ExecuteStringNoExceptions("float d = 20.8");
         checkLastValAndType(Float.parseFloat("20.8"), "float");
-        ErrorTypeHelper("double b = 20", WrongType.class);
-        ErrorTypeHelper("float b = 20", WrongType.class);
-        ErrorTypeHelper("float b = 'c'", WrongType.class);
-        ErrorTypeHelper("int b = 20.8", WrongType.class);
-        ErrorTypeHelper("int b = 'b'", WrongType.class);
-        ErrorTypeHelper("string a = 5", WrongType.class);
-        ErrorTypeHelper("int a = 5.9", WrongType.class);
-        ErrorTypeHelper("char a = 95", WrongType.class);
+        ExecuteAndCheckThrows("double b = 20", WrongType.class);
+        ExecuteAndCheckThrows("float b = 20", WrongType.class);
+        ExecuteAndCheckThrows("float b = 'c'", WrongType.class);
+        ExecuteAndCheckThrows("int b = 20.8", WrongType.class);
+        ExecuteAndCheckThrows("int b = 'b'", WrongType.class);
+        ExecuteAndCheckThrows("string a = 5", WrongType.class);
+        ExecuteAndCheckThrows("int a = 5.9", WrongType.class);
+        ExecuteAndCheckThrows("char a = 95", WrongType.class);
+    }
+
+    @Test
+    public void IncorrectAssignmentTypes() throws LexerException, ParserException, EvaluatorException, IOException {
+        ExecuteStringNoExceptions("char a = 'c'");
+        ExecuteAndCheckThrows("a = 15", WrongType.class);
+        ExecuteAndCheckThrows("a = \"asd\"", WrongType.class);
+        ExecuteStringNoExceptions("a = 'J'");
+        ExecuteStringNoExceptions("float a = 3.8");
+        ExecuteStringNoExceptions("double a = 3.886868");
+        ExecuteAndCheckThrows("int a = True", WrongType.class);
+        ExecuteStringNoExceptions("bool a = True");
+        ExecuteStringNoExceptions("a = False");
+        ExecuteStringNoExceptions("bool a = True");
     }
 
     @Test
@@ -115,9 +129,9 @@ public class AssignmentTests extends EvaluatorTest {
         Assertions.assertEquals("a", findVar("a").getName());
         Assertions.assertEquals(20, findVar("a").getVal().getVal());
 
-        ExecuteString("a = 20.5");
-        Assertions.assertEquals("a", findVar("a").getName());
-        Assertions.assertEquals(Float.parseFloat("20.5"), findVar("a").getVal().getVal());
+        ExecuteString("b = 20.5");
+        Assertions.assertEquals("b", findVar("b").getName());
+        Assertions.assertEquals(Float.parseFloat("20.5"), findVar("b").getVal().getVal());
 
         ExecuteString("double d2 = -6.7");
         Assertions.assertEquals("d2", findVar("d2").getName());
@@ -151,14 +165,14 @@ public class AssignmentTests extends EvaluatorTest {
         ExecuteString("a  ");
         checkLastValAndType(true, "bool");
 
-        ExecuteString("a = 'c'");
+        ExecuteString("b = 'c'");
         checkLastValAndType('c', "char");
-        ExecuteString("a  ");
+        ExecuteString("b  ");
         checkLastValAndType('c', "char");
 
-        ExecuteString("a = \"Hey\"");
+        ExecuteString("c = \"Hey\"");
         checkLastValAndType("\"Hey\"", "string");
-        ExecuteString("a  ");
+        ExecuteString("c  ");
         checkLastValAndType("\"Hey\"", "string");
     }
 

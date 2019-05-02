@@ -4,9 +4,7 @@ import com.znaka.Evaluator;
 import com.znaka.EvaluatorStructures.DataVal;
 import com.znaka.EvaluatorStructures.ExecuteOperations.BaseExecuteOper;
 import com.znaka.EvaluatorStructures.Variable;
-import com.znaka.Exceptions.CannotEvaluate;
-import com.znaka.Exceptions.UnknownVariable;
-import com.znaka.Exceptions.WrongType;
+import com.znaka.Exceptions.EvaluatorException;
 import com.znaka.ParserStructures.DefaultAST;
 import com.znaka.ParserStructures.Expression.OperatorAST;
 import com.znaka.ParserStructures.Expression.UnaryOperatorAST;
@@ -23,7 +21,7 @@ public class UnaryOper extends BaseExecuteOper {
     }
 
     @Override
-    public DataVal exec(DefaultAST ast) throws UnknownVariable, CannotEvaluate, WrongType {
+    public DataVal exec(DefaultAST ast) throws EvaluatorException {
         UnaryOperatorAST unaryOperatorAST = (UnaryOperatorAST) ast;
 
         DefaultAST left = unaryOperatorAST.getLeft();

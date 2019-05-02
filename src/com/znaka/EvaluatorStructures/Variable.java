@@ -1,6 +1,7 @@
 package com.znaka.EvaluatorStructures;
 
 import com.znaka.Exceptions.CannotModifyConstant;
+import com.znaka.Exceptions.WrongType;
 
 import java.util.Objects;
 
@@ -32,11 +33,14 @@ public class Variable<T> {
         return val;
     }
 
-    public void setVal(DataVal<T> val) throws CannotModifyConstant {
+    public void setVal(DataVal<T> newVal) throws CannotModifyConstant, WrongType {
         if(isConst){
             throw new CannotModifyConstant();
         }
-        this.val = val;
+        if(!newVal.getType().equals(val.getType())){
+            throw new WrongType(newVal.getType(), val.getType(), newVal.toString());
+        }
+        this.val = newVal;
     }
 
     public String getName() {
