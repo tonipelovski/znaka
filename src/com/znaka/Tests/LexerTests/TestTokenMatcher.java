@@ -7,29 +7,34 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.stream.Collectors;
 
 public class TestTokenMatcher {
-    @Test
-    public void testTokenizeLine(){
-        TokenMatcher tm = new TokenMatcher();
-        try {
-            ArrayList<Token> tokens = tm.tokenizeLine("int a = -10.2");
-            Assertions.assertEquals("[type : int]", tokens.get(0).toString(), "Testing float");
-            Assertions.assertEquals("[symbol : a]", tokens.get(1).toString());
-            Assertions.assertEquals("[operator : =]", tokens.get(2).toString());
-            Assertions.assertEquals("[operator : -]", tokens.get(3).toString());
-            Assertions.assertEquals("[float : 10.2]", tokens.get(4).toString());
 
-            tokens = tm.tokenizeLine("int a = -5");
-            Assertions.assertEquals("[type : int]", tokens.get(0).toString(), "Testing int");
-            Assertions.assertEquals("[symbol : a]", tokens.get(1).toString());
-            Assertions.assertEquals("[operator : =]", tokens.get(2).toString());
-            Assertions.assertEquals("[operator : -]", tokens.get(3).toString());
-            Assertions.assertEquals("[integer : 5]", tokens.get(4).toString());
-        }
-        catch (TokenMatchException te){
-            System.out.println(te.getMessage());
-        }
+
+    private void checkStatementFromTokens(String statement, String s) throws TokenMatchException {
+        TokenMatcher tm = new TokenMatcher();
+        ArrayList<Token> tokens = tm.tokenizeLine(statement);
+        ArrayList<Token> ls2 = Arrays.stream(s.split(", "))
+                .map(Token::tokenFromString).collect(Collectors.toCollection(ArrayList::new));
+        Assertions.assertEquals(tokens, ls2);
+
+    }
+
+    @Test
+    public void testTokenizeLine() throws TokenMatchException {
+        TokenMatcher tm = new TokenMatcher();
+
+        checkStatementFromTokens("let int a = -10.2",
+                "[access : let], [type : int], [symbol : a], [operator : =], [operator : -], [float : 10.2]");
+
+        checkStatementFromTokens("int a = -5",
+                "[type : int], [symbol : a], [operator : =], [operator : -], [integer : 5]");
+
+        checkStatementFromTokens("bool a = True",
+                "[type : bool], [symbol : a], [operator : =], [boolean : True]");
+
 
     }
 }

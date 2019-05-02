@@ -16,6 +16,7 @@ public class TokenMatcher {
         ls.add(new TokenPunctuationMatch());
         //ls.add(new TokenIndexMatch());
         ls.add(new TokenTypeMatch());
+        ls.add(new TokenAccessTypeMatch());
         ls.add(new TokenResWordMatch());
         ls.add(new TokenBoolMatch());
         ls.add(new TokenSymbolMatch());

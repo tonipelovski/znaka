@@ -6,6 +6,11 @@ public class Token {
     private String type;
     private String value;
 
+    static public Token tokenFromString(String s1){
+        return new Token(s1.substring(1, s1.indexOf(":")-1),
+                s1.substring(s1.indexOf(":")+2, s1.length()-1));
+    }
+
     public Token(String type, String value) {
         this.type = type;
         this.value = value;
