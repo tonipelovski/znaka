@@ -1,37 +1,15 @@
 package com.znaka.Tests.EvaluatorTests;
 
-import com.znaka.Evaluator;
-import com.znaka.EvaluatorStructures.ExecuteOperations.VarGetOper;
-import com.znaka.EvaluatorStructures.Variable;
 import com.znaka.Exceptions.EvaluatorException;
 import com.znaka.Exceptions.LexerException;
 import com.znaka.Exceptions.ParserException;
 import com.znaka.Exceptions.WrongType;
-import com.znaka.Lexer;
-import com.znaka.Parser;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-import java.io.*;
-import java.net.URL;
+import java.io.IOException;
 
-public class EvaluatorTests {
-    private Evaluator evaluator;
-    private Lexer lexer;
-
-    @BeforeEach
-    public void setUp() throws IOException {
-
-        URL url = EvaluatorTests.class.getResource("test.zk");
-        File file = new File(url.getPath());
-        BufferedReader reader = new BufferedReader(new FileReader(file));
-        this.lexer = new Lexer(reader);
-        Parser parser = new Parser(lexer);
-        evaluator = new Evaluator(parser);
-        reader.close();
-    }
+public class AssignmentTests extends EvaluatorTest {
 
     @Test
     public void GeneralTest() throws ParserException, IOException, LexerException, EvaluatorException {
@@ -47,26 +25,6 @@ public class EvaluatorTests {
         ExecuteString("b = 'c'");
         ExecuteString("c = \"Hi\"");
         ExecuteString("c = a");
-    }
-
-    private void ExecuteString(String s1) throws LexerException, ParserException, IOException, EvaluatorException {
-        lexer.resetInput(new BufferedReader(new StringReader(s1)));
-        evaluator.ProcessLine();
-    }
-
-    private Variable findVar(String varName){
-        return VarGetOper.findVar(evaluator.getVariables(), varName);
-    }
-
-    private <T> void checkLastValAndType(T val, String type){
-        Assertions.assertEquals(val, evaluator.getLastReturnedValue().getVal());
-        Assertions.assertEquals(type, evaluator.getLastReturnedValue().getType());
-    }
-
-    private <T extends Throwable> void ErrorTypeHelper(String s1, Class<T> exception) throws LexerException, ParserException, EvaluatorException, IOException {
-        Assertions.assertThrows(exception, () -> {
-            ExecuteString(s1);
-        });
     }
 
      // waiting for changes of lexer and parser
@@ -135,13 +93,19 @@ public class EvaluatorTests {
         Assertions.assertEquals(4, evaluator.getVariables().size());
     }
 
-    @Disabled
     @Test
-    public void VariableCorrectTypeForce() throws LexerException, ParserException, EvaluatorException, IOException {
+    public void VariableCorrectTypeException() throws LexerException, ParserException, EvaluatorException, IOException {
+        ExecuteString("double d = 20.8");
+        checkLastValAndType(20.8, "double");
+        ExecuteString("float d = 20.8");
+        checkLastValAndType(Float.parseFloat("20.8"), "float");
+        ErrorTypeHelper("double b = 20", WrongType.class);
+        ErrorTypeHelper("float b = 20", WrongType.class);
+        ErrorTypeHelper("float b = 'c'", WrongType.class);
         ErrorTypeHelper("int b = 20.8", WrongType.class);
+        ErrorTypeHelper("int b = 'b'", WrongType.class);
         ErrorTypeHelper("string a = 5", WrongType.class);
         ErrorTypeHelper("int a = 5.9", WrongType.class);
-        checkLastValAndType(5, "integer");
         ErrorTypeHelper("char a = 95", WrongType.class);
     }
 

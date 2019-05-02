@@ -1,35 +1,14 @@
 package com.znaka.Tests.EvaluatorTests;
 
-import com.znaka.Evaluator;
 import com.znaka.Exceptions.EvaluatorException;
 import com.znaka.Exceptions.LexerException;
 import com.znaka.Exceptions.ParserException;
-import com.znaka.Lexer;
-import com.znaka.Parser;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.StringReader;
 
-public class ExpressionsTest {
-    private Evaluator evaluator;
-    private Lexer lexer;
-
-    @BeforeEach
-    public void setUp(){
-        BufferedReader reader = new BufferedReader(new StringReader(""));
-        this.lexer = new Lexer(reader);
-        Parser parser = new Parser(lexer);
-        evaluator = new Evaluator(parser);
-    }
-
-    private void ExecuteString(String s1) throws LexerException, ParserException, IOException, EvaluatorException {
-        lexer.resetInput(new BufferedReader(new StringReader(s1)));
-        evaluator.ProcessLine();
-    }
+public class ExpressionsTest extends EvaluatorTest{
 
     @Test
     public void TwoOperators() throws LexerException, ParserException, EvaluatorException, IOException {
@@ -73,7 +52,7 @@ public class ExpressionsTest {
         Assertions.assertEquals(40, evaluator.getLastReturnedValue().getVal());
         ExecuteString("a - b");
         Assertions.assertEquals(0, evaluator.getLastReturnedValue().getVal());
-        ExecuteString("int c = -20.0");
+        ExecuteString("int c = -20");
         ExecuteString("a + c");
         Assertions.assertEquals(0, evaluator.getLastReturnedValue().getVal());
         ExecuteString("double a = 25.67");

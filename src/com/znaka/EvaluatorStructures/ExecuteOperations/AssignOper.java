@@ -2,9 +2,7 @@ package com.znaka.EvaluatorStructures.ExecuteOperations;
 
 import com.znaka.Evaluator;
 import com.znaka.EvaluatorStructures.DataVal;
-import com.znaka.EvaluatorStructures.ExecuteOperations.TypeConversionOperations.BasicOperation;
-import com.znaka.EvaluatorStructures.ExecuteOperations.TypeConversionOperations.DoubleOper;
-import com.znaka.EvaluatorStructures.ExecuteOperations.TypeConversionOperations.FloatOper;
+import com.znaka.EvaluatorStructures.ExecuteOperations.TypeConversionOperations.*;
 import com.znaka.EvaluatorStructures.Variable;
 import com.znaka.Exceptions.CannotEvaluate;
 import com.znaka.Exceptions.UnknownVariable;
@@ -24,12 +22,12 @@ public class AssignOper extends BaseExecuteOper {
     public AssignOper(Evaluator eval) {
         super(AssignAST.class, eval);
         ls = new ArrayList<>();
-//        ls.add(new IntOper());
+        ls.add(new IntOper());
         ls.add(new DoubleOper());
         ls.add(new FloatOper());
-//        ls.add(new CharOper());
-//        ls.add(new StringOper());
-//        ls.add(new BoolOper());
+        ls.add(new CharOper());
+        ls.add(new StringOper());
+        ls.add(new BoolOper());
     }
 
     @Override
@@ -65,10 +63,10 @@ public class AssignOper extends BaseExecuteOper {
         return ret; // return right side
     }
 
-    private DataVal applyTypeToRightSide(String type, DataVal right){
+    private DataVal applyTypeToRightSide(String type, DataVal right) throws WrongType {
         for (BasicOperation operation : ls) {
             if(operation.getType().equals(type)){
-                return operation.convert(right);
+                return operation.convertWithCheck(right);
             }
         }
         return null;
