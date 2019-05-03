@@ -65,4 +65,33 @@ public class ExpressionsTest extends EvaluatorTest{
         ExecuteString("-a");
         Assertions.assertEquals(-10, evaluator.getLastReturnedValue().getVal());
     }
+
+    @Test
+    public void CompareOperators() throws LexerException, ParserException, EvaluatorException, IOException {
+        ExecuteString("int a = 20");
+        ExecuteString("int b = 30");
+        ExecuteString("a > b");
+        Assertions.assertEquals(false, evaluator.getLastReturnedValue().getVal());
+        ExecuteString("a < b");
+        Assertions.assertEquals(true, evaluator.getLastReturnedValue().getVal());
+        ExecuteString("(a + b) > (a - b)");
+        Assertions.assertEquals(true, evaluator.getLastReturnedValue().getVal());
+        ExecuteString("(a - b) > (a + b)");
+        Assertions.assertEquals(false, evaluator.getLastReturnedValue().getVal());
+    }
+    @Test
+    public void BinaryOperators() throws LexerException, ParserException, EvaluatorException, IOException {
+        ExecuteString("int a = 20");
+        ExecuteString("bool b = False");
+        ExecuteString("bool c = True");
+        ExecuteString("a++");
+        Assertions.assertEquals(21, evaluator.getLastReturnedValue().getVal());
+        ExecuteString("a--");
+        Assertions.assertEquals(19, evaluator.getLastReturnedValue().getVal());
+        ExecuteString("!a");
+        Assertions.assertEquals(true, evaluator.getLastReturnedValue().getVal());
+        ExecuteString("!c");
+        Assertions.assertEquals(false, evaluator.getLastReturnedValue().getVal());
+
+    }
 }

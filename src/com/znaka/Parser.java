@@ -273,12 +273,13 @@ public class Parser {
 
                 MainAST ordered = new MainAST(new Stack<DefaultAST>());
                 orderAST(temp, 0, null, ordered);
-                //System.out.println(ordered.getAll_AST().get(0).toString());
+                //System.out.println("here" + ordered.getAll_AST().get(0).toString());
                 to_order.popFrontAST(1);
                 if(to_order.has(2)) {
                     if (to_order.getAll_AST().get(0).getType().equals("operator")) {
                         ordered.addAST(orderAST(to_order, level + 1, ordered.getAll_AST().get(0), be_ordered));
-                        DefaultAST defaultAST1 = order_redo(to_order, level, ordered.getAll_AST().get(1), be_ordered);
+                        DefaultAST defaultAST1 = ordered.getAll_AST().get(1);
+
                         return order_redo(to_order, level, defaultAST1, be_ordered);
                     }
                     return order_redo(to_order, level, ordered.getAll_AST().get(ordered.getAll_AST().size() - 1), be_ordered);
