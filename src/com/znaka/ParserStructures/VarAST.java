@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 public class VarAST extends DefaultAST {
     private String type;
+    private String accessType;
     public void setName(String name) {
         this.name = name;
     }
@@ -16,7 +17,15 @@ public class VarAST extends DefaultAST {
     public VarAST() {
         super("var");
         this.type = "";
+        this.accessType = "";
+    }
 
+    public String getAccessType() {
+        return accessType;
+    }
+
+    public void setAccessType(String accessType) {
+        this.accessType = accessType;
     }
 
     public String getVariableType() {
@@ -33,13 +42,24 @@ public class VarAST extends DefaultAST {
         boolean flag_symbol = false;
         String value = "";
         String t = "";
+        String at = "";
         int i = 0;
 
-        //System.out.println("start");
-        if (tokens.get(i).getType().equals("type")) {
-            t = tokens.get(i).getValue();
-            i++;
+        if(tokens.size() >= 2) {
+            if (tokens.get(i).getType().equals("access")) {
+                //System.out.println("start");
 
+                at = tokens.get(i).getValue();
+                i++;
+
+            }
+            if (tokens.get(i).getType().equals("type")) {
+                //System.out.println("start type");
+
+                t = tokens.get(i).getValue();
+                i++;
+
+            }
         }
         //System.out.println( tokens.get(i).getValue());
         if(tokens.size() > i + 1 || parser.parsedAllTokens(parser.getLexer().getTokens())) {
@@ -55,16 +75,20 @@ public class VarAST extends DefaultAST {
             }
         }
         if(flag_symbol){
-            //System.out.println("end");
+            //System.out.println(i);
 
             this.setName(value);
             this.setVariableType(t);
+            this.setAccessType(at);
+            int next = 1;
             if(!t.equals("")) {
-                parser.next(2);
-            }else{
-                parser.next(1);
+                next += 1;
             }
 
+            if(!at.equals("")){
+                next+=1;
+            }
+            parser.next(next);
             return true;
         }
         return false;
