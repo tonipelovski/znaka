@@ -1,14 +1,12 @@
-package com.znaka.ParserStructures.Expression;
+package com.znaka.ParserStructures;
 
 import com.znaka.Parser;
-import com.znaka.ParserStructures.DefaultAST;
-import com.znaka.ParserStructures.MainAST;
 import com.znaka.Tokens.TokenMatches.Token;
 
 import java.util.ArrayList;
 import java.util.Stack;
-//add arg_count
-public class FunctionAST extends ExpressionAST {
+
+public class FunctionDefAST extends DefaultAST {
     private String ret_type;
     private String name;
     private Stack<DefaultAST> args;
@@ -31,8 +29,8 @@ public class FunctionAST extends ExpressionAST {
     }
 
 
-    public FunctionAST(String return_type, Stack<DefaultAST> arguments, MainAST body) {
-        super("call");
+    public FunctionDefAST(String return_type, Stack<DefaultAST> arguments, MainAST body) {
+        super("def");
         this.ret_type = return_type;
         this.args = arguments;
         this.body = body;
@@ -64,12 +62,12 @@ public class FunctionAST extends ExpressionAST {
             //System.out.println(token.getType() + ":" + token.getValue() + ":" + flag);
 
             if(token.getType().equals("type")){
-             type = token.getValue();
+                type = token.getValue();
             }else if(token.getType().equals("symbol")){
                 func_name = token.getValue();
                 flag = true;
 
-            }else if(flag && token.getType().equals("punc") && token.getValue().equals("(")){
+            }else if(flag && token.getType().equals("punc") && token.getValue().equals("(") && !type.equals("")){
                 if(type.length() > 0){
                     setRet_type(type);
                     setName(func_name);
@@ -108,5 +106,4 @@ public class FunctionAST extends ExpressionAST {
         output = output.concat(body);
         return output.concat("]");
     }
-
 }

@@ -2,7 +2,7 @@ package com.znaka.ParserStructures;
 
 import com.znaka.Parser;
 import com.znaka.ParserStructures.Expression.AssignAST;
-import com.znaka.ParserStructures.Expression.FunctionAST;
+import com.znaka.ParserStructures.Expression.FunctionCallAST;
 import com.znaka.ParserStructures.Expression.OperatorAST;
 import com.znaka.ParserStructures.Expression.UnaryOperatorAST;
 import com.znaka.ParserStructures.Statement.ElseConditionAST;
@@ -26,7 +26,8 @@ public class DefaultASTMatcher {
         //asts.add(new BooleanTypeAST(""));
 
         asts.add(new AssignAST(null, null));
-        asts.add(new FunctionAST("", null, null));
+        asts.add(new FunctionCallAST("", null, null));
+        asts.add(new FunctionDefAST("", null, null));
         asts.add(new UnaryOperatorAST(null));
         asts.add(new OperatorAST(null, null));
         asts.add(new IfConditionAST(null, null));
