@@ -1,9 +1,6 @@
 package EvaluatorTests;
 
-import com.znaka.Exceptions.EvaluatorException;
-import com.znaka.Exceptions.LexerException;
-import com.znaka.Exceptions.ParserException;
-import com.znaka.Exceptions.WrongType;
+import com.znaka.Exceptions.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -174,6 +171,18 @@ public class AssignmentTests extends EvaluatorTest {
         checkLastValAndType("\"Hey\"", "string");
         ExecuteString("c  ");
         checkLastValAndType("\"Hey\"", "string");
+    }
+
+    @Test
+    public void ConstantsTest() throws LexerException, ParserException, EvaluatorException, IOException {
+        ExecuteStringNoExceptions("a = 10");
+        ExecuteStringNoExceptions("a = 5");
+        ExecuteStringNoExceptions("non-var a = 10");
+        ExecuteAndCheckThrows("a = 8", CannotModifyConstant.class);
+        ExecuteStringNoExceptions("b = 'c'");
+        ExecuteStringNoExceptions("b = 'H'");
+        ExecuteStringNoExceptions("non-var b = 'a'");
+        ExecuteAndCheckThrows("b = 'f'", CannotModifyConstant.class);
     }
 
 }
