@@ -40,9 +40,11 @@ public class AssignOper extends BaseExecuteOper {
 
         final String rightType = rightSide.getType();
         final String rightVal = rightSide.toString();
+        VarAST left = (VarAST) ast1.getLeft();
         String leftType = ((VarAST)ast1.getLeft()).getVariableType();
         leftType = leftType.isEmpty() ? rightType : leftType;
         final String varName = ast1.getLeft().getText();
+        final boolean constant = ((VarAST) ast1.getLeft()).getAccessType().equals("non-var");
         final HashSet<Variable> vars = getEvaluator().getVariables();
 
 
@@ -54,12 +56,12 @@ public class AssignOper extends BaseExecuteOper {
         }
         Variable var = VarGetOper.findVar(vars, varName);
         if(var  == null){
-            var = new Variable<>(varName, ret, false);
+            var = new Variable<>(varName, ret, constant);
             vars.add(var);
         }
         else{
-            if(!((VarAST)ast1.getLeft()).getVariableType().isEmpty()){
-                var = new Variable<>(varName, ret, false);
+            if(!left.getVariableType().isEmpty() || !left.getAccessType().isEmpty()){
+                var = new Variable<>(varName, ret, constant);
                 vars.remove(var);
                 vars.add(var);
             }else {
