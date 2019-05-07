@@ -26,8 +26,8 @@ public class TestTokenMatcher {
     public void testTokenizeLine() throws TokenMatchException {
         TokenMatcher tm = new TokenMatcher();
 
-        checkStatementFromTokens("let int a = -10.2",
-                "[access : let], [type : int], [symbol : a], [operator : =], [operator : -], [float : 10.2]");
+        checkStatementFromTokens("non-var int a = -10.2",
+                "[access : non-var], [type : int], [symbol : a], [operator : =], [operator : -], [float : 10.2]");
 
         checkStatementFromTokens("int a = -5",
                 "[type : int], [symbol : a], [operator : =], [operator : -], [integer : 5]");

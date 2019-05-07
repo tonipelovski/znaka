@@ -1,7 +1,7 @@
 package com.znaka.Tokens.TokenMatches;
 
 public class TokenAccessTypeMatch extends TokenMatch {
-    private String[] keywords = {"non-var", "jiw_ednorog111"};
+    private String[] keywords = {"non-var"};
     public TokenAccessTypeMatch() {
         super("access");
     }

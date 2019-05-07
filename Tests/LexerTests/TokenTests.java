@@ -173,12 +173,8 @@ public class TokenTests {
     @Test
     public void TestAccessType(){
         TokenAccessTypeMatch acc = new TokenAccessTypeMatch();
-        Assertions.assertEquals(3, acc.nextTokenEndIndex("let"));
-        Assertions.assertEquals(3, acc.nextTokenEndIndex("var"));
-        Assertions.assertEquals(0, acc.nextTokenEndIndex("int"));
-        Assertions.assertEquals(0, acc.nextTokenEndIndex("-let"));
-        Assertions.assertEquals(0, acc.nextTokenEndIndex("varlet"));
-        Assertions.assertEquals(0, acc.nextTokenEndIndex("letvar"));
-        Assertions.assertEquals(0, acc.nextTokenEndIndex("let3"));
+        Assertions.assertEquals(7, acc.nextTokenEndIndex("non-var"));
+        Assertions.assertEquals(0, acc.nextTokenEndIndex("gnon-var"));
+
     }
 }

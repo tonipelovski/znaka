@@ -4,6 +4,7 @@ import com.znaka.EvaluatorStructures.Variable;
 import com.znaka.ParserStructures.DefaultAST;
 
 import java.util.List;
+import java.util.Objects;
 
 public class Function {
     private String name;
@@ -23,14 +24,29 @@ public class Function {
         return args;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Function function = (Function) o;
+        return name.equals(function.name) &&
+                return_type.equals(function.return_type);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, return_type);
+    }
+
     public List<DefaultAST> getBody() {
         return body;
     }
 
-    public Function(String name, String return_type, List<Variable> args) {
+    public Function(String name, String return_type, List<Variable> args, List<DefaultAST> body) {
         this.name = name;
         this.return_type = return_type;
         this.args = args;
+        this.body = body;
     }
 
 
