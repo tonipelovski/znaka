@@ -4,6 +4,8 @@ import com.znaka.EvaluatorStructures.DataVal;
 import com.znaka.EvaluatorStructures.ExecuteOperations.*;
 import com.znaka.EvaluatorStructures.ExecuteOperations.BinaryOper.BinaryOper;
 import com.znaka.EvaluatorStructures.ExecuteOperations.UnaryOper.UnaryOper;
+import com.znaka.EvaluatorStructures.Functions.FunctionCall;
+import com.znaka.EvaluatorStructures.Scope;
 import com.znaka.EvaluatorStructures.Variable;
 import com.znaka.Exceptions.CannotEvaluate;
 import com.znaka.Exceptions.EvaluatorException;
@@ -15,21 +17,25 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Stack;
 
 public class Evaluator {
     private Parser parser;
     private List<BaseExecuteOper> operations;
     private DataVal lastReturnedValue;
-    private HashSet<Variable> variables;
+    private Scope mainScope;
+    private Scope currentScope;
+    private Stack<FunctionCall> callStack;
 
     public Evaluator(Parser parser) {
         this.parser = parser;
-        variables = new HashSet<>();
+        mainScope = new Scope();
+        currentScope = mainScope;
         addAllOperations();
     }
 
     public HashSet<Variable> getVariables() {
-        return variables;
+        return currentScope.variables;
     }
 
     private void addAllOperations() {

@@ -174,7 +174,7 @@ public class AssignmentTests extends EvaluatorTest {
     }
 
     @Test
-    public void ConstantsTest() throws LexerException, ParserException, EvaluatorException, IOException {
+    public void ConstantsTest() {
         ExecuteStringNoExceptions("a = 10");
         ExecuteStringNoExceptions("a = 5");
         ExecuteStringNoExceptions("non-var a = 10");
