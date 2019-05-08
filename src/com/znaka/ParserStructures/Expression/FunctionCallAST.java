@@ -57,10 +57,8 @@ public class FunctionCallAST extends ExpressionAST {
     @Override
     protected boolean matchAST(ArrayList<Token> tokens, Parser parser) {
         boolean flag = false;
-        String type = "";
         String func_name = "";
         for(Token token: tokens){
-            //
             //System.out.println(token.getType() + ":" + token.getValue() + ":" + flag);
 
             if(token.getType().equals("type")){
@@ -70,14 +68,9 @@ public class FunctionCallAST extends ExpressionAST {
                 flag = true;
 
             }else if(flag && token.getType().equals("punc") && token.getValue().equals("(")){
-                if(type.length() > 0){
-                    setRet_type(type);
-                    setName(func_name);
-                    parser.next(2);
-                }else {
-                    parser.next(1);
-                    setName(func_name);
-                }
+                setName(func_name);
+                parser.next(1);
+                System.out.println("matched");
                 return true;
             }else{
                 //System.out.println("here");

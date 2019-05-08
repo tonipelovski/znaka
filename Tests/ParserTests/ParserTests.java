@@ -119,7 +119,7 @@ public class ParserTests {
                 "  [operator\n" +
                 "    =\n" +
                 "     [var::c]\n" +
-                "     [func::[var::a]]]";
+                "     [ala::[var::a]]]";
         Assertions.assertEquals(expected, parserOutput);
     }
 
@@ -151,7 +151,7 @@ public class ParserTests {
                 "  [operator\n" +
                 "    =\n" +
                 "     [var::five]\n" +
-                "     [operator:*:[func::[var::a]]:[integer:10]]]\n" +
+                "     [operator:*:[ala::[var::a]]:[integer:10]]]\n" +
                 "  [operator\n" +
                 "    =\n" +
                 "     [operator:+:[operator:*:[var::a]:[var::b]]:[var::c]]\n" +
@@ -181,13 +181,13 @@ public class ParserTests {
                 "  [operator\n" +
                 "    =\n" +
                 "     [var::c]\n" +
-                "     [var::a]]]\n" +
+                "     [var::a]]:]\n" +
                 "[while:[operator:==:[var::ala]:[var::bala]]:[operator:+=:[var::ala]:[integer:1]][operator:+=:[var::c]:[var::a]]]\n" +
                 "[if:[operator:<:[var::ala]:[var::bala]]:\n" +
                 "  [operator\n" +
                 "    =\n" +
                 "     [var::ala]\n" +
-                "     [operator:+:[var::ala]:[integer:1]]]]\n" +
+                "     [operator:+:[var::ala]:[integer:1]]]:]\n" +
                 "[while:[operator:==:[var::ala]:[var::bala]]:[operator:+=:[var::ala]:[integer:1]][operator:+=:[var::c]:[var::a]]]";
         Assertions.assertEquals(expected, parserOutput);
     }
@@ -205,7 +205,7 @@ public class ParserTests {
 
         }
         String parserOutput = parser.toString();
-        String expected = "[func::[var:int:a][var:int:b]\n" +
+        String expected = "[ala::[var:int:a][var:int:b]\n" +
                 "  [operator\n" +
                 "    =\n" +
                 "     [var::a]\n" +
@@ -213,8 +213,8 @@ public class ParserTests {
                 "  [operator\n" +
                 "    =\n" +
                 "     [var::a]\n" +
-                "     [operator:*:[func::[var::c][var::b]]:[integer:10]]]" +
-                "[func:int:[var:int:a][var:int:b]\n" +
+                "     [operator:*:[ala::[var::c][var::b]]:[integer:10]]]" +
+                "[bala:int:[var:int:a][var:int:b]\n" +
                 "  [operator\n" +
                 "    =\n" +
                 "     [var::a]\n" +

@@ -7,6 +7,8 @@ import com.znaka.ParserStructures.Expression.BasicOperators;
 import com.znaka.ParserStructures.Expression.FunctionCallAST;
 import com.znaka.ParserStructures.Expression.UnaryOperatorAST;
 import com.znaka.ParserStructures.Statement.ConditionalsAST;
+import com.znaka.ParserStructures.Statement.ElseConditionAST;
+import com.znaka.ParserStructures.Statement.IfConditionAST;
 import com.znaka.Tokens.TokenMatches.Token;
 
 import java.io.BufferedReader;
@@ -63,6 +65,7 @@ public class Parser {
                     max_token--;
                 }
             }
+            //System.out.println(last_token + " " + max_token);
             max_token++;
 
         }
@@ -523,7 +526,7 @@ public class Parser {
                 //to_order.popFrontAST(1);
                 return order_redo(to_order, level, basicOperators, be_ordered);
             }else {
-                error = true;
+                //error = true;
                 basicOperators.setRight(orderAST(to_order, level + 1, basicOperators, be_ordered));
                 to_order.popFrontAST(1);
 
@@ -551,8 +554,22 @@ public class Parser {
                         //System.out.println(asts.getAll_AST().get(1));
 
                         conditionalsAST.setBody(asts);
-                        be_ordered.addAST(conditionalsAST);
-                        be_ordered.addAST(temp_parser.mainAST);
+
+                        if(conditionalsAST instanceof IfConditionAST){
+                            if(temp_parser.mainAST.getAll_AST().get(0) instanceof ElseConditionAST){
+                                ((IfConditionAST) conditionalsAST).setElse_cond((ConditionalsAST) temp_parser.mainAST.getAll_AST().get(0));
+                                be_ordered.addAST(conditionalsAST);
+
+                            }else{
+                                be_ordered.addAST(conditionalsAST);
+                            }
+                        }else{
+                            be_ordered.addAST(conditionalsAST);
+                            if(temp_parser.mainAST.getAll_AST().size() > 1) {
+                                be_ordered.addAST(temp_parser.mainAST);
+                            }
+                        }
+
                         temp_parser.mainAST.getAll_AST().clear();
                         return null;
                     }else if(!defaultAST1.getType().equals("open_curly")){
@@ -567,7 +584,21 @@ public class Parser {
                 }
             }
         }else{
+            if(to_order.getAll_AST().get(0).getType().equals("open_curly")) {
+                to_order.popFrontAST(1);
+            }
             orderAST(to_order, 0, null, asts);
+            MainAST body = new MainAST(new Stack<>());
+            for(DefaultAST defaultAST : asts.getAll_AST()){
+                if(conditionalsAST instanceof IfConditionAST){
+                    if(defaultAST instanceof ElseConditionAST){
+                        ((IfConditionAST) conditionalsAST).setElse_cond((ConditionalsAST) defaultAST);
+                    }
+                }else{
+                   body.addAST(defaultAST);
+                }
+
+            }
             conditionalsAST.setBody(asts);
             return order_redo(to_order, level, conditionalsAST, be_ordered);
 

@@ -41,7 +41,7 @@ public class Evaluator {
     private void addAllOperations() {
         operations = new ArrayList<>();
         operations.add(new AssignOper(this));
-        operations.add(new IfOper(this));
+        operations.add(new ConditionOper(this));
         operations.add(new VarGetOper(this));
         operations.add(new LiterValueOper(this));
         operations.add(new BinaryOper(this));
@@ -101,6 +101,7 @@ public class Evaluator {
 
     public DataVal Eval(DefaultAST ast) throws EvaluatorException {
         for (BaseExecuteOper oper : operations) {
+            //System.out.println(ast.getClass());
             if(ast.getClass().isAssignableFrom(oper.getMatchClass()) || oper.getMatchClass().isAssignableFrom(ast.getClass())){ // can it be casted to the oper MatchClass
                 return oper.exec(ast);
             }

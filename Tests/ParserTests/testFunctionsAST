@@ -1,10 +1,10 @@
-void func(int a, int b){
+void ala(int a, int b){
     a = b;
 }
 
-a = func(c , b) * 10;
+a = ala(c , b) * 10;
 
-int func(int a, int b)
+int bala(int a, int b)
 
 {
     a = b;

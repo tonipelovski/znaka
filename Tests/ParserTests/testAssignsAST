@@ -4,4 +4,4 @@ char c = 'c';
 bool b = True;
 string alabala = "alaaaa";
 a = a * 10;
-c = func(a);
+c = ala(a);

@@ -31,9 +31,15 @@ public class Main {
         System.out.println(lexer.tokensToString());
         Parser parser = new Parser(lexer);
         Evaluator evaluator = new Evaluator(parser);
+
         //evaluator.ProcessLine();
         //evaluator.ProcessLine();
         //evaluator.ProcessLine();
+
+
+        //evaluator.ProcessLine();
+        //evaluator.ProcessLine();
+
         while(parser.parseLine()){
 
         }

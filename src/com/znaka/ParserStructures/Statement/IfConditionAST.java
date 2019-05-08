@@ -8,12 +8,22 @@ import com.znaka.Tokens.TokenMatches.Token;
 import java.util.ArrayList;
 
 public class IfConditionAST extends ConditionalsAST {
-
+    private ConditionalsAST else_cond;
 
     public IfConditionAST(MainAST cond, MainAST th) {
         super(cond, th);
+        else_cond = null;
 
     }
+
+    public ConditionalsAST getElse_cond() {
+        return else_cond;
+    }
+
+    public void setElse_cond(ConditionalsAST else_cond) {
+        this.else_cond = else_cond;
+    }
+
     @Override
     protected boolean matchAST(ArrayList<Token> tokens, Parser parsesr) {
         for(Token token: tokens){
@@ -45,8 +55,12 @@ public class IfConditionAST extends ConditionalsAST {
                     then = then.concat(defaultAST.toString());
                 }
             }        }
+        String else_cond = "";
 
-        return "\n[" + "if" + ":" + condition + ":" + then + "]";
+        if(getElse_cond() != null){
+            else_cond = getElse_cond().toString();
+        }
+        return "\n[" + "if" + ":" + condition + ":" + then + ":" + else_cond + "]";
     }
 
     @Override
