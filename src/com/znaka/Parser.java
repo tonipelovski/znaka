@@ -206,87 +206,9 @@ public class Parser {
                 func.setArgs(args);
                 MainAST asts = new MainAST(new Stack<DefaultAST>());
                 //System.out.println(func.getRet_type());
-                if(to_order.has(1)) {
-                    if (to_order.getAll_AST().get(0).getType().equals("open_curly")) {
-                        if(func.getRet_type().equals("")){
-                            //Exception
-                        }
-                        Parser temp_parser = new Parser(lexer);
 
-                        while (temp_parser.parseLine()) {
-                            //System.out.println("cccc");
+                return getFuncBody(to_order, level, last, be_ordered, func, asts);
 
-                            for (DefaultAST defaultAST1 : temp_parser.mainAST.getAll_AST()) {
-                                //System.out.println("ala: " + defaultAST1.toString());
-                                if (defaultAST1.getType().equals("close_curly")) {
-                                    temp_parser.mainAST.popFrontAST(1);
-                                    func.setBody(asts);
-                                    be_ordered.addAST(func);
-                                    be_ordered.addAST(temp_parser.mainAST);
-                                    temp_parser.mainAST.getAll_AST().clear();
-                                    return null;
-                                } else {
-                                    temp_parser.mainAST.popFrontAST(1);
-                                    asts.addAST(defaultAST1);
-
-                                }
-                            }
-                        }
-                    }
-                    else if (to_order.getAll_AST().get(0).getType().equals("operator")) {
-                        DefaultAST defaultAST = orderAST(to_order, level + 1, func, be_ordered);
-                        if (level == 0) {
-                            be_ordered.addAST(defaultAST);
-                        }
-                        return defaultAST;
-
-                    }else{
-                        return order_redo(to_order, level, func, be_ordered);
-
-                    }
-                }else{
-                    if(!func.getRet_type().equals("")){
-                        Parser temp_parser = new Parser(lexer);
-                        boolean error_no_close = false;
-                        boolean error_no_open = false;
-                        while(temp_parser.parseLine()){
-                            //System.out.println("cccc");
-                            for(DefaultAST defaultAST1 : temp_parser.mainAST.getAll_AST()){
-                                if(defaultAST1.getType().equals("close_curly")){
-
-                                    temp_parser.mainAST.popFrontAST(1);
-                                    //System.out.println(asts.getAll_AST().get(1));
-
-                                    func.setBody(asts);
-                                    be_ordered.addAST(func);
-                                    be_ordered.addAST(temp_parser.mainAST);
-                                    temp_parser.mainAST.getAll_AST().clear();
-                                    return null;
-                                }else if(!defaultAST1.getType().equals("open_curly")){
-                                    temp_parser.mainAST.popFrontAST(1);
-                                    asts.addAST(defaultAST1);
-                                    if(!error_no_close) {
-                                        error_no_open = true;
-                                    }
-
-                                }else if(defaultAST1.getType().equals("open_curly")){
-                                    temp_parser.mainAST.popFrontAST(1);
-                                    error_no_close = true;
-                                }
-                            }
-                            if(error_no_open){
-                                break;
-                            }
-                        }
-                        //System.out.println("end");
-                        be_ordered.addAST(func);
-                        be_ordered.addAST(temp_parser.mainAST);
-                        temp_parser.mainAST.getAll_AST().clear();
-                        return null;
-                    }
-                    return order_redo(to_order, level, func, be_ordered);
-
-                }
             }
 
             if(to_order.getAll_AST().get(0).getType().equals("conditional")){
@@ -412,6 +334,7 @@ public class Parser {
                //if(!operatorAST.getOperator().equals("=")) {
 
                DefaultAST left = last;
+               System.out.println(left.getType());
                if(left != null) {
                    if (to_order.has(1)) {
                        DefaultAST right = to_order.getAll_AST().get(0);
@@ -439,6 +362,22 @@ public class Parser {
                to_order.popFrontAST(1);
                be_ordered.addAST(closeCurlyAST);
                return order_redo(to_order, level, closeCurlyAST, be_ordered);
+           }
+
+           if(to_order.getAll_AST().get(0).getType().equals("keyword")){
+               error = false;
+               DefaultAST keywordAST = to_order.getAll_AST().get(0);
+               to_order.popFrontAST(1);
+               if(keywordAST instanceof ReturnAST){
+                    last = to_order.getAll_AST().get(0);
+                    //System.out.println(last.getType());
+                    to_order.popFrontAST(1);
+                    ((ReturnAST) keywordAST).setToReturn( orderAST(to_order, level + 1, last, be_ordered));
+                    return order_redo(to_order, level, keywordAST, be_ordered);
+               }else {
+                   be_ordered.addAST(keywordAST);
+                   return order_redo(to_order, level, keywordAST, be_ordered);
+               }
            }
 
            if(to_order.getAll_AST().get(0).getType().equals("coma")){
@@ -604,6 +543,53 @@ public class Parser {
 
         }
         return order_redo(to_order, level, conditionalsAST, be_ordered);
+    }
+
+    private DefaultAST getFuncBody(MainAST to_order, int level, DefaultAST last, MainAST be_ordered, FunctionDefAST functionDefAST, MainAST asts) throws IOException, LexerException, ParserException {
+        if(!to_order.has(2)) {
+            Parser temp_parser = new Parser(lexer);
+
+            while(temp_parser.parseLine()){
+                //System.out.println("cccc");
+                for(DefaultAST defaultAST1 : temp_parser.mainAST.getAll_AST()){
+                    if(defaultAST1.getType().equals("close_curly")){
+                        temp_parser.mainAST.popFrontAST(1);
+                        //System.out.println(asts.getAll_AST().get(1));
+
+                        functionDefAST.setBody(asts);
+                        be_ordered.addAST(functionDefAST);
+                        if(temp_parser.mainAST.getAll_AST().size() > 1) {
+                            be_ordered.addAST(temp_parser.mainAST);
+                        }
+
+                        temp_parser.mainAST.getAll_AST().clear();
+                        return null;
+                    }else if(!defaultAST1.getType().equals("open_curly")){
+                        temp_parser.mainAST.popFrontAST(1);
+                        asts.addAST(defaultAST1);
+
+                    }else if(defaultAST1.getType().equals("open_curly")){
+                        temp_parser.mainAST.popFrontAST(1);
+                    }
+                    //System.out.println(defaultAST1.toString());
+
+                }
+            }
+        }else{
+            if(to_order.getAll_AST().get(0).getType().equals("open_curly")) {
+                to_order.popFrontAST(1);
+            }
+            orderAST(to_order, 0, null, asts);
+            MainAST body = new MainAST(new Stack<>());
+            for(DefaultAST defaultAST : asts.getAll_AST()){
+                body.addAST(defaultAST);
+
+            }
+            functionDefAST.setBody(asts);
+            return order_redo(to_order, level, functionDefAST, be_ordered);
+
+        }
+        return order_redo(to_order, level, functionDefAST, be_ordered);
     }
 }
 
