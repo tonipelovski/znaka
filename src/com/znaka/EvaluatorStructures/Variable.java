@@ -33,6 +33,13 @@ public class Variable<T> {
         this.isConst = constant;
     }
 
+    public Variable(Variable<T> other) {
+        this.name = other.name;
+        this.val = new DataVal<>(other.val);
+        this.isConst = other.isConst;
+
+    }
+
     public DataVal<T> getVal() {
         return val;
     }

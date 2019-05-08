@@ -1,5 +1,8 @@
 package EvaluatorTests;
 
+
+import Mocks.FunctionASTDefMock;
+import Mocks.FunctionCallAstMock;
 import com.znaka.EvaluatorStructures.DataVal;
 import com.znaka.EvaluatorStructures.Functions.Function;
 import com.znaka.EvaluatorStructures.Functions.FunctionCall;
@@ -7,6 +10,7 @@ import com.znaka.EvaluatorStructures.Variable;
 import com.znaka.Exceptions.*;
 import com.znaka.ParserStructures.*;
 import com.znaka.ParserStructures.Expression.AssignAST;
+import com.znaka.ParserStructures.Expression.ExpressionAST;
 import com.znaka.ParserStructures.Expression.FunctionCallAST;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -14,9 +18,7 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Stack;
+import java.util.*;
 
 public class FunctionsTest extends EvaluatorTest {
     private static HashMap<String, Function> functions = new HashMap<>();
@@ -65,6 +67,7 @@ public class FunctionsTest extends EvaluatorTest {
 
     }
 
+    @Disabled
     @Test
     public void CreateFunctionFromASTAndRun() throws EvaluatorException {
         VarAST var1 = new VarAST();
@@ -94,6 +97,30 @@ public class FunctionsTest extends EvaluatorTest {
         args2.push(number_10);
         FunctionCallAST fn_call = new FunctionCallAST(null, args2, null);
         fn_call.setName("test_func1");
+        evaluator.ExecLine(fn_call);
+        checkLastValAndType(10, "int");
+    }
+
+    @Test
+    public void FuncCreationFromASTAndCallMockTest() throws EvaluatorException, ParserException, IOException, LexerException {
+
+
+        List<VarAST> args = new ArrayList<>();
+        args.add((VarAST)getAstFromString("int var1"));
+
+        List<DefaultAST> body_code = new ArrayList<>();
+        body_code.add(getAstFromString("string var1 = \"Hello\""));
+        body_code.add(getAstFromString("10"));
+
+
+        FunctionASTDefMock fn = new FunctionASTDefMock("test_func1", "int", args, body_code);
+        evaluator.ExecLine(fn);
+        Assertions.assertEquals(1, evaluator.getFunctions().size());
+
+        List<ExpressionAST> callArgs = new ArrayList<>();
+        callArgs.add((ExpressionAST) getAstFromString("10"));
+
+        FunctionCallAstMock fn_call = new FunctionCallAstMock(fn.getName(), callArgs);
         evaluator.ExecLine(fn_call);
         checkLastValAndType(10, "int");
     }

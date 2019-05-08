@@ -62,7 +62,7 @@ public class Evaluator {
 
     public void ProcessLine() throws ParserException, IOException, LexerException, EvaluatorException {
         parser.parseLine();
-        DefaultAST ast = parser.mainAST.getAll_AST().get(parser.mainAST.getAll_AST().size() - 1); // needs to be changed....
+        DefaultAST ast = parser.getLastAst(); // needs to be changed....
 
         /*lastReturnedValue = new DataVal<>(2);
         System.out.println(lastReturnedValue.getVal());
@@ -101,6 +101,10 @@ public class Evaluator {
 
     public void setLastReturnedValue(DataVal lastReturnedValue) {
         this.lastReturnedValue = lastReturnedValue;
+    }
+
+    public Parser getParser() {
+        return parser;
     }
 
     public void ExecLine(DefaultAST ast) throws EvaluatorException {

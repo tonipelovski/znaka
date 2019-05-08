@@ -29,21 +29,22 @@ public class FunctionCall {
                         func.getArgs().get(i).getVal().getType(), args.get(i).getVal().toString());
             }
         }
+
+    }
+
+    private void createVariablesIntoScope(List<DataVal> args) {
         for (int i = 0; i < func.getArgs().size(); i++) {
             Variable var = func.getArgs().get(i);
             scope.variables.add(new Variable(var.getName(), args.get(i), var.isConst()));
         }
-
     }
 
     public FunctionCall(Function func, List<DataVal> args) throws ArgumentException, WrongType {
         this.func = func;
         this.scope = new Scope();
         validateArgs(args);
+        createVariablesIntoScope(args);
 
-    }
-
-    public void call(){
 
     }
 }
