@@ -13,6 +13,12 @@ public class DataVal<T> {
         this.type = type;
     }
 
+    public DataVal(DataVal<T> other){
+        this.val = other.val;
+        this.type = other.type;
+
+    }
+
     public T getVal() {
         return val;
     }

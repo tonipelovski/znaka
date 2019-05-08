@@ -11,7 +11,6 @@ import com.znaka.ParserStructures.Statement.ElseConditionAST;
 import com.znaka.ParserStructures.Statement.IfConditionAST;
 import com.znaka.Tokens.TokenMatches.Token;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Stack;
@@ -19,7 +18,7 @@ import java.util.Stack;
 //import sun.security.krb5.internal.PAEncTSEnc;
 public class Parser {
     Lexer lexer;
-    MainAST mainAST;
+    public MainAST mainAST;
     private int last_token = 0;
     private int max_token = 0;
     private boolean error = false;
@@ -34,6 +33,10 @@ public class Parser {
     public Parser(Lexer lexer) {
         this.lexer = lexer;
         mainAST = new MainAST(new Stack<>());
+    }
+
+    public DefaultAST getLastAst(){
+       return mainAST.getAll_AST().get(mainAST.getAll_AST().size() - 1);
     }
 
     public boolean parsedAllTokens(ArrayList<Token> tokens){

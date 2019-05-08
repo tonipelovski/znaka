@@ -8,6 +8,7 @@ import com.znaka.Exceptions.LexerException;
 import com.znaka.Exceptions.ParserException;
 import com.znaka.Lexer;
 import com.znaka.Parser;
+import com.znaka.ParserStructures.DefaultAST;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 
@@ -33,6 +34,13 @@ public abstract class EvaluatorTest {
     protected void ExecuteString(String s1) throws LexerException, ParserException, IOException, EvaluatorException {
         lexer.resetInput(new BufferedReader(new StringReader(s1)));
         evaluator.ProcessLine();
+    }
+
+    protected DefaultAST getAstFromString(String s1) throws ParserException, IOException, LexerException {
+        lexer.resetInput(new BufferedReader(new StringReader(s1)));
+        Parser parser = evaluator.getParser();
+        parser.parseLine();
+        return parser.getLastAst();
     }
 
     protected Variable findVar(String varName){

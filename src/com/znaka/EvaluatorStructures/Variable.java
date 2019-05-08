@@ -10,6 +10,10 @@ public class Variable<T> {
     private DataVal<T> val;
     private boolean isConst;
 
+    public boolean isConst() {
+        return isConst;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -27,6 +31,13 @@ public class Variable<T> {
         this.name = name;
         this.val = val;
         this.isConst = constant;
+    }
+
+    public Variable(Variable<T> other) {
+        this.name = other.name;
+        this.val = new DataVal<>(other.val);
+        this.isConst = other.isConst;
+
     }
 
     public DataVal<T> getVal() {

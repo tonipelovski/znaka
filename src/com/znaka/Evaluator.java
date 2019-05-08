@@ -4,6 +4,7 @@ import com.znaka.EvaluatorStructures.DataVal;
 import com.znaka.EvaluatorStructures.ExecuteOperations.*;
 import com.znaka.EvaluatorStructures.ExecuteOperations.BinaryOper.BinaryOper;
 import com.znaka.EvaluatorStructures.ExecuteOperations.UnaryOper.UnaryOper;
+import com.znaka.EvaluatorStructures.Functions.Function;
 import com.znaka.EvaluatorStructures.Functions.FunctionCall;
 import com.znaka.EvaluatorStructures.Scope;
 import com.znaka.EvaluatorStructures.Variable;
@@ -31,6 +32,7 @@ public class Evaluator {
         this.parser = parser;
         mainScope = new Scope();
         currentScope = mainScope;
+        this.callStack = new Stack<>();
         addAllOperations();
     }
 
@@ -46,6 +48,8 @@ public class Evaluator {
         operations.add(new LiterValueOper(this));
         operations.add(new BinaryOper(this));
         operations.add(new UnaryOper(this));
+        operations.add(new FunctionDef(this));
+        operations.add(new FunctionCalling(this));
 
     }
 
@@ -58,7 +62,7 @@ public class Evaluator {
 
     public void ProcessLine() throws ParserException, IOException, LexerException, EvaluatorException {
         parser.parseLine();
-        DefaultAST ast = parser.mainAST.getAll_AST().get(parser.mainAST.getAll_AST().size() - 1); // needs to be changed....
+        DefaultAST ast = parser.getLastAst(); // needs to be changed....
 
         /*lastReturnedValue = new DataVal<>(2);
         System.out.println(lastReturnedValue.getVal());
@@ -83,12 +87,24 @@ public class Evaluator {
                 parser.getLexer().getLineNum(), parser.getLexer().getLast_line(), exc.getMessage());
     }
 
+    public Stack<FunctionCall> getCallStack() {
+        return callStack;
+    }
+
+    public HashSet<Function> getFunctions(){
+        return currentScope.functions;
+    }
+
     public DataVal getLastReturnedValue() {
         return lastReturnedValue;
     }
 
     public void setLastReturnedValue(DataVal lastReturnedValue) {
         this.lastReturnedValue = lastReturnedValue;
+    }
+
+    public Parser getParser() {
+        return parser;
     }
 
     public void ExecLine(DefaultAST ast) throws EvaluatorException {
@@ -110,5 +126,17 @@ public class Evaluator {
                 parser.getLexer().getLast_line()));
     }
 
+    public void switchScope(){
+        if(callStack.isEmpty()){
+            revertMainScope();
+        }
+        else {
+            currentScope = callStack.firstElement().getScope();
+        }
+    }
+
+    public void revertMainScope(){
+        currentScope = mainScope;
+    }
 
 }
