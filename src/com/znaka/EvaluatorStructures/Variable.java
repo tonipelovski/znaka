@@ -10,6 +10,10 @@ public class Variable<T> {
     private DataVal<T> val;
     private boolean isConst;
 
+    public boolean isConst() {
+        return isConst;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

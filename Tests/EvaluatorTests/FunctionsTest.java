@@ -5,10 +5,9 @@ import com.znaka.EvaluatorStructures.Functions.Function;
 import com.znaka.EvaluatorStructures.Functions.FunctionCall;
 import com.znaka.EvaluatorStructures.Variable;
 import com.znaka.Exceptions.*;
-import com.znaka.ParserStructures.DefaultAST;
+import com.znaka.ParserStructures.*;
 import com.znaka.ParserStructures.Expression.AssignAST;
-import com.znaka.ParserStructures.NumberAST;
-import com.znaka.ParserStructures.VarAST;
+import com.znaka.ParserStructures.Expression.FunctionCallAST;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
@@ -17,6 +16,7 @@ import org.junit.jupiter.api.Test;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Stack;
 
 public class FunctionsTest extends EvaluatorTest {
     private static HashMap<String, Function> functions = new HashMap<>();
@@ -29,7 +29,7 @@ public class FunctionsTest extends EvaluatorTest {
         NumberAST number = new NumberAST("20");
         AssignAST create_var = new AssignAST(var1, number);
         DefaultAST[] body = {create_var};
-        Variable[] args = {new Variable("arg1", new DataVal("", "int"), false)};
+        Variable[] args = {new Variable<>("arg1", new DataVal<>("", "int"), false)};
 
         Function f1 = new Function("test1", "int", Arrays.asList(args), Arrays.asList(body));
         FunctionsTest.functions.put(f1.getName(), f1);
@@ -43,7 +43,7 @@ public class FunctionsTest extends EvaluatorTest {
         NumberAST number = new NumberAST("20");
         AssignAST create_var = new AssignAST(var1, number);
         DefaultAST[] body = {create_var};
-        Variable[] args = {new Variable("arg1", new DataVal("", "int"), false)};
+        Variable[] args = {new Variable<String>("arg1", new DataVal<>("", "int"), false)};
 
         Function f1 = new Function("test1", "int", Arrays.asList(args), Arrays.asList(body));
         Assertions.assertEquals("test1", f1.getName());
@@ -52,17 +52,50 @@ public class FunctionsTest extends EvaluatorTest {
     }
 
     @Test
-    public void FunctionCallArgumentValidationTest() throws ArgumentException, WrongType {
+    public void FunctionCallArgumentValidationTest() throws EvaluatorException, LexerException, ParserException, IOException {
         Function f1 = functions.get("test1");
-        DataVal[] args = {new DataVal("6", "int")};
-        DataVal[] wrong_args1 = {new DataVal('c', "char")};
-        DataVal[] wrong_args2 = {new DataVal("6", "int"), new DataVal("6", "int")};
+        DataVal[] args = {new DataVal<>("6", "int")};
+        DataVal[] wrong_args1 = {new DataVal<>('c', "char")};
+        DataVal[] wrong_args2 = {new DataVal<>("6", "int"), new DataVal<>("6", "int")};
         DataVal[] wrong_args3 = {};
-        FunctionCall f1_call = new FunctionCall(f1, Arrays.asList(args));
+        Assertions.assertDoesNotThrow(() -> new FunctionCall(f1, Arrays.asList(args)));
         Assertions.assertThrows(WrongType.class, () -> new FunctionCall(f1, Arrays.asList(wrong_args1))) ;
         Assertions.assertThrows(ArgumentException.class, () -> new FunctionCall(f1, Arrays.asList(wrong_args2))) ;
         Assertions.assertThrows(ArgumentException.class, () -> new FunctionCall(f1, Arrays.asList(wrong_args3))) ;
 
+    }
+
+    @Test
+    public void CreateFunctionFromASTAndRun() throws EvaluatorException {
+        VarAST var1 = new VarAST();
+        var1.setVariableType("string");
+        var1.setName("var1");
+
+        Stack<DefaultAST> args = new Stack<>();
+        VarAST arg1 = new VarAST();
+        arg1.setVariableType("int");
+        arg1.setName("var1");
+        args.push(arg1);
+
+        NumberAST number_10 = new NumberAST("10");
+        number_10.setNumberType("integer");
+        Stack<DefaultAST> body_code = new Stack<>();
+        body_code.push(new AssignAST(var1, new StringAST("Hello")));
+        body_code.push(number_10);
+
+        MainAST body= new MainAST(body_code);
+
+        FunctionDefAST fn = new FunctionDefAST("int", args, body);
+        fn.setName("test_func1");
+        // Function ast created
+        evaluator.ExecLine(fn);
+        Assertions.assertEquals(1, evaluator.getFunctions().size());
+        Stack<DefaultAST> args2 = new Stack<>();
+        args2.push(number_10);
+        FunctionCallAST fn_call = new FunctionCallAST(null, args2, null);
+        fn_call.setName("test_func1");
+        evaluator.ExecLine(fn_call);
+        checkLastValAndType(10, "int");
     }
 
     @Disabled
