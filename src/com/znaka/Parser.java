@@ -64,7 +64,7 @@ public class Parser {
                 DefaultAST defaultAST = defaultASTMatcher.match(tokens);
                 if (defaultAST != null) {
                     to_order.addAST(defaultAST);
-                    //System.out.println(defaultAST.getText());
+                    System.out.println(defaultAST.getType());
                     max_token--;
                 }
             }
@@ -337,7 +337,6 @@ public class Parser {
                //if(!operatorAST.getOperator().equals("=")) {
 
                DefaultAST left = last;
-               System.out.println(left.getType());
                if(left != null) {
                    if (to_order.has(1)) {
                        DefaultAST right = to_order.getAll_AST().get(0);
@@ -427,7 +426,7 @@ public class Parser {
         return output;
     }
     private DefaultAST order_redo(MainAST to_order, int level, DefaultAST defaultAST, MainAST be_ordered) throws IOException, LexerException, ParserException {
-        if(level == 0 && to_order.getAll_AST().size() == 0){
+        if(level == 0 && to_order.getAll_AST().size() == 0 && defaultAST != null){
             error = false;
             be_ordered.addAST(defaultAST);
             //System.out.println(toString());
@@ -493,24 +492,22 @@ public class Parser {
                 for(DefaultAST defaultAST1 : temp_parser.mainAST.getAll_AST()){
                     if(defaultAST1.getType().equals("close_curly")){
                         temp_parser.mainAST.popFrontAST(1);
-                        //System.out.println(asts.getAll_AST().get(1));
 
                         conditionalsAST.setBody(asts);
 
-                        if(conditionalsAST instanceof IfConditionAST){
                             if(temp_parser.mainAST.getAll_AST().get(0) instanceof ElseConditionAST){
-                                ((IfConditionAST) conditionalsAST).setElse_cond((ConditionalsAST) temp_parser.mainAST.getAll_AST().get(0));
+                                //System.out.println(temp_parser.mainAST.getAll_AST().get(0).toString());
+
+                                conditionalsAST.setElse_cond((ConditionalsAST) temp_parser.mainAST.getAll_AST().get(0));
                                 be_ordered.addAST(conditionalsAST);
+                                //System.out.println("there" + conditionalsAST.getElse_cond().toString());
+
 
                             }else{
                                 be_ordered.addAST(conditionalsAST);
+                                //System.out.println("there" + conditionalsAST.toString());
+
                             }
-                        }else{
-                            be_ordered.addAST(conditionalsAST);
-                            if(temp_parser.mainAST.getAll_AST().size() > 1) {
-                                be_ordered.addAST(temp_parser.mainAST);
-                            }
-                        }
 
                         temp_parser.mainAST.getAll_AST().clear();
                         return null;
@@ -529,20 +526,35 @@ public class Parser {
             if(to_order.getAll_AST().get(0).getType().equals("open_curly")) {
                 to_order.popFrontAST(1);
             }
+            boolean flag_body = false;
             orderAST(to_order, 0, null, asts);
             MainAST body = new MainAST(new Stack<>());
             for(DefaultAST defaultAST : asts.getAll_AST()){
                 if(conditionalsAST instanceof IfConditionAST){
                     if(defaultAST instanceof ElseConditionAST){
-                        ((IfConditionAST) conditionalsAST).setElse_cond((ConditionalsAST) defaultAST);
+                        (conditionalsAST).setElse_cond((ConditionalsAST) defaultAST);
+                        break;
                     }
                 }else{
-                   body.addAST(defaultAST);
+                    if(conditionalsAST instanceof ElseConditionAST && defaultAST instanceof ConditionalsAST){
+                        conditionalsAST.setCond(((ConditionalsAST) defaultAST).getCond());
+                        conditionalsAST.setBody(((ConditionalsAST) defaultAST).getBody());
+                        conditionalsAST.setElse_cond(((ConditionalsAST) defaultAST).getElse_cond());
+                        flag_body = true;
+
+                    }else {
+                        body.addAST(defaultAST);
+                    }
                 }
 
             }
-            conditionalsAST.setBody(asts);
-            return order_redo(to_order, level, conditionalsAST, be_ordered);
+            if(!flag_body) {
+                conditionalsAST.setBody(asts);
+            }
+            //System.out.println("here" + conditionalsAST.toString());
+            be_ordered.addAST(conditionalsAST);
+
+            return order_redo(to_order, level, null, be_ordered);
 
         }
         return order_redo(to_order, level, conditionalsAST, be_ordered);

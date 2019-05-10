@@ -10,7 +10,7 @@ import java.util.ArrayList;
 public class LoopAST extends ConditionalsAST {
 
     public LoopAST(MainAST condition, MainAST body) {
-        super(condition, body);
+        super(condition, body, null);
     }
 
     @Override

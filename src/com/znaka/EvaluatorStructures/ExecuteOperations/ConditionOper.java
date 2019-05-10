@@ -7,6 +7,7 @@ import com.znaka.Exceptions.EvaluatorException;
 import com.znaka.ParserStructures.DefaultAST;
 import com.znaka.ParserStructures.MainAST;
 import com.znaka.ParserStructures.Statement.ConditionalsAST;
+import com.znaka.ParserStructures.Statement.ElseConditionAST;
 import com.znaka.ParserStructures.Statement.IfConditionAST;
 import com.znaka.ParserStructures.Statement.LoopAST;
 
@@ -19,9 +20,9 @@ public class ConditionOper extends BaseExecuteOper {
 
     @Override
     public DataVal exec(DefaultAST ast) throws EvaluatorException {
-        if(ast instanceof IfConditionAST) {
+        if(ast instanceof IfConditionAST || ast instanceof ElseConditionAST) {
             System.out.println("Condition");
-            IfConditionAST ast1 = (IfConditionAST) ast;
+            ConditionalsAST ast1 = (ConditionalsAST) ast;
             DataVal result = this.getEvaluator().Eval(ast1.getCond().getAll_AST().get(0));
             if (result != null) {
                 getEvaluator().setLastReturnedValue(result);
@@ -29,7 +30,6 @@ public class ConditionOper extends BaseExecuteOper {
             Boolean cond_result = false;
             if (result.getType().equals("boolean")) {
                 cond_result = (Boolean) result.getVal();
-                System.out.println(cond_result);
             }
             if (cond_result) {
                 MainAST body = ast1.getBody();
@@ -41,6 +41,7 @@ public class ConditionOper extends BaseExecuteOper {
                 }
             } else {
                 if (ast1.getElse_cond().getCond() == null) {
+
                     MainAST body = ast1.getElse_cond().getBody();
                     for (DefaultAST ast2 : body.getAll_AST()) {
                         DataVal body_result = this.getEvaluator().Eval(ast2);
@@ -50,11 +51,11 @@ public class ConditionOper extends BaseExecuteOper {
                     }
                 }else{
                     this.getEvaluator().Eval(ast1.getElse_cond());
+
                 }
             }
         }
         if(ast instanceof LoopAST) {
-            System.out.println("Condition");
             LoopAST ast1 = (LoopAST) ast;
             DataVal result = this.getEvaluator().Eval(ast1.getCond().getAll_AST().get(0));
             if (result != null) {

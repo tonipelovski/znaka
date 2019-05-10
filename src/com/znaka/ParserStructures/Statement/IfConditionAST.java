@@ -8,20 +8,10 @@ import com.znaka.Tokens.TokenMatches.Token;
 import java.util.ArrayList;
 
 public class IfConditionAST extends ConditionalsAST {
-    private ConditionalsAST else_cond;
 
     public IfConditionAST(MainAST cond, MainAST th) {
-        super(cond, th);
-        else_cond = null;
+        super(cond, th, null);
 
-    }
-
-    public ConditionalsAST getElse_cond() {
-        return else_cond;
-    }
-
-    public void setElse_cond(ConditionalsAST else_cond) {
-        this.else_cond = else_cond;
     }
 
     @Override

@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 public class ElseConditionAST extends ConditionalsAST {
     public ElseConditionAST(MainAST cond, MainAST body) {
-        super(cond, body);
+        super(cond, body, null);
     }
 
     @Override
@@ -27,6 +27,15 @@ public class ElseConditionAST extends ConditionalsAST {
         return false;    }
     @Override
     public String toString() {
+        String condition = "";
+        if (getCond() != null){
+            for(DefaultAST defaultAST : getCond().getAll_AST()) {
+                if(defaultAST != null) {
+                    condition = condition.concat(defaultAST.toString());
+                }
+            }
+        }
+
         String then = "";
         if (getBody() != null){
             for(DefaultAST defaultAST : getBody().getAll_AST()) {
@@ -34,8 +43,12 @@ public class ElseConditionAST extends ConditionalsAST {
                     then = then.concat(defaultAST.toString());
                 }
             }        }
+        String else_cond = "";
 
-        return "\n[" + "else" + ":" + then + "]";
+        if(getElse_cond() != null){
+            else_cond = getElse_cond().toString();
+        }
+        return "\n[" + "else" + ":" + condition + ":" + then + ":" + else_cond + "]";
     }
 
     @Override

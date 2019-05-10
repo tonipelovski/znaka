@@ -153,8 +153,14 @@ public class BinaryOper extends BaseExecuteOper {
                 return new DataVal(smaller_equal(left_num, right_num), "boolean");
             case ">=":
                 return new DataVal(greater_equal(left_num, right_num), "boolean");
+            case "==":
+            return new DataVal(equal(left_num, right_num), "boolean");
         }
         return null;
+    }
+
+    private Boolean equal(Double left_num, Double right_num) {
+        return left_num.equals(right_num);
     }
 
     private Boolean greater_equal(Double left_num, Double right_num) {
