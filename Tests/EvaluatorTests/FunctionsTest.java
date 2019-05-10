@@ -125,6 +125,28 @@ public class FunctionsTest extends EvaluatorTest {
         checkLastValAndType(10, "int");
     }
 
+    @Test
+    public void FuncWrongRetTypeException() throws ParserException, IOException, LexerException, EvaluatorException {
+        List<VarAST> args = new ArrayList<>();
+        args.add((VarAST)getAstFromString("int var1"));
+
+        List<DefaultAST> body_code = new ArrayList<>();
+        body_code.add(getAstFromString("string var1 = \"Hello\""));
+        body_code.add(getAstFromString("\"Beak it all\""));
+
+
+        FunctionASTDefMock fn = new FunctionASTDefMock("test_func1", "int", args, body_code);
+        evaluator.ExecLine(fn);
+
+        List<ExpressionAST> callArgs = new ArrayList<>();
+        callArgs.add((ExpressionAST) getAstFromString("10"));
+
+        FunctionCallAstMock fn_call = new FunctionCallAstMock(fn.getName(), callArgs);
+        Assertions.assertThrows(WrongType.class, () -> evaluator.ExecLine(fn_call));
+
+
+    }
+
     @Disabled
     @Test
     public void FunctionCreation() throws LexerException, ParserException, EvaluatorException, IOException {
