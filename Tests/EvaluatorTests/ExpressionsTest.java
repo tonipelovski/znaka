@@ -29,6 +29,22 @@ public class ExpressionsTest extends EvaluatorTest{
     }
 
     @Test
+    public void BooleanExpresionsTest() throws LexerException, ParserException, EvaluatorException, IOException {
+        ExecuteString("5 == 5");
+        checkLastValAndType(true, "boolean");
+        ExecuteString("5 > 2");
+        checkLastValAndType(true, "boolean");
+        ExecuteString("1 < 5");
+        checkLastValAndType(true, "boolean");
+        ExecuteString("5 >= 5");
+        checkLastValAndType(true, "boolean");
+        ExecuteString("2 > 5.2");
+        checkLastValAndType(false, "boolean");
+        ExecuteString("1.0 == 1");
+        checkLastValAndType(true, "boolean");
+    }
+
+    @Test
     public void MoreThanTwoOperators() throws LexerException, ParserException, EvaluatorException, IOException {
         ExecuteString("20 + 5 + 3");
         Assertions.assertEquals(28, evaluator.getLastReturnedValue().getVal());

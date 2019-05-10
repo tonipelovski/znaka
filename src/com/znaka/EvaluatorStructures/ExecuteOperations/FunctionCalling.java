@@ -7,6 +7,7 @@ import com.znaka.EvaluatorStructures.Functions.Function;
 import com.znaka.EvaluatorStructures.Functions.FunctionCall;
 import com.znaka.Exceptions.EvaluatorException;
 import com.znaka.Exceptions.NoSuchFunction;
+import com.znaka.Exceptions.WrongType;
 import com.znaka.ParserStructures.DefaultAST;
 
 import java.util.ArrayList;
@@ -39,13 +40,15 @@ public class FunctionCalling extends BaseExecuteOper {
             getEvaluator().ExecLine(line);
         }
         DataVal returned = getEvaluator().getLastReturnedValue();
-        validateReturnType(returned);
+        validateReturnType(returned, f);
         getEvaluator().getCallStack().pop();
         getEvaluator().switchScope();
         return returned;
     }
 
-    private void validateReturnType(DataVal lastReturnedValue) {
-
+    private void validateReturnType(DataVal lastReturnedValue, Function f) throws WrongType {
+        if(!lastReturnedValue.getType().equals(f.getReturn_type())){
+            throw new WrongType(lastReturnedValue.getType(), f.getReturn_type(), lastReturnedValue.toString());
+        }
     }
 }
