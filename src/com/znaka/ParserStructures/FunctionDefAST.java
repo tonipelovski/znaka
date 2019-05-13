@@ -1,12 +1,13 @@
 package com.znaka.ParserStructures;
 
+import com.znaka.Contracts.FunctionDefinitionASTInter;
 import com.znaka.Parser;
 import com.znaka.Tokens.TokenMatches.Token;
 
 import java.util.ArrayList;
 import java.util.Stack;
 
-public class FunctionDefAST extends DefaultAST {
+public class FunctionDefAST extends DefaultAST implements FunctionDefinitionASTInter {
     private String ret_type;
     private String name;
     private Stack<DefaultAST> args;

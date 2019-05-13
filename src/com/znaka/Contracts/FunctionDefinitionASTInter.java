@@ -6,9 +6,9 @@ import com.znaka.ParserStructures.VarAST;
 import java.util.List;
 
 public interface FunctionDefinitionASTInter {
-    List<DefaultAST> getBody();
-    List<VarAST> getArgs();
-    String getRet_type();
-    String getName();
+    List<DefaultAST> getBody(); // the function body as List of AST
+    List<VarAST> getArgs(); // the args of the function
+    String getRet_type(); //  the functions return type as string
+    String getName(); // the name of the function
 
 }

@@ -1,5 +1,6 @@
 package com.znaka.ParserStructures.Expression;
 
+import com.znaka.Contracts.FunctionCallASTInter;
 import com.znaka.Parser;
 import com.znaka.ParserStructures.DefaultAST;
 import com.znaka.ParserStructures.MainAST;
@@ -8,7 +9,7 @@ import com.znaka.Tokens.TokenMatches.Token;
 import java.util.ArrayList;
 import java.util.Stack;
 //add arg_count
-public class FunctionCallAST extends ExpressionAST {
+public class FunctionCallAST extends ExpressionAST implements FunctionCallASTInter {
     private String ret_type;
     private String name;
     private Stack<DefaultAST> args;

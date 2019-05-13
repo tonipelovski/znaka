@@ -50,6 +50,7 @@ public class Evaluator {
         operations.add(new UnaryOper(this));
         operations.add(new FunctionDef(this));
         operations.add(new FunctionCalling(this));
+        operations.add(new ReturnExecuteOper(this));
 
     }
 

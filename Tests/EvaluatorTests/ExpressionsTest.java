@@ -3,12 +3,22 @@ package EvaluatorTests;
 import com.znaka.Exceptions.EvaluatorException;
 import com.znaka.Exceptions.LexerException;
 import com.znaka.Exceptions.ParserException;
+import com.znaka.ParserStructures.ReturnAST;
+import com.znaka.ParserStructures.StringAST;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 
 public class ExpressionsTest extends EvaluatorTest{
+
+    @Test
+    public void SingleASTEvaluation() throws ParserException, IOException, LexerException {
+        ReturnAST rt = new ReturnAST(new StringAST("asd"));
+        Assertions.assertEquals("asd", rt.getToReturn().getText());
+        rt = (ReturnAST) getAstFromString("ret asd");
+        Assertions.assertEquals("asd", rt.getToReturn().getText());
+    }
 
     @Test
     public void TwoOperators() throws LexerException, ParserException, EvaluatorException, IOException {
