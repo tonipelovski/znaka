@@ -22,7 +22,7 @@ public class FunctionDef extends BaseExecuteOper {
         FunctionDefinitionASTInter fnAST = (FunctionDefinitionASTInter) ast;
         List<Variable> args = new ArrayList<>();
         for (VarAST arg : fnAST.getArgs()) {
-            args.add(new Variable(arg.getText(), new DataVal("", arg.getVariableType()),
+            args.add(new Variable<>(arg.getText(), new DataVal<>("", arg.getVariableType()),
                     arg.getAccessType().equals("non-var")));
         }
         Function fn = new Function(fnAST.getName(), fnAST.getRet_type(), args, fnAST.getBody());

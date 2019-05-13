@@ -149,7 +149,7 @@ public class FunctionsTest extends EvaluatorTest {
 
     @Disabled
     @Test
-    public void FunctionCreation() throws LexerException, ParserException, EvaluatorException, IOException {
+    public void FunctionCreationFromString() throws LexerException, ParserException, EvaluatorException, IOException {
         ExecuteString("func foo(string a) -> string{\n" +
                 "  ret a + \" + B\"\n" +
                 "}");
