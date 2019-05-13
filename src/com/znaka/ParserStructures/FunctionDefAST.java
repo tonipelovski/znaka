@@ -2,22 +2,24 @@ package com.znaka.ParserStructures;
 
 import com.znaka.Contracts.FunctionDefinitionASTInter;
 import com.znaka.Parser;
+import com.znaka.ParserStructures.Expression.VarAST;
 import com.znaka.Tokens.TokenMatches.Token;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Stack;
 
 public class FunctionDefAST extends DefaultAST implements FunctionDefinitionASTInter {
     private String ret_type;
     private String name;
-    private Stack<DefaultAST> args;
-    private MainAST body;
+    private Stack<VarAST> args;
+    private List<DefaultAST> body;
 
-    public MainAST getBody() {
+    public List<DefaultAST> getBody() {
         return body;
     }
 
-    public void setBody(MainAST body) {
+    public void setBody(List<DefaultAST> body) {
         this.body = body;
     }
 
@@ -30,7 +32,7 @@ public class FunctionDefAST extends DefaultAST implements FunctionDefinitionASTI
     }
 
 
-    public FunctionDefAST(String return_type, Stack<DefaultAST> arguments, MainAST body) {
+    public FunctionDefAST(String return_type, Stack<VarAST> arguments, List<DefaultAST> body) {
         super("def");
         this.ret_type = return_type;
         this.args = arguments;
@@ -41,7 +43,12 @@ public class FunctionDefAST extends DefaultAST implements FunctionDefinitionASTI
         return ret_type;
     }
 
-    public Stack<DefaultAST> getArgs() {
+    @Override
+    public String getName() {
+        return null;
+    }
+
+    public List<VarAST> getArgs() {
         return args;
     }
 
@@ -49,7 +56,7 @@ public class FunctionDefAST extends DefaultAST implements FunctionDefinitionASTI
         this.ret_type = ret_type;
     }
 
-    public void setArgs(Stack<DefaultAST> args) {
+    public void setArgs(Stack<VarAST> args) {
         this.args = args;
     }
 
@@ -92,7 +99,7 @@ public class FunctionDefAST extends DefaultAST implements FunctionDefinitionASTI
     public String toString() {
         String body = "";
         if (getBody() != null) {
-            for (DefaultAST defaultAST : getBody().getAll_AST()) {
+            for (DefaultAST defaultAST : getBody()) {
                 if (defaultAST != null) {
                     body = body.concat(defaultAST.toString());
                 }

@@ -12,7 +12,7 @@ import java.util.Stack;
 public class FunctionCallAST extends ExpressionAST implements FunctionCallASTInter {
     private String ret_type;
     private String name;
-    private Stack<DefaultAST> args;
+    private Stack<ExpressionAST> args;
     private MainAST body;
 
     public MainAST getBody() {
@@ -32,7 +32,7 @@ public class FunctionCallAST extends ExpressionAST implements FunctionCallASTInt
     }
 
 
-    public FunctionCallAST(String return_type, Stack<DefaultAST> arguments, MainAST body) {
+    public FunctionCallAST(String return_type, Stack<ExpressionAST> arguments, MainAST body) {
         super("call");
         this.ret_type = return_type;
         this.args = arguments;
@@ -43,7 +43,12 @@ public class FunctionCallAST extends ExpressionAST implements FunctionCallASTInt
         return ret_type;
     }
 
-    public Stack<DefaultAST> getArgs() {
+    @Override
+    public String getName() {
+        return null;
+    }
+
+    public Stack<ExpressionAST> getArgs() {
         return args;
     }
 
@@ -51,7 +56,7 @@ public class FunctionCallAST extends ExpressionAST implements FunctionCallASTInt
         this.ret_type = ret_type;
     }
 
-    public void setArgs(Stack<DefaultAST> args) {
+    public void setArgs(Stack<ExpressionAST> args) {
         this.args = args;
     }
 

@@ -10,7 +10,7 @@ import com.znaka.Exceptions.UnknownVariable;
 import com.znaka.ParserStructures.DefaultAST;
 import com.znaka.ParserStructures.Expression.OperatorAST;
 import com.znaka.ParserStructures.NumberAST;
-import com.znaka.ParserStructures.VarAST;
+import com.znaka.ParserStructures.Expression.VarAST;
 
 import java.util.Arrays;
 import java.util.HashSet;

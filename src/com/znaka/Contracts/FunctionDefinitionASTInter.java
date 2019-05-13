@@ -1,7 +1,7 @@
 package com.znaka.Contracts;
 
 import com.znaka.ParserStructures.DefaultAST;
-import com.znaka.ParserStructures.VarAST;
+import com.znaka.ParserStructures.Expression.VarAST;
 
 import java.util.List;
 

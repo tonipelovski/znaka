@@ -3,9 +3,7 @@ package com.znaka;
 import com.znaka.Exceptions.LexerException;
 import com.znaka.Exceptions.ParserException;
 import com.znaka.ParserStructures.*;
-import com.znaka.ParserStructures.Expression.BasicOperators;
-import com.znaka.ParserStructures.Expression.FunctionCallAST;
-import com.znaka.ParserStructures.Expression.UnaryOperatorAST;
+import com.znaka.ParserStructures.Expression.*;
 import com.znaka.ParserStructures.Statement.ConditionalsAST;
 import com.znaka.ParserStructures.Statement.ElseConditionAST;
 import com.znaka.ParserStructures.Statement.IfConditionAST;
@@ -108,7 +106,7 @@ public class Parser {
 
                 FunctionCallAST func = (FunctionCallAST) to_order.getAll_AST().get(0);
                 to_order.popFrontAST(2);
-                Stack<DefaultAST> args = new Stack<>();
+                Stack<ExpressionAST> args = new Stack<>();
                 DefaultAST result = func;
                 DefaultAST temp = null;
                 while(true){
@@ -118,13 +116,13 @@ public class Parser {
 
                     if(result != null) {
                         if (result.getType().equals("close_punc")) {
-                            args.add(temp);
+                            args.add((ExpressionAST) temp);
                             break;
                         }else{
                             if(!result.getType().equals("open_punc") && !result.getType().equals("coma")) {
                                 temp = result;
                             }else if(result.getType().equals("coma")){
-                                args.add(temp);
+                                args.add((ExpressionAST) temp);
                             }
                         }
                     }
@@ -184,7 +182,7 @@ public class Parser {
 
                 FunctionDefAST func = (FunctionDefAST) to_order.getAll_AST().get(0);
                 to_order.popFrontAST(2);
-                Stack<DefaultAST> args = new Stack<>();
+                Stack<VarAST> args = new Stack<>();
                 DefaultAST result = func;
                 DefaultAST temp = null;
                 while(true){
@@ -194,13 +192,13 @@ public class Parser {
 
                     if(result != null) {
                         if (result.getType().equals("close_punc")) {
-                            args.add(temp);
+                            args.add((VarAST) temp);
                             break;
                         }else{
                             if(!result.getType().equals("open_punc") && !result.getType().equals("coma")) {
                                 temp = result;
                             }else if(result.getType().equals("coma")){
-                                args.add(temp);
+                                args.add((VarAST) temp);
                             }
                         }
                     }
@@ -373,9 +371,44 @@ public class Parser {
                if(keywordAST instanceof ReturnAST){
                     last = to_order.getAll_AST().get(0);
                     //System.out.println(last.getType());
-                    to_order.popFrontAST(1);
-                    ((ReturnAST) keywordAST).setToReturn( orderAST(to_order, level + 1, last, be_ordered));
-                    return order_redo(to_order, level, keywordAST, be_ordered);
+                   if(to_order.has(2)) {
+                       //System.out.println("ala" + to_order.getAll_AST().get(1).getType());
+
+                       if (to_order.getAll_AST().get(1).getType().equals("operator")) {
+
+                           BasicOperators next = (BasicOperators) to_order.getAll_AST().get(1);
+
+                           if(!next.getOperator().equals("=")) {
+                               to_order.popFrontAST(1);
+                               ((ReturnAST) keywordAST).setToReturn(orderAST(to_order, level + 1, last, be_ordered));
+                               return order_redo(to_order, level, keywordAST, be_ordered);
+
+                           }else{
+                               ((ReturnAST) keywordAST).setToReturn(last);
+                               to_order.popFrontAST(1);
+
+                               return order_redo(to_order, level, keywordAST, be_ordered);
+                           }
+                       }else if(to_order.getAll_AST().get(0).getType().equals("operator")) {
+                           //BasicOperators defaultAST = (BasicOperators) to_order.getAll_AST().get(0);
+                           ((ReturnAST) keywordAST).setToReturn(orderAST(to_order, level + 1, null, be_ordered));
+                           //System.out.println("operator" + basicOperators.toString());
+                           //to_order.popFrontAST(1);
+                           return order_redo(to_order, level, keywordAST, be_ordered);
+                       }else {
+                           //error = true;
+                           ((ReturnAST) keywordAST).setToReturn(orderAST(to_order, level + 1, keywordAST, be_ordered));
+                           to_order.popFrontAST(1);
+
+                           return order_redo(to_order, level, keywordAST, be_ordered);
+
+                       }
+                   }else {
+                       ((ReturnAST) keywordAST).setToReturn(orderAST(to_order, level + 1, keywordAST, be_ordered));
+                       to_order.popFrontAST(1);
+                       return order_redo(to_order, level, keywordAST, be_ordered);
+
+                   }
                }else {
                    be_ordered.addAST(keywordAST);
                    return order_redo(to_order, level, keywordAST, be_ordered);
@@ -571,7 +604,7 @@ public class Parser {
                         temp_parser.mainAST.popFrontAST(1);
                         //System.out.println(asts.getAll_AST().get(1));
 
-                        functionDefAST.setBody(asts);
+                        functionDefAST.setBody(asts.getAll_AST());
                         be_ordered.addAST(functionDefAST);
                         if(temp_parser.mainAST.getAll_AST().size() > 1) {
                             be_ordered.addAST(temp_parser.mainAST);
@@ -600,7 +633,7 @@ public class Parser {
                 body.addAST(defaultAST);
 
             }
-            functionDefAST.setBody(asts);
+            functionDefAST.setBody(asts.getAll_AST());
             return order_redo(to_order, level, functionDefAST, be_ordered);
 
         }

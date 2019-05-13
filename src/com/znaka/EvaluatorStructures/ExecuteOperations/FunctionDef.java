@@ -7,7 +7,7 @@ import com.znaka.EvaluatorStructures.Functions.Function;
 import com.znaka.EvaluatorStructures.Variable;
 import com.znaka.Exceptions.EvaluatorException;
 import com.znaka.ParserStructures.DefaultAST;
-import com.znaka.ParserStructures.VarAST;
+import com.znaka.ParserStructures.Expression.VarAST;
 
 import java.util.ArrayList;
 import java.util.List;

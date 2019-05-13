@@ -1,11 +1,12 @@
-package com.znaka.ParserStructures;
+package com.znaka.ParserStructures.Expression;
 
 import com.znaka.Parser;
+import com.znaka.ParserStructures.Expression.ExpressionAST;
 import com.znaka.Tokens.TokenMatches.Token;
 
 import java.util.ArrayList;
 
-public class VarAST extends DefaultAST {
+public class VarAST extends ExpressionAST {
     private String type;
     private String accessType;
     public void setName(String name) {

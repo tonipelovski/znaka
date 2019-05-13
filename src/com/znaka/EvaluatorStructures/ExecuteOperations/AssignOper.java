@@ -8,7 +8,7 @@ import com.znaka.Exceptions.EvaluatorException;
 import com.znaka.Exceptions.WrongType;
 import com.znaka.ParserStructures.DefaultAST;
 import com.znaka.ParserStructures.Expression.AssignAST;
-import com.znaka.ParserStructures.VarAST;
+import com.znaka.ParserStructures.Expression.VarAST;
 
 import java.util.ArrayList;
 import java.util.HashSet;

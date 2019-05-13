@@ -12,6 +12,7 @@ import com.znaka.ParserStructures.*;
 import com.znaka.ParserStructures.Expression.AssignAST;
 import com.znaka.ParserStructures.Expression.ExpressionAST;
 import com.znaka.ParserStructures.Expression.FunctionCallAST;
+import com.znaka.ParserStructures.Expression.VarAST;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
@@ -74,7 +75,7 @@ public class FunctionsTest extends EvaluatorTest {
         var1.setVariableType("string");
         var1.setName("var1");
 
-        Stack<DefaultAST> args = new Stack<>();
+        Stack<VarAST> args = new Stack<>();
         VarAST arg1 = new VarAST();
         arg1.setVariableType("int");
         arg1.setName("var1");
@@ -88,12 +89,12 @@ public class FunctionsTest extends EvaluatorTest {
 
         MainAST body= new MainAST(body_code);
 
-        FunctionDefAST fn = new FunctionDefAST("int", args, body);
+        FunctionDefAST fn = new FunctionDefAST("int", args, body.getAll_AST());
         fn.setName("test_func1");
         // Function ast created
         evaluator.ExecLine(fn);
         Assertions.assertEquals(1, evaluator.getFunctions().size());
-        Stack<DefaultAST> args2 = new Stack<>();
+        Stack<ExpressionAST> args2 = new Stack<>();
         args2.push(number_10);
         FunctionCallAST fn_call = new FunctionCallAST(null, args2, null);
         fn_call.setName("test_func1");

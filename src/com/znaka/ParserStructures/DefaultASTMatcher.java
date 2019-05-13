@@ -1,10 +1,7 @@
 package com.znaka.ParserStructures;
 
 import com.znaka.Parser;
-import com.znaka.ParserStructures.Expression.AssignAST;
-import com.znaka.ParserStructures.Expression.FunctionCallAST;
-import com.znaka.ParserStructures.Expression.OperatorAST;
-import com.znaka.ParserStructures.Expression.UnaryOperatorAST;
+import com.znaka.ParserStructures.Expression.*;
 import com.znaka.ParserStructures.Statement.ElseConditionAST;
 import com.znaka.ParserStructures.Statement.IfConditionAST;
 import com.znaka.ParserStructures.Statement.LoopAST;

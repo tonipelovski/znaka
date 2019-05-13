@@ -3,7 +3,7 @@ package Mocks;
 import com.znaka.Contracts.FunctionDefinitionASTInter;
 import com.znaka.Parser;
 import com.znaka.ParserStructures.DefaultAST;
-import com.znaka.ParserStructures.VarAST;
+import com.znaka.ParserStructures.Expression.VarAST;
 import com.znaka.Tokens.TokenMatches.Token;
 
 import java.util.ArrayList;

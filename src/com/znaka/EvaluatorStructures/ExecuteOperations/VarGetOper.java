@@ -5,7 +5,7 @@ import com.znaka.EvaluatorStructures.DataVal;
 import com.znaka.EvaluatorStructures.Variable;
 import com.znaka.Exceptions.UnknownVariable;
 import com.znaka.ParserStructures.DefaultAST;
-import com.znaka.ParserStructures.VarAST;
+import com.znaka.ParserStructures.Expression.VarAST;
 
 import java.util.HashSet;
 
