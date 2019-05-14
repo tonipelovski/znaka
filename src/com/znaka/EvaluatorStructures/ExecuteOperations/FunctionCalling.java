@@ -35,6 +35,9 @@ public class FunctionCalling extends BaseExecuteOper {
                 break;
             }
             args.add(getEvaluator().Eval(arg));
+            if(arg instanceof ReturnAST){
+                break;
+            }
             // evaluate and add each
         }
         FunctionCall call = new FunctionCall(f, args);
