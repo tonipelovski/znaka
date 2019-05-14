@@ -14,6 +14,9 @@ import org.junit.jupiter.api.BeforeEach;
 
 import java.io.*;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 public abstract class EvaluatorTest {
     protected Evaluator evaluator;
@@ -29,6 +32,12 @@ public abstract class EvaluatorTest {
         Parser parser = new Parser(lexer);
         evaluator = new Evaluator(parser);
         reader.close();
+    }
+
+    protected void setNewFile(String filename) throws IOException {
+        BufferedReader reader = Files.newBufferedReader(Paths.get("TestResources/" + filename),
+                StandardCharsets.US_ASCII);
+        lexer.resetInput(reader);
     }
 
     protected void ExecuteString(String s1) throws LexerException, ParserException, IOException, EvaluatorException {

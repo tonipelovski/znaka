@@ -9,6 +9,7 @@ import com.znaka.Exceptions.EvaluatorException;
 import com.znaka.Exceptions.NoSuchFunction;
 import com.znaka.Exceptions.WrongType;
 import com.znaka.ParserStructures.DefaultAST;
+import com.znaka.ParserStructures.ReturnAST;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +31,13 @@ public class FunctionCalling extends BaseExecuteOper {
         }
         List<DataVal> args = new ArrayList<>();
         for (DefaultAST arg : fnc.getArgs()) {
+            if(arg == null){
+                break;
+            }
             args.add(getEvaluator().Eval(arg));
+            if(arg instanceof ReturnAST){
+                break;
+            }
             // evaluate and add each
         }
         FunctionCall call = new FunctionCall(f, args);
@@ -38,6 +45,9 @@ public class FunctionCalling extends BaseExecuteOper {
         getEvaluator().switchScope();
         for (DefaultAST line : f.getBody()) {
             getEvaluator().ExecLine(line);
+            if(line instanceof ReturnAST){
+                break;
+            }
         }
         DataVal returned = getEvaluator().getLastReturnedValue();
         validateReturnType(returned, f);

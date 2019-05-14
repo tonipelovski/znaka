@@ -12,7 +12,7 @@ import java.util.Stack;
 public class FunctionDefAST extends DefaultAST implements FunctionDefinitionASTInter {
     private String ret_type;
     private String name;
-    private Stack<VarAST> args;
+    private List<VarAST> args;
     private List<DefaultAST> body;
 
     public List<DefaultAST> getBody() {
@@ -32,8 +32,9 @@ public class FunctionDefAST extends DefaultAST implements FunctionDefinitionASTI
     }
 
 
-    public FunctionDefAST(String return_type, Stack<VarAST> arguments, List<DefaultAST> body) {
+    public FunctionDefAST(String name, String return_type, List<VarAST> arguments, List<DefaultAST> body) {
         super("def");
+        this.name = name;
         this.ret_type = return_type;
         this.args = arguments;
         this.body = body;
@@ -45,7 +46,7 @@ public class FunctionDefAST extends DefaultAST implements FunctionDefinitionASTI
 
     @Override
     public String getName() {
-        return null;
+        return name;
     }
 
     public List<VarAST> getArgs() {

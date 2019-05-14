@@ -54,15 +54,15 @@ public class Evaluator {
 
     }
 
-    public void run() throws ParserException, IOException, LexerException {
-        while(parser.parseLine()){
+    public void run() throws ParserException, IOException, LexerException, EvaluatorException {
+        while(ProcessLine()){
         }
-
-        System.out.println(parser);
     }
 
-    public void ProcessLine() throws ParserException, IOException, LexerException, EvaluatorException {
-        parser.parseLine();
+    public boolean ProcessLine() throws ParserException, IOException, LexerException, EvaluatorException {
+        if(!parser.parseLine()){
+            return false;
+        }
         DefaultAST ast = parser.getLastAst(); // needs to be changed....
 
         /*lastReturnedValue = new DataVal<>(2);
@@ -80,6 +80,7 @@ public class Evaluator {
         System.out.println(ast1.getRight());*/
 
             ExecLine(ast);
+            return true;
 //        System.out.println("Last expression returned: " + lastReturnedValue);
     }
 
