@@ -88,6 +88,10 @@ public class Evaluator {
                 parser.getLexer().getLineNum(), parser.getLexer().getLast_line(), exc.getMessage());
     }
 
+    public Scope getMainScope() {
+        return mainScope;
+    }
+
     public Stack<FunctionCall> getCallStack() {
         return callStack;
     }
@@ -114,6 +118,18 @@ public class Evaluator {
             lastReturnedValue = returned;
         }
        System.out.println(lastReturnedValue);
+    }
+
+    public void setMainScope(Scope mainScope) {
+        this.mainScope = mainScope;
+    }
+
+    public void setCurrentScope(Scope currentScope) {
+        this.currentScope = currentScope;
+    }
+
+    public Scope getCurrentScope() {
+        return currentScope;
     }
 
     public DataVal Eval(DefaultAST ast) throws EvaluatorException {

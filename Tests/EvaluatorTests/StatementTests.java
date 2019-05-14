@@ -1,12 +1,22 @@
 package EvaluatorTests;
 
+import com.znaka.Evaluator;
 import com.znaka.Exceptions.EvaluatorException;
 import com.znaka.Exceptions.LexerException;
 import com.znaka.Exceptions.ParserException;
+import com.znaka.Lexer;
+import com.znaka.Main;
+import com.znaka.Parser;
+import com.znaka.Tokens.TokenMatches.Token;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
+import java.net.URL;
+import java.util.ArrayList;
 
 public class StatementTests extends EvaluatorTest {
     @Test
@@ -40,5 +50,59 @@ public class StatementTests extends EvaluatorTest {
         ExecuteString("int c = b");
 
         Assertions.assertEquals(10, evaluator.getLastReturnedValue().getVal());
+    }
+
+    @Test
+    public void ElseIfConditionTestFalse() throws LexerException, ParserException, EvaluatorException, IOException {
+        URL url = StatementTests.class.getResource("StatementElseIfTest");
+        File file = new File(url.getPath());
+        BufferedReader reader = new BufferedReader(new FileReader(file));
+        ArrayList<Token> tokens = new ArrayList<>();
+        Lexer lexer = new Lexer(tokens, reader);
+
+        String lexerOutput = "";
+        while (lexer.readLine()) {
+            lexerOutput = lexerOutput.concat(lexer.tokensToString());
+        }
+        lexer.resetInput(new BufferedReader(new FileReader(file)));
+        Parser parser = new Parser(lexer);
+        Evaluator evaluator = new Evaluator(parser);
+
+        evaluator.ProcessLine();
+        evaluator.ProcessLine();
+        evaluator.ProcessLine();
+
+
+        //evaluator.ProcessLine();
+        //evaluator.ProcessLine();
+
+        Assertions.assertEquals(false, evaluator.getLastReturnedValue().getVal());
+    }
+
+    @Test
+    public void ElseIfConditionTestTrue() throws LexerException, ParserException, EvaluatorException, IOException {
+        URL url = StatementTests.class.getResource("StatementElseIfTestTrue");
+        File file = new File(url.getPath());
+        BufferedReader reader = new BufferedReader(new FileReader(file));
+        ArrayList<Token> tokens = new ArrayList<>();
+        Lexer lexer = new Lexer(tokens, reader);
+
+        String lexerOutput = "";
+        while (lexer.readLine()) {
+            lexerOutput = lexerOutput.concat(lexer.tokensToString());
+        }
+        lexer.resetInput(new BufferedReader(new FileReader(file)));
+        Parser parser = new Parser(lexer);
+        Evaluator evaluator = new Evaluator(parser);
+
+        evaluator.ProcessLine();
+        evaluator.ProcessLine();
+        evaluator.ProcessLine();
+
+
+        //evaluator.ProcessLine();
+        //evaluator.ProcessLine();
+
+        Assertions.assertEquals(100, evaluator.getLastReturnedValue().getVal());
     }
 }

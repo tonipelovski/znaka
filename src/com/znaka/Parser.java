@@ -34,7 +34,7 @@ public class Parser {
     }
 
     public DefaultAST getLastAst(){
-       return mainAST.getAll_AST().get(mainAST.getAll_AST().size() - 1);
+        return mainAST.getAll_AST().get(mainAST.getAll_AST().size() - 1);
     }
 
     public boolean parsedAllTokens(ArrayList<Token> tokens){
@@ -299,144 +299,144 @@ public class Parser {
             }
         }
 
-       if(to_order.has(1)) {
-           //System.out.println(to_order.getAll_AST().get(0).getType());
+        if(to_order.has(1)) {
+            //System.out.println(to_order.getAll_AST().get(0).getType());
 
-           if(to_order.getAll_AST().get(0).getText() != null) {
-               if (line.contains(to_order.getAll_AST().get(0).getText())) {
-                   indexOf += line.indexOf(to_order.getAll_AST().get(0).getText()) + 1;
-                   line = last_line.substring(indexOf);
-                   //System.out.println(line + " "  + error + " " + indexOf + " " + to_order.getAll_AST().get(0).getText());
+            if(to_order.getAll_AST().get(0).getText() != null) {
+                if (line.contains(to_order.getAll_AST().get(0).getText())) {
+                    indexOf += line.indexOf(to_order.getAll_AST().get(0).getText()) + 1;
+                    line = last_line.substring(indexOf);
+                    //System.out.println(line + " "  + error + " " + indexOf + " " + to_order.getAll_AST().get(0).getText());
 
-               }
-           }
+                }
+            }
 
-           if (to_order.getAll_AST().get(0).getType().equals("operator")  && to_order.getAll_AST().get(0) instanceof UnaryOperatorAST) {
+            if (to_order.getAll_AST().get(0).getType().equals("operator")  && to_order.getAll_AST().get(0) instanceof UnaryOperatorAST) {
 
-               //System.out.println("bala");
-               UnaryOperatorAST unaryOperatorAST = (UnaryOperatorAST) to_order.getAll_AST().get(0);
-               error = false;
-               if (unaryOperatorAST.getOperator().equals("!")) {
-                   to_order.popFrontAST(1);
-                   unaryOperatorAST.setLeft(orderAST(to_order, level + 1, to_order.getAll_AST().get(0), be_ordered));
-                   return order_redo(to_order, level, unaryOperatorAST, be_ordered);
-               }else {
-                   DefaultAST left = last;
-                   unaryOperatorAST.setLeft(left);
-                   to_order.popFrontAST(1);
-                   return order_redo(to_order, level, unaryOperatorAST, be_ordered);
-               }
-           }
-           if (to_order.getAll_AST().get(0).getType().equals("operator")) {
-               error = false;
-               BasicOperators operatorAST = (BasicOperators) to_order.getAll_AST().get(0);
+                //System.out.println("bala");
+                UnaryOperatorAST unaryOperatorAST = (UnaryOperatorAST) to_order.getAll_AST().get(0);
+                error = false;
+                if (unaryOperatorAST.getOperator().equals("!")) {
+                    to_order.popFrontAST(1);
+                    unaryOperatorAST.setLeft(orderAST(to_order, level + 1, to_order.getAll_AST().get(0), be_ordered));
+                    return order_redo(to_order, level, unaryOperatorAST, be_ordered);
+                }else {
+                    DefaultAST left = last;
+                    unaryOperatorAST.setLeft(left);
+                    to_order.popFrontAST(1);
+                    return order_redo(to_order, level, unaryOperatorAST, be_ordered);
+                }
+            }
+            if (to_order.getAll_AST().get(0).getType().equals("operator")) {
+                error = false;
+                BasicOperators operatorAST = (BasicOperators) to_order.getAll_AST().get(0);
 
-               to_order.popFrontAST(1);
-               //if(!operatorAST.getOperator().equals("=")) {
+                to_order.popFrontAST(1);
+                //if(!operatorAST.getOperator().equals("=")) {
 
-               DefaultAST left = last;
-               if(left != null) {
-                   if (to_order.has(1)) {
-                       DefaultAST right = to_order.getAll_AST().get(0);
-                       operatorAST.setLeft(left);
-                       //System.out.println("debaaa" + operatorAST.toString());
+                DefaultAST left = last;
+                if(left != null) {
+                    if (to_order.has(1)) {
+                        DefaultAST right = to_order.getAll_AST().get(0);
+                        operatorAST.setLeft(left);
+                        //System.out.println("debaaa" + operatorAST.toString());
 
-                       return getRight(to_order, level, last, be_ordered, operatorAST, right);
-                   } else {
-                       StringBuffer outputBuffer = new StringBuffer();
-                       String message = "Expected right: ";
-                       for (int i = 0; i < indexOf + message.length(); i++) {
-                           outputBuffer.append(" ");
-                       }
-                       throw new ParserException("\n" + message + last_line + "\n" + outputBuffer.toString() + "^");
-                   }
-               }else{
-                   operatorAST.setRight(orderAST(to_order, level + 1, operatorAST, be_ordered));
-                   return order_redo(to_order, level, operatorAST, be_ordered);
-               }
-               //}
-           }
-           if(to_order.getAll_AST().get(0).getType().equals("close_curly")){
-               error = false;
-               DefaultAST closeCurlyAST = to_order.getAll_AST().get(0);
-               to_order.popFrontAST(1);
-               be_ordered.addAST(closeCurlyAST);
-               return order_redo(to_order, level, closeCurlyAST, be_ordered);
-           }
+                        return getRight(to_order, level, last, be_ordered, operatorAST, right);
+                    } else {
+                        StringBuffer outputBuffer = new StringBuffer();
+                        String message = "Expected right: ";
+                        for (int i = 0; i < indexOf + message.length(); i++) {
+                            outputBuffer.append(" ");
+                        }
+                        throw new ParserException("\n" + message + last_line + "\n" + outputBuffer.toString() + "^");
+                    }
+                }else{
+                    operatorAST.setRight(orderAST(to_order, level + 1, operatorAST, be_ordered));
+                    return order_redo(to_order, level, operatorAST, be_ordered);
+                }
+                //}
+            }
+            if(to_order.getAll_AST().get(0).getType().equals("close_curly")){
+                error = false;
+                DefaultAST closeCurlyAST = to_order.getAll_AST().get(0);
+                to_order.popFrontAST(1);
+                be_ordered.addAST(closeCurlyAST);
+                return order_redo(to_order, level, closeCurlyAST, be_ordered);
+            }
 
-           if(to_order.getAll_AST().get(0).getType().equals("keyword")){
-               error = false;
-               DefaultAST keywordAST = to_order.getAll_AST().get(0);
-               to_order.popFrontAST(1);
-               if(keywordAST instanceof ReturnAST){
+            if(to_order.getAll_AST().get(0).getType().equals("keyword")){
+                error = false;
+                DefaultAST keywordAST = to_order.getAll_AST().get(0);
+                to_order.popFrontAST(1);
+                if(keywordAST instanceof ReturnAST){
                     last = to_order.getAll_AST().get(0);
                     //System.out.println(last.getType());
-                   if(to_order.has(2)) {
-                       //System.out.println("ala" + to_order.getAll_AST().get(1).getType());
+                    if(to_order.has(2)) {
+                        //System.out.println("ala" + to_order.getAll_AST().get(1).getType());
 
-                       if (to_order.getAll_AST().get(1).getType().equals("operator")) {
+                        if (to_order.getAll_AST().get(1).getType().equals("operator")) {
 
-                           BasicOperators next = (BasicOperators) to_order.getAll_AST().get(1);
+                            BasicOperators next = (BasicOperators) to_order.getAll_AST().get(1);
 
-                           if(!next.getOperator().equals("=")) {
-                               to_order.popFrontAST(1);
-                               ((ReturnAST) keywordAST).setToReturn(orderAST(to_order, level + 1, last, be_ordered));
-                               return order_redo(to_order, level, keywordAST, be_ordered);
+                            if(!next.getOperator().equals("=")) {
+                                to_order.popFrontAST(1);
+                                ((ReturnAST) keywordAST).setToReturn(orderAST(to_order, level + 1, last, be_ordered));
+                                return order_redo(to_order, level, keywordAST, be_ordered);
 
-                           }else{
-                               ((ReturnAST) keywordAST).setToReturn(last);
-                               to_order.popFrontAST(1);
+                            }else{
+                                ((ReturnAST) keywordAST).setToReturn(last);
+                                to_order.popFrontAST(1);
 
-                               return order_redo(to_order, level, keywordAST, be_ordered);
-                           }
-                       }else if(to_order.getAll_AST().get(0).getType().equals("operator")) {
-                           //BasicOperators defaultAST = (BasicOperators) to_order.getAll_AST().get(0);
-                           ((ReturnAST) keywordAST).setToReturn(orderAST(to_order, level + 1, null, be_ordered));
-                           //System.out.println("operator" + basicOperators.toString());
-                           //to_order.popFrontAST(1);
-                           return order_redo(to_order, level, keywordAST, be_ordered);
-                       }else {
-                           //error = true;
-                           ((ReturnAST) keywordAST).setToReturn(orderAST(to_order, level + 1, keywordAST, be_ordered));
-                           to_order.popFrontAST(1);
+                                return order_redo(to_order, level, keywordAST, be_ordered);
+                            }
+                        }else if(to_order.getAll_AST().get(0).getType().equals("operator")) {
+                            //BasicOperators defaultAST = (BasicOperators) to_order.getAll_AST().get(0);
+                            ((ReturnAST) keywordAST).setToReturn(orderAST(to_order, level + 1, null, be_ordered));
+                            //System.out.println("operator" + basicOperators.toString());
+                            //to_order.popFrontAST(1);
+                            return order_redo(to_order, level, keywordAST, be_ordered);
+                        }else {
+                            //error = true;
+                            ((ReturnAST) keywordAST).setToReturn(orderAST(to_order, level + 1, keywordAST, be_ordered));
+                            to_order.popFrontAST(1);
 
-                           return order_redo(to_order, level, keywordAST, be_ordered);
+                            return order_redo(to_order, level, keywordAST, be_ordered);
 
-                       }
-                   }else {
-                       ((ReturnAST) keywordAST).setToReturn(orderAST(to_order, level + 1, keywordAST, be_ordered));
-                       to_order.popFrontAST(1);
-                       return order_redo(to_order, level, keywordAST, be_ordered);
+                        }
+                    }else {
+                        ((ReturnAST) keywordAST).setToReturn(orderAST(to_order, level + 1, keywordAST, be_ordered));
+                        to_order.popFrontAST(1);
+                        return order_redo(to_order, level, keywordAST, be_ordered);
 
-                   }
-               }else {
-                   be_ordered.addAST(keywordAST);
-                   return order_redo(to_order, level, keywordAST, be_ordered);
-               }
-           }
+                    }
+                }else {
+                    be_ordered.addAST(keywordAST);
+                    return order_redo(to_order, level, keywordAST, be_ordered);
+                }
+            }
 
-           if(to_order.getAll_AST().get(0).getType().equals("coma")){
-               error = false;
-               DefaultAST comaAST = to_order.getAll_AST().get(0);
-               to_order.popFrontAST(1);
-               if(level == 0) {
-                   be_ordered.addAST(last);
-               }
-               return order_redo(to_order, level, comaAST, be_ordered);
-           }
-           DefaultAST defaultAST = to_order.getAll_AST().get(0);
-           if(error){
-               StringBuffer outputBuffer = new StringBuffer();
-               String message = "Expected operator: ";
-               for (int i = 0; i < indexOf + message.length() - 1; i++){
-                   outputBuffer.append(" ");
-               }
-               throw new ParserException("\n" + message + last_line + "\n" + outputBuffer.toString() + "^");
-           }else {
-               to_order.popFrontAST(1);
-               error = true;
-               return order_redo(to_order, level, defaultAST, be_ordered);
-           }
+            if(to_order.getAll_AST().get(0).getType().equals("coma")){
+                error = false;
+                DefaultAST comaAST = to_order.getAll_AST().get(0);
+                to_order.popFrontAST(1);
+                if(level == 0) {
+                    be_ordered.addAST(last);
+                }
+                return order_redo(to_order, level, comaAST, be_ordered);
+            }
+            DefaultAST defaultAST = to_order.getAll_AST().get(0);
+            if(error){
+                StringBuffer outputBuffer = new StringBuffer();
+                String message = "Expected operator: ";
+                for (int i = 0; i < indexOf + message.length() - 1; i++){
+                    outputBuffer.append(" ");
+                }
+                throw new ParserException("\n" + message + last_line + "\n" + outputBuffer.toString() + "^");
+            }else {
+                to_order.popFrontAST(1);
+                error = true;
+                return order_redo(to_order, level, defaultAST, be_ordered);
+            }
         }else{
             return null;
         }
@@ -528,19 +528,19 @@ public class Parser {
 
                         conditionalsAST.setBody(asts);
 
-                            if(temp_parser.mainAST.getAll_AST().get(0) instanceof ElseConditionAST){
-                                //System.out.println(temp_parser.mainAST.getAll_AST().get(0).toString());
+                        if(temp_parser.mainAST.getAll_AST().get(0) instanceof ElseConditionAST){
+                            //System.out.println(temp_parser.mainAST.getAll_AST().get(0).toString());
 
-                                conditionalsAST.setElse_cond((ConditionalsAST) temp_parser.mainAST.getAll_AST().get(0));
-                                be_ordered.addAST(conditionalsAST);
-                                //System.out.println("there" + conditionalsAST.getElse_cond().toString());
+                            conditionalsAST.setElse_cond((ConditionalsAST) temp_parser.mainAST.getAll_AST().get(0));
+                            be_ordered.addAST(conditionalsAST);
+                            //System.out.println("there" + conditionalsAST.getElse_cond().toString());
 
 
-                            }else{
-                                be_ordered.addAST(conditionalsAST);
-                                //System.out.println("there" + conditionalsAST.toString());
+                        }else{
+                            be_ordered.addAST(conditionalsAST);
+                            //System.out.println("there" + conditionalsAST.toString());
 
-                            }
+                        }
 
                         temp_parser.mainAST.getAll_AST().clear();
                         return null;
@@ -640,5 +640,3 @@ public class Parser {
         return order_redo(to_order, level, functionDefAST, be_ordered);
     }
 }
-
-
