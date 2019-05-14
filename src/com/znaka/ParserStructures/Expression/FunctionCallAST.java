@@ -90,22 +90,13 @@ public class FunctionCallAST extends ExpressionAST implements FunctionCallASTInt
 
     @Override
     public String toString() {
-        String body = "";
-        if (getBody() != null) {
-            for (DefaultAST defaultAST : getBody().getAll_AST()) {
-                if (defaultAST != null) {
-                    body = body.concat(defaultAST.toString());
-                }
-            }
-        }
-        String output = "[" + getText() + ":" + getRet_type() + ":";
+
+        String output = "[" + getText() + ":";
         for(int i = 0; i < getArgs().size(); i++){
             if(getArgs().get(i) != null) {
                 output = output.concat(getArgs().get(i).toString());
             }
-        }
-        output = output.concat(body);
-        return output.concat("]");
+        }return output.concat("]");
     }
 
 }

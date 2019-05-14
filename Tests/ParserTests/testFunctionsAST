@@ -1,7 +1,7 @@
-void ala(int a, int b){
+int ala(int a, int b){
     a = b;
+    ret a;
 }
-
 a = ala(c , b) * 10;
 
 int bala(int a, int b)

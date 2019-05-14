@@ -119,7 +119,7 @@ public class ParserTests {
                 "  [operator\n" +
                 "    =\n" +
                 "     [var::c]\n" +
-                "     [ala::[var::a]]]";
+                "     [ala:[var::a]]]";
         Assertions.assertEquals(expected, parserOutput);
     }
 
@@ -151,7 +151,7 @@ public class ParserTests {
                 "  [operator\n" +
                 "    =\n" +
                 "     [var::five]\n" +
-                "     [operator:*:[ala::[var::a]]:[integer:10]]]\n" +
+                "     [operator:*:[ala:[var::a]]:[integer:10]]]\n" +
                 "  [operator\n" +
                 "    =\n" +
                 "     [operator:+:[operator:*:[var::a]:[var::b]]:[var::c]]\n" +
@@ -205,16 +205,15 @@ public class ParserTests {
 
         }
         String parserOutput = parser.toString();
-        String expected = "[ala::[var:int:a][var:int:b]\n" +
+        String expected = "[ala:int:[var:int:a][var:int:b]\n" +
                 "  [operator\n" +
                 "    =\n" +
                 "     [var::a]\n" +
-                "     [var::b]]]\n" +
+                "     [var::b]][return:[var::a]]]\n" +
                 "  [operator\n" +
                 "    =\n" +
                 "     [var::a]\n" +
-                "     [operator:*:[ala::[var::c][var::b]]:[integer:10]]]" +
-                "[bala:int:[var:int:a][var:int:b]\n" +
+                "     [operator:*:[ala:[var::c][var::b]]:[integer:10]]][bala:int:[var:int:a][var:int:b]\n" +
                 "  [operator\n" +
                 "    =\n" +
                 "     [var::a]\n" +
