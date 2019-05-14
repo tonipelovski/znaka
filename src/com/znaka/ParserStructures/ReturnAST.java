@@ -36,7 +36,7 @@ public class ReturnAST extends KeywordAST {
 
     @Override
     public String getText() {
-        return null;
+        return "ret";
     }
 
     @Override

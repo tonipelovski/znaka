@@ -13,4 +13,9 @@ public class Library {
     private Function printFn(){
         return null;
     }
+
+    private Function pow(){
+        return null;
+    }
+
 }
