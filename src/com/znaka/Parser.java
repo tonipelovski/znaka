@@ -62,7 +62,7 @@ public class Parser {
                 DefaultAST defaultAST = defaultASTMatcher.match(tokens);
                 if (defaultAST != null) {
                     to_order.addAST(defaultAST);
-                    System.out.println(defaultAST.getType());
+                    //System.out.println(defaultAST.getType());
                     max_token--;
                 }
             }
@@ -361,6 +361,7 @@ public class Parser {
                 DefaultAST closeCurlyAST = to_order.getAll_AST().get(0);
                 to_order.popFrontAST(1);
                 be_ordered.addAST(closeCurlyAST);
+                //be_ordered.addAST(last);
                 return order_redo(to_order, level, closeCurlyAST, be_ordered);
             }
 
@@ -496,16 +497,25 @@ public class Parser {
             }else if(to_order.getAll_AST().get(0).getType().equals("operator")) {
                 //BasicOperators defaultAST = (BasicOperators) to_order.getAll_AST().get(0);
                 basicOperators.setRight(orderAST(to_order, level + 1, null, be_ordered));
+
                 //System.out.println("operator" + basicOperators.toString());
                 //to_order.popFrontAST(1);
                 return order_redo(to_order, level, basicOperators, be_ordered);
-            }else {
+            }/*else if(to_order.getAll_AST().get(1).getType().equals("close_curly")){
+                System.out.println("close_curly");
+                basicOperators.setRight(right);
+                to_order.popFrontAST(1);
+
+                return order_redo(to_order, level, basicOperators, be_ordered);
+
+            }*/else {
+                System.out.println(to_order.getAll_AST().get(0).getType());
+
                 //error = true;
                 basicOperators.setRight(orderAST(to_order, level + 1, basicOperators, be_ordered));
                 to_order.popFrontAST(1);
 
                 return order_redo(to_order, level, basicOperators, be_ordered);
-
             }
         }else {
             basicOperators.setRight(orderAST(to_order, level + 1, basicOperators, be_ordered));
