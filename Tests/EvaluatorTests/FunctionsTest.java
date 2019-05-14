@@ -8,18 +8,22 @@ import com.znaka.EvaluatorStructures.Functions.Function;
 import com.znaka.EvaluatorStructures.Functions.FunctionCall;
 import com.znaka.EvaluatorStructures.Variable;
 import com.znaka.Exceptions.*;
-import com.znaka.ParserStructures.*;
+import com.znaka.ParserStructures.DefaultAST;
 import com.znaka.ParserStructures.Expression.AssignAST;
 import com.znaka.ParserStructures.Expression.ExpressionAST;
 import com.znaka.ParserStructures.Expression.FunctionCallAST;
 import com.znaka.ParserStructures.Expression.VarAST;
+import com.znaka.ParserStructures.FunctionDefAST;
+import com.znaka.ParserStructures.NumberAST;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
 
 public class FunctionsTest extends EvaluatorTest {
     private static HashMap<String, Function> functions = new HashMap<>();
@@ -68,36 +72,25 @@ public class FunctionsTest extends EvaluatorTest {
 
     }
 
-    @Disabled
     @Test
-    public void CreateFunctionFromASTAndRun() throws EvaluatorException {
-        VarAST var1 = new VarAST();
-        var1.setVariableType("string");
-        var1.setName("var1");
+    public void CreateFunctionFromASTAndRun() throws EvaluatorException, ParserException, IOException, LexerException {
+        List<VarAST> args = new ArrayList<>();
+        args.add((VarAST)getAstFromString("int var1"));
 
-        Stack<VarAST> args = new Stack<>();
-        VarAST arg1 = new VarAST();
-        arg1.setVariableType("int");
-        arg1.setName("var1");
-        args.push(arg1);
+        List<DefaultAST> body_code = new ArrayList<>();
+        body_code.add(getAstFromString("string var1 = \"Hello\""));
+        body_code.add(getAstFromString("ret 10"));
+        body_code.add(getAstFromString("var1 = \"Hello\""));
 
-        NumberAST number_10 = new NumberAST("10");
-        number_10.setNumberType("integer");
-        Stack<DefaultAST> body_code = new Stack<>();
-        body_code.push(new AssignAST(var1, new StringAST("Hello")));
-        body_code.push(number_10);
 
-        MainAST body= new MainAST(body_code);
-
-        FunctionDefAST fn = new FunctionDefAST("int", args, body.getAll_AST());
-        fn.setName("test_func1");
-        // Function ast created
+        FunctionDefAST fn = new FunctionDefAST("test_func1", "int", args, body_code);
         evaluator.ExecLine(fn);
         Assertions.assertEquals(1, evaluator.getFunctions().size());
-        Stack<ExpressionAST> args2 = new Stack<>();
-        args2.push(number_10);
-        FunctionCallAST fn_call = new FunctionCallAST(null, args2, null);
-        fn_call.setName("test_func1");
+
+        List<ExpressionAST> callArgs = new ArrayList<>();
+        callArgs.add((ExpressionAST) getAstFromString("10"));
+
+        FunctionCallAST fn_call = new FunctionCallAST(fn.getName(), callArgs);
         evaluator.ExecLine(fn_call);
         checkLastValAndType(10, "int");
     }
@@ -148,11 +141,23 @@ public class FunctionsTest extends EvaluatorTest {
 
     }
 
-    @Disabled
     @Test
     public void FunctionCreation() throws LexerException, ParserException, EvaluatorException, IOException {
-        ExecuteString("func foo(string a) -> string{\n" +
-                "  ret a + \" + B\"\n" +
+        ExecuteString("string foo(string a){" +
+                "  ret a" +
                 "}");
+        Assertions.assertEquals(1, evaluator.getFunctions().size());
+        ExecuteString("foo(\"Toni\")");
+        checkLastValAndType("\"Toni\"", "string");
+    }
+
+    @Test
+    public void fileRun() throws IOException, EvaluatorException, ParserException, LexerException {
+        setNewFile("General/FuncTest.zk");
+        evaluator.run();
+        Assertions.assertEquals(2, evaluator.getFunctions().size());
+        checkLastValAndType(40, "int");
+
+//        checkLastValAndType("\"Toni\"", "string");
     }
 }

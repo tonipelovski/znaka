@@ -7,12 +7,13 @@ import com.znaka.ParserStructures.MainAST;
 import com.znaka.Tokens.TokenMatches.Token;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Stack;
 //add arg_count
 public class FunctionCallAST extends ExpressionAST implements FunctionCallASTInter {
     private String ret_type;
     private String name;
-    private Stack<ExpressionAST> args;
+    private List<ExpressionAST> args;
     private MainAST body;
 
     public MainAST getBody() {
@@ -32,11 +33,10 @@ public class FunctionCallAST extends ExpressionAST implements FunctionCallASTInt
     }
 
 
-    public FunctionCallAST(String return_type, Stack<ExpressionAST> arguments, MainAST body) {
+    public FunctionCallAST(String name, List<ExpressionAST> args) {
         super("call");
-        this.ret_type = return_type;
-        this.args = arguments;
-        this.body = body;
+        this.name = name;
+        this.args = args;
     }
 
     public String getRet_type() {
@@ -45,10 +45,10 @@ public class FunctionCallAST extends ExpressionAST implements FunctionCallASTInt
 
     @Override
     public String getName() {
-        return null;
+        return name;
     }
 
-    public Stack<ExpressionAST> getArgs() {
+    public List<ExpressionAST> getArgs() {
         return args;
     }
 

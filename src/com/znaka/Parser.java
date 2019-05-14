@@ -170,9 +170,7 @@ public class Parser {
 
                     }
                 }else{
-                    if(!func.getRet_type().equals("")){
-                        //error
-                    }
+
                     return order_redo(to_order, level, func, be_ordered);
 
                 }

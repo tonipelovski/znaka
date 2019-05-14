@@ -24,8 +24,8 @@ public class DefaultASTMatcher {
         asts.add(new ReturnAST(null));
         asts.add(new BreakAST());
         asts.add(new AssignAST(null, null));
-        asts.add(new FunctionDefAST("", null, null));
-        asts.add(new FunctionCallAST("", null, null));
+        asts.add(new FunctionDefAST("", null, null, null));
+        asts.add(new FunctionCallAST("", null));
         asts.add(new UnaryOperatorAST(null));
         asts.add(new OperatorAST(null, null));
         asts.add(new IfConditionAST(null, null));
