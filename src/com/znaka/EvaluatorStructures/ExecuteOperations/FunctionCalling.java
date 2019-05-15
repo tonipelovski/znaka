@@ -55,21 +55,21 @@ public class FunctionCalling extends BaseExecuteOper {
         getEvaluator().switchScope();
         for (DefaultAST line : f.getBody()) {
             getEvaluator().ExecLine(line);
-            if(line instanceof ReturnAST){
+            if(getEvaluator().getCallStack().isEmpty() || !getEvaluator().getCallStack().lastElement().equals(call)){
                 break;
             }
         }
         DataVal returned = getEvaluator().getLastReturnedValue();
-        if(f.getReturn_type().equals("void")){
+        /*if(f.getReturn_type().equals("void")){
             returned = new DataVal<>(null, "void");
         }
         validateReturnType(returned, f);
         getEvaluator().getCallStack().pop();
-        getEvaluator().switchScope();
+        getEvaluator().switchScope();*/
         return returned;
     }
 
-    private void validateReturnType(DataVal lastReturnedValue, Function f) throws WrongType {
+    public static void validateReturnType(DataVal lastReturnedValue, Function f) throws WrongType {
         if(!lastReturnedValue.getType().equals(f.getReturn_type())){
             throw new WrongType(lastReturnedValue.getType(), f.getReturn_type(), lastReturnedValue.toString());
         }

@@ -2,6 +2,8 @@ package com.znaka.EvaluatorStructures.ExecuteOperations;
 
 import com.znaka.Evaluator;
 import com.znaka.EvaluatorStructures.DataVal;
+import com.znaka.EvaluatorStructures.Functions.Function;
+import com.znaka.EvaluatorStructures.Functions.FunctionCall;
 import com.znaka.Exceptions.EvaluatorException;
 import com.znaka.ParserStructures.DefaultAST;
 import com.znaka.ParserStructures.ReturnAST;
@@ -14,6 +16,15 @@ public class ReturnExecuteOper extends BaseExecuteOper {
     @Override
     public DataVal exec(DefaultAST ast) throws EvaluatorException {
         ReturnAST ast1 = (ReturnAST)ast;
-        return getEvaluator().Eval(ast1.getToReturn());
+
+        DataVal returned = getEvaluator().Eval(ast1.getToReturn());
+        FunctionCall call = getEvaluator().getCallStack().pop();
+        Function f = call.getFunc();
+        if(f.getReturn_type().equals("void")){
+            returned = new DataVal<>(null, "void");
+        }
+        FunctionCalling.validateReturnType(returned, f);
+        getEvaluator().switchScope();
+        return returned;
     }
 }

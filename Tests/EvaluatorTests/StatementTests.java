@@ -5,8 +5,8 @@ import com.znaka.Exceptions.EvaluatorException;
 import com.znaka.Exceptions.LexerException;
 import com.znaka.Exceptions.ParserException;
 import com.znaka.Lexer;
-import com.znaka.Main;
 import com.znaka.Parser;
+import com.znaka.StdLib.Library;
 import com.znaka.Tokens.TokenMatches.Token;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -104,5 +104,12 @@ public class StatementTests extends EvaluatorTest {
         //evaluator.ProcessLine();
 
         Assertions.assertEquals(100, evaluator.getLastReturnedValue().getVal());
+    }
+
+    @Test
+    public void ScopesTest() throws IOException, EvaluatorException, ParserException, LexerException {
+        setNewFile("EvaluatorResources/ConditionalTests.zk");
+        Library.addFunctions(evaluator.getFunctions());
+        evaluator.run();
     }
 }

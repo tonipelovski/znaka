@@ -30,7 +30,7 @@ public class Evaluator {
         this.parser = parser;
         mainScope = new Scope();
         currentScope = mainScope;
-        lastReturnedValue = new DataVal<>(null, "void");
+        lastReturnedValue = new DataVal<>("null", "void");
         this.callStack = new Stack<>();
         addAllOperations();
     }
@@ -81,7 +81,8 @@ public class Evaluator {
         ExecLine(ast);
         if(debug){
             System.out.println("Running: " + getParser().getLastAst().toString());
-            System.out.println("Returned: " + (lastReturnedValue.getVal() == null ? "Void" : lastReturnedValue.getVal()));
+            System.out.println("Returned: " + (lastReturnedValue == null || lastReturnedValue.getVal() == null
+                    ? "Void" : lastReturnedValue.getVal().toString()));
         }
 
         return true;
@@ -156,7 +157,7 @@ public class Evaluator {
             revertMainScope();
         }
         else {
-            currentScope = callStack.firstElement().getScope();
+            currentScope = callStack.lastElement().getScope();
         }
     }
 
