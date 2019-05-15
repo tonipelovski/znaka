@@ -60,6 +60,7 @@ public class FunctionCalling extends BaseExecuteOper {
             }
         }
         DataVal returned = getEvaluator().getLastReturnedValue();
+        validateReturnType(returned, f);
         /*if(f.getReturn_type().equals("void")){
             returned = new DataVal<>(null, "void");
         }

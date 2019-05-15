@@ -23,7 +23,6 @@ public class ReturnExecuteOper extends BaseExecuteOper {
         if(f.getReturn_type().equals("void")){
             returned = new DataVal<>(null, "void");
         }
-        FunctionCalling.validateReturnType(returned, f);
         getEvaluator().switchScope();
         return returned;
     }
