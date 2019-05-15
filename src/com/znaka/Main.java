@@ -3,46 +3,23 @@ package com.znaka;
 import com.znaka.Exceptions.EvaluatorException;
 import com.znaka.Exceptions.LexerException;
 import com.znaka.Exceptions.ParserException;
-import com.znaka.Tokens.TokenMatches.Token;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
-import java.net.URL;
-import java.util.ArrayList;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 public class Main {
 
     public static void main(String[] args) throws IOException, LexerException, ParserException, EvaluatorException {
-	// write your code here
-        URL url = Main.class.getResource("ParserPrinting");
-        File file = new File(url.getPath());
-        BufferedReader reader = new BufferedReader(new FileReader(file));
-        ArrayList<Token> tokens = new ArrayList<>();
-        Lexer lexer = new Lexer(tokens, reader);
-
-        String lexerOutput = "";
-        while (lexer.readLine()) {
-            lexerOutput = lexerOutput.concat(lexer.tokensToString());
-        }
-        System.out.println(lexerOutput);
-        lexer.resetInput(new BufferedReader(new FileReader(file)));
-        System.out.println(lexer.tokensToString());
+        // write your code here
+        BufferedReader reader = Files.newBufferedReader(Paths.get("TestResources/General/Basic.zk"),
+                StandardCharsets.US_ASCII);
+        Lexer lexer = new Lexer(reader);
         Parser parser = new Parser(lexer);
         Evaluator evaluator = new Evaluator(parser);
-
-        //evaluator.ProcessLine();
-       // evaluator.ProcessLine();
-       // evaluator.ProcessLine();
-
-
-        //evaluator.ProcessLine();
-        //evaluator.ProcessLine();
-
-        while(parser.parseLine()){
-
-        }
-        System.out.println(parser.toString());
+        evaluator.setDebug(true);
+        evaluator.run();
     }
 }

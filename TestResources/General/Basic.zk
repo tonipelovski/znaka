@@ -1,0 +1,13 @@
+string foo(string a){
+    ton = 20
+    ret a
+}
+
+int calc(){
+    ton = 20
+    ret ton + 20
+}
+
+
+foo("Toni")
+calc()

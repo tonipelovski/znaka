@@ -22,6 +22,7 @@ import java.util.Stack;
 
 public class Evaluator {
     private Parser parser;
+    private boolean debug = false;
     private List<BaseExecuteOper> operations;
     private DataVal lastReturnedValue;
     private Scope mainScope;
@@ -79,9 +80,17 @@ public class Evaluator {
         System.out.println(ast1.getLeft());
         System.out.println(ast1.getRight());*/
 
-            ExecLine(ast);
-            return true;
-//        System.out.println("Last expression returned: " + lastReturnedValue);
+        ExecLine(ast);
+        if(debug){
+            System.out.println("Running: " + getParser().getLastAst().toString());
+            System.out.println("Returned: " + (lastReturnedValue == null ? "Void" : lastReturnedValue.toString()));
+        }
+
+        return true;
+    }
+
+    public void setDebug(boolean debug) {
+        this.debug = debug;
     }
 
     private void ErrorMessagePrint(Throwable exc){
