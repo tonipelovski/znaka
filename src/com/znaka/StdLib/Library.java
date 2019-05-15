@@ -23,7 +23,7 @@ public class Library {
             @Override
             public DataVal call(List<DataVal> arguments) {
                 System.out.println(arguments.get(0));
-                return new DataVal<>(null, "void");
+                return null;
             }
 
         };

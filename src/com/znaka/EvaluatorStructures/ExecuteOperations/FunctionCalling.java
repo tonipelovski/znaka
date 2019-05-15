@@ -43,6 +43,9 @@ public class FunctionCalling extends BaseExecuteOper {
         }
         if(f instanceof NativeFunction){
             DataVal ret = ((NativeFunction) f).call(args);
+            if(f.getReturn_type().equals("void")){
+                ret = new DataVal<>(null, "void");
+            }
             validateReturnType(ret, f);
             return ret;
         }
@@ -57,6 +60,9 @@ public class FunctionCalling extends BaseExecuteOper {
             }
         }
         DataVal returned = getEvaluator().getLastReturnedValue();
+        if(f.getReturn_type().equals("void")){
+            returned = new DataVal<>(null, "void");
+        }
         validateReturnType(returned, f);
         getEvaluator().getCallStack().pop();
         getEvaluator().switchScope();
