@@ -55,7 +55,7 @@ public class FunctionCalling extends BaseExecuteOper {
         getEvaluator().switchScope();
         for (DefaultAST line : f.getBody()) {
             getEvaluator().ExecLine(line);
-            if(!getEvaluator().getCallStack().isEmpty() && !getEvaluator().getCallStack().lastElement().equals(call)){
+            if(getEvaluator().getCallStack().isEmpty() || !getEvaluator().getCallStack().lastElement().equals(call)){
                 break;
             }
         }
