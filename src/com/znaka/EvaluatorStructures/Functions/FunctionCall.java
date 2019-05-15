@@ -7,13 +7,32 @@ import com.znaka.Exceptions.ArgumentException;
 import com.znaka.Exceptions.WrongType;
 
 import java.util.List;
+import java.util.Objects;
 
 public class FunctionCall {
     private Function func;
     private Scope scope;
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        FunctionCall that = (FunctionCall) o;
+        return func.equals(that.func) &&
+                scope.equals(that.scope);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(func, scope);
+    }
+
     public Scope getScope() {
         return scope;
+    }
+
+    public Function getFunc() {
+        return func;
     }
 
     private static void validateArgs(Function func, List<DataVal> args) throws ArgumentException, WrongType{

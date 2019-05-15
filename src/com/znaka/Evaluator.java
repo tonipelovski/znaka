@@ -30,7 +30,7 @@ public class Evaluator {
         this.parser = parser;
         mainScope = new Scope();
         currentScope = mainScope;
-        lastReturnedValue = new DataVal<>(null, "void");
+        lastReturnedValue = new DataVal<>("null", "void");
         this.callStack = new Stack<>();
         addAllOperations();
     }
@@ -157,7 +157,7 @@ public class Evaluator {
             revertMainScope();
         }
         else {
-            currentScope = callStack.firstElement().getScope();
+            currentScope = callStack.lastElement().getScope();
         }
     }
 

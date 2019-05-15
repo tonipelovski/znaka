@@ -1,32 +1,22 @@
-string foo(string a){
-    ton = 20
-    ret a
-}
-
 int fib(int n){
     if(n==0){
-        println("zero")
         ret 0
     }
     if(n==1){
-
+       println("reached 1")
        ret 1
     }
         a = n-1
         b = n-2
+
         println(a)
         println(b)
         f1 = fib(a)
+        println(f1)
         f2 = fib(b)
+        println(f2)
         ret f1 + f2
 
 }
 
-int rec(int n){
-    println(10)
-    ret 6
-
-}
-
-foo("Toni")
-fib(5)
+fib(3)

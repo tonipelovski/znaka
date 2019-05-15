@@ -111,7 +111,6 @@ public class Lexer {
         tokens.clear();
         if (line == null) {
             if(st.size() > 0){
-                br.close();
                 throw new InvalidSyntax(last_bracket.getLine());
 
             }
