@@ -11,6 +11,7 @@ import com.znaka.Tokens.TokenMatches.Token;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Stack;
 
 //import sun.security.krb5.internal.PAEncTSEnc;
@@ -105,30 +106,38 @@ public class Parser {
             if(to_order.getAll_AST().get(0).getType().equals("call")){
 
                 FunctionCallAST func = (FunctionCallAST) to_order.getAll_AST().get(0);
-                to_order.popFrontAST(2);
-                Stack<ExpressionAST> args = new Stack<>();
-                DefaultAST result = func;
-                DefaultAST temp = null;
-                while(true){
-                    error = false;
+                to_order.popFrontAST(1);
+                MainAST temp = new MainAST(new Stack<>());
+                DefaultAST defaultASTTemp = null;
+                int subAST = 1;
+                to_order.popFrontAST(1);
 
-                    result = orderAST(to_order, level + 1, result, be_ordered);
-
-                    if(result != null) {
-                        if (result.getType().equals("close_punc")) {
-                            args.add((ExpressionAST) temp);
-                            break;
-                        }else{
-                            if(!result.getType().equals("open_punc") && !result.getType().equals("coma")) {
-                                temp = result;
-                            }else if(result.getType().equals("coma")){
-                                args.add((ExpressionAST) temp);
-                            }
-                        }
+                while (subAST > 0) {
+                    defaultASTTemp = to_order.getAll_AST().get(0);
+                    if (defaultASTTemp.getType().equals("open_punc")) {
+                        subAST++;
                     }
-                    error = false;
+
+                    if (defaultASTTemp.getType().equals("close_punc")) {
+                        subAST--;
+                    }
+                    if (subAST > 0) {
+                        to_order.popFrontAST(1);
+                        temp.addAST(defaultASTTemp);
+                        //System.out.println(defaultASTTemp.toString() + subAST);
+
+                    }
                 }
-                func.setArgs(args);
+//                temp.addAST(defaultAST);
+
+                MainAST ordered = new MainAST(new Stack<DefaultAST>());
+                orderAST(temp, 0, null, ordered);
+                to_order.popFrontAST(1);
+                Stack<ExpressionAST> list = new Stack<>();
+                for(DefaultAST defaultAST1 : ordered.getAll_AST()){
+                    list.add((ExpressionAST) defaultAST1);
+                }
+                func.setArgs(list);
                 MainAST asts = new MainAST(new Stack<DefaultAST>());
                 //System.out.println(func.getRet_type());
                 if(to_order.has(1)) {
