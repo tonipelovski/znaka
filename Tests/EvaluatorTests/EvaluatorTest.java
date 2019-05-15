@@ -57,8 +57,8 @@ public abstract class EvaluatorTest {
     }
 
     protected  <T> void checkLastValAndType(T val, String type){
-        Assertions.assertEquals(val, evaluator.getLastReturnedValue().getVal());
         Assertions.assertEquals(type, evaluator.getLastReturnedValue().getType());
+        Assertions.assertEquals(val, evaluator.getLastReturnedValue().getVal());
     }
 
     protected  <T extends Throwable> void ExecuteAndCheckThrows(String s1, Class<T> exception) {
