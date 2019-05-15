@@ -81,7 +81,8 @@ public class Evaluator {
         ExecLine(ast);
         if(debug){
             System.out.println("Running: " + getParser().getLastAst().toString());
-            System.out.println("Returned: " + (lastReturnedValue.getVal() == null ? "Void" : lastReturnedValue.getVal()));
+            System.out.println("Returned: " + (lastReturnedValue == null || lastReturnedValue.getVal() == null
+                    ? "Void" : lastReturnedValue.getVal().toString()));
         }
 
         return true;
