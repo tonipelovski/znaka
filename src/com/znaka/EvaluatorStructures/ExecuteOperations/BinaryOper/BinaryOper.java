@@ -4,14 +4,14 @@ import com.znaka.Evaluator;
 import com.znaka.EvaluatorStructures.DataVal;
 import com.znaka.EvaluatorStructures.ExecuteOperations.BaseExecuteOper;
 import com.znaka.EvaluatorStructures.Variable;
-import com.znaka.Exceptions.CannotEvaluate;
-import com.znaka.Exceptions.EvaluatorException;
-import com.znaka.Exceptions.UnknownVariable;
+import com.znaka.Exceptions.*;
 import com.znaka.ParserStructures.DefaultAST;
+import com.znaka.ParserStructures.Expression.AssignAST;
 import com.znaka.ParserStructures.Expression.OperatorAST;
 import com.znaka.ParserStructures.NumberAST;
 import com.znaka.ParserStructures.Expression.VarAST;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -120,12 +120,16 @@ public class BinaryOper extends BaseExecuteOper {
 
         }
         List<String> compares = Arrays.asList(">", ">=", "<", "<=", "==");
+        List<String> calculate_assigns = Arrays.asList("+=", "-=", "*=", "/=");
+
         List<String> booleans = Arrays.asList("||", "&&");
 
         if(compares.contains(binaryOper.getOperator())){
             return compare(left_result, right_result, binaryOper);
         }else if (booleans.contains(binaryOper.getOperator())){
             return boolean_calculation(left_result, right_result, binaryOper);
+        }else if (calculate_assigns.contains(binaryOper.getOperator())){
+            return calculate_assign(left_result, right_result, binaryOper);
         }
         return calculate(left_result, right_result, binaryOper);
     }
@@ -179,6 +183,58 @@ public class BinaryOper extends BaseExecuteOper {
         return left_num > right_num;
     }
 
+    private DataVal calculate_assign(DataVal left, DataVal right, OperatorAST operatorAST) throws EvaluatorException {
+        Double left_num = Double.parseDouble(String.valueOf(left.getVal()));
+        Double right_num = Double.parseDouble(String.valueOf(right.getVal()));
+
+        if(left.getType().equals("int")){
+            left_num = (double) left_num.intValue();
+        }else if(left.getType().equals("float")){
+            left_num = (double) left_num.floatValue();
+        }
+        if(right.getType().equals("int")){
+            right_num = (double) right_num.intValue();
+        }else if(right.getType().equals("float")){
+            right_num = (double) right_num.floatValue();
+        }
+
+        Double result = null;
+
+        if(operatorAST.getOperator().equals("+=")){
+            result = add(left_num,right_num);
+        }
+        if(operatorAST.getOperator().equals("-=")){
+            result = sub(left_num,right_num);
+        }
+        if(operatorAST.getOperator().equals("*=")){
+            result = mul(left_num,right_num);
+        }
+        if(operatorAST.getOperator().equals("/=")){
+            result = div(left_num,right_num);
+        }
+        DataVal to_assign = null;
+        NumberAST numberAST = new NumberAST(null);
+
+        //System.out.println("real: " + 10/3);
+        if(left.getType().equals("int") && right.getType().equals("int")) {
+            to_assign = new DataVal(result.intValue(), "int");
+            numberAST.setNumberType("integer");
+        }
+        else if(left.getType().equals("float") || right.getType().equals("float")) {
+            to_assign = new DataVal(result.floatValue(), "float");
+            numberAST.setNumberType("float");
+        }else{
+            to_assign = new DataVal(result, "double");
+            numberAST.setNumberType("double");
+        }
+        numberAST.setValue(String.valueOf(to_assign.getVal()));
+        AssignAST assignAST = new AssignAST(operatorAST.getLeft(), numberAST);
+        DataVal assign_result = this.getEvaluator().Eval(assignAST);
+        getEvaluator().setLastReturnedValue(assign_result);
+        return assign_result;
+    }
+
+
     private DataVal calculate(DataVal left, DataVal right, OperatorAST operatorAST) throws CannotEvaluate, UnknownVariable{
         Double left_num = Double.parseDouble(String.valueOf(left.getVal()));
         Double right_num = Double.parseDouble(String.valueOf(right.getVal()));
@@ -193,9 +249,6 @@ public class BinaryOper extends BaseExecuteOper {
         }else if(right.getType().equals("float")){
             right_num = (double) right_num.floatValue();
         }
-        System.out.println("real: " + left.getType() + left.getVal());
-        System.out.println("real: " + right.getType() + right.getVal());
-
 
         Double result = null;
 

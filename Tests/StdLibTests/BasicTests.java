@@ -21,6 +21,15 @@ public class BasicTests extends EvaluatorTest {
         ExecuteString("println(\"heya\")");
         ExecuteString("pow(2.0, 3.0)");
         checkLastValAndType(8.0, "double");
+
+        ExecuteString("sqrt(4.0)");
+        checkLastValAndType(2.0, "double");
+
+        ExecuteString("floor(3.5)");
+        checkLastValAndType(3.0, "double");
+
+        ExecuteString("ceil(3.5)");
+        checkLastValAndType(4.0, "double");
     }
 
     @Test
