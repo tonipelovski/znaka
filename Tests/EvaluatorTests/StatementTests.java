@@ -4,6 +4,7 @@ import com.znaka.Evaluator;
 import com.znaka.Exceptions.EvaluatorException;
 import com.znaka.Exceptions.LexerException;
 import com.znaka.Exceptions.ParserException;
+import com.znaka.Exceptions.UnknownVariable;
 import com.znaka.Lexer;
 import com.znaka.Parser;
 import com.znaka.StdLib.Library;
@@ -111,5 +112,10 @@ public class StatementTests extends EvaluatorTest {
         setNewFile("EvaluatorResources/ConditionalTests.zk");
         Library.addFunctions(evaluator.getFunctions());
         evaluator.run();
+        ExecuteStringNoExceptions("a");
+        ExecuteStringNoExceptions("b");
+        ExecuteAndCheckThrows("c", UnknownVariable.class);
+        ExecuteAndCheckThrows("d", UnknownVariable.class);
+
     }
 }
