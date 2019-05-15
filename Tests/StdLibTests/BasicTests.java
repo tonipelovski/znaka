@@ -19,6 +19,8 @@ public class BasicTests extends EvaluatorTest {
     @Test
     public void BasicTest() throws LexerException, ParserException, EvaluatorException, IOException {
         ExecuteString("println(\"heya\")");
+        ExecuteString("pow(2.0, 3.0)");
+        checkLastValAndType(8.0, "double");
     }
 
     @Test
