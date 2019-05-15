@@ -76,7 +76,6 @@ public class FunctionCallAST extends ExpressionAST implements FunctionCallASTInt
             }else if(flag && token.getType().equals("punc") && token.getValue().equals("(")){
                 setName(func_name);
                 parser.next(1);
-                System.out.println("matched");
                 return true;
             }else{
                 //System.out.println("here");

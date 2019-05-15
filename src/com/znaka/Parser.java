@@ -505,7 +505,7 @@ public class Parser {
                 return order_redo(to_order, level, basicOperators, be_ordered);
 
             }*/else {
-                System.out.println(to_order.getAll_AST().get(0).getType());
+                //System.out.println(to_order.getAll_AST().get(0).getType());
 
                 //error = true;
                 basicOperators.setRight(orderAST(to_order, level + 1, basicOperators, be_ordered));

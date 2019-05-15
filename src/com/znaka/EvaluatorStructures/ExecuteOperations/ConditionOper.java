@@ -34,7 +34,6 @@ public class ConditionOper extends BaseExecuteOper {
         conditionalScope.functions = getEvaluator().getCurrentScope().functions;
         getEvaluator().setCurrentScope(conditionalScope);
         if(ast instanceof IfConditionAST || ast instanceof ElseConditionAST) {
-            System.out.println("Condition");
 
             ConditionalsAST ast1 = (ConditionalsAST) ast;
             DataVal result = this.getEvaluator().Eval(ast1.getCond().getAll_AST().get(0));
