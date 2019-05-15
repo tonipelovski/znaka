@@ -19,11 +19,11 @@ public class Library {
 
         List<Variable> args = new ArrayList<>();
         args.add(new Variable<>("str", new DataVal<>("", "string"), false));
-        return new NativeFunction("println", "boolean", args) {
+        return new NativeFunction("println", "void", args) {
             @Override
             public DataVal call(List<DataVal> arguments) {
                 System.out.println(arguments.get(0));
-                return new DataVal<>(true, "boolean");
+                return new DataVal<>(null, "void");
             }
 
         };

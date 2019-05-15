@@ -25,6 +25,6 @@ public class BasicTests extends EvaluatorTest {
     public void FileTest() throws IOException, EvaluatorException, ParserException, LexerException {
         setNewFile("EvaluatorResources/NativeFunctions.zk");
         evaluator.run();
-        checkLastValAndType(true, "boolean");
+        checkLastValAndType(null, "void");
     }
 }

@@ -47,6 +47,7 @@ public class FunctionCalling extends BaseExecuteOper {
             return ret;
         }
         FunctionCall call = new FunctionCall(f, args);
+        call.getScope().functions.addAll(getEvaluator().getFunctions());
         getEvaluator().getCallStack().push(call);
         getEvaluator().switchScope();
         for (DefaultAST line : f.getBody()) {
