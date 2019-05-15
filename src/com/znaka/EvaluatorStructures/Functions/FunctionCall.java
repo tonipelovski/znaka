@@ -16,7 +16,7 @@ public class FunctionCall {
         return scope;
     }
 
-    private void validateArgs(List<DataVal> args) throws ArgumentException, WrongType{
+    private static void validateArgs(Function func, List<DataVal> args) throws ArgumentException, WrongType{
         if(args.size() < func.getArgs().size()){
             throw new ArgumentException("Too few arguments provided");
         }
@@ -42,7 +42,7 @@ public class FunctionCall {
     public FunctionCall(Function func, List<DataVal> args) throws ArgumentException, WrongType {
         this.func = func;
         this.scope = new Scope();
-        validateArgs(args);
+        validateArgs(func, args);
         createVariablesIntoScope(args);
 
 

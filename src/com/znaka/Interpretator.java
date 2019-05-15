@@ -15,24 +15,24 @@ public class Interpretator {
     private boolean interpretatorMode = false;
 
     public Interpretator(String filename, boolean debug) throws IOException { // exec file
-        BufferedReader reader = Files.newBufferedReader(Paths.get(filename),
-                StandardCharsets.US_ASCII);
-        Lexer lexer = new Lexer(reader);
-        Parser parser = new Parser(lexer);
-        evaluator = new Evaluator(parser);
+        evaluator = createEvaluator(Files.newBufferedReader(Paths.get(filename),
+                StandardCharsets.US_ASCII));
         Library.addFunctions(evaluator.getFunctions());
         evaluator.setDebug(debug);
 
     }
 
     public Interpretator(){ // interprator mode
-        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-        Lexer lexer = new Lexer(reader);
-        Parser parser = new Parser(lexer);
-        evaluator = new Evaluator(parser);
+        evaluator = createEvaluator(new BufferedReader(new InputStreamReader(System.in)));
         Library.addFunctions(evaluator.getFunctions());
         evaluator.setDebug(true);
         interpretatorMode = true;
+    }
+
+    private static Evaluator createEvaluator(BufferedReader reader){
+        Lexer lexer = new Lexer(reader);
+        Parser parser = new Parser(lexer);
+        return new Evaluator(parser);
     }
 
     public void run(){
@@ -46,7 +46,7 @@ public class Interpretator {
                 } catch (Throwable e) {
                     ErrorMessagePrint(e);
                     System.out.println();
-                    if(e instanceof ExitException){
+                    if(e instanceof ExitException || !interpretatorMode){
                         break;
                     }
                 }
