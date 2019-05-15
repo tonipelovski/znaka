@@ -126,16 +126,16 @@ public class FunctionsTest extends EvaluatorTest {
 
         List<DefaultAST> body_code = new ArrayList<>();
         body_code.add(getAstFromString("string var1 = \"Hello\""));
-        body_code.add(getAstFromString("\"Beak it all\""));
+        body_code.add(getAstFromString("ret \"Beak it all\""));
 
 
-        FunctionASTDefMock fn = new FunctionASTDefMock("test_func1", "int", args, body_code);
+        FunctionDefAST fn = new FunctionDefAST("test_func1", "int", args, body_code);
         evaluator.ExecLine(fn);
 
         List<ExpressionAST> callArgs = new ArrayList<>();
         callArgs.add((ExpressionAST) getAstFromString("10"));
 
-        FunctionCallAstMock fn_call = new FunctionCallAstMock(fn.getName(), callArgs);
+        FunctionCallAST fn_call = new FunctionCallAST(fn.getName(), callArgs);
         Assertions.assertThrows(WrongType.class, () -> evaluator.ExecLine(fn_call));
 
 
