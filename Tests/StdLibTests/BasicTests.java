@@ -20,6 +20,10 @@ public class BasicTests extends EvaluatorTest {
     @Test
     public void BasicTest() throws LexerException, ParserException, EvaluatorException, IOException {
         ExecuteString("println(\"heya\")");
+    }
+
+    @Test
+    public void BasicMathTest() throws LexerException, ParserException, EvaluatorException, IOException {
         ExecuteString("pow(2.0, 3.0)");
         checkLastValAndType(8.0, "double");
 
@@ -31,6 +35,17 @@ public class BasicTests extends EvaluatorTest {
 
         ExecuteString("ceil(3.5)");
         checkLastValAndType(4.0, "double");
+
+        ExecuteString("rand()");
+    }
+
+    @Test
+    public void AToTests() throws LexerException, ParserException, EvaluatorException, IOException {
+        ExecuteString("atof(\"11\")");
+        checkLastValAndType(Float.parseFloat(String.valueOf(11.0)), "float");
+
+        ExecuteString("atoi(\"11\")");
+        checkLastValAndType(Integer.parseInt(String.valueOf(11)), "integer");
     }
 
     @Test
