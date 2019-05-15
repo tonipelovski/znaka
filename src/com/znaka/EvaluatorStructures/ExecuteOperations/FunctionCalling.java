@@ -5,6 +5,7 @@ import com.znaka.Evaluator;
 import com.znaka.EvaluatorStructures.DataVal;
 import com.znaka.EvaluatorStructures.Functions.Function;
 import com.znaka.EvaluatorStructures.Functions.FunctionCall;
+import com.znaka.EvaluatorStructures.Functions.NativeFunction;
 import com.znaka.Exceptions.EvaluatorException;
 import com.znaka.Exceptions.NoSuchFunction;
 import com.znaka.Exceptions.WrongType;
@@ -39,6 +40,11 @@ public class FunctionCalling extends BaseExecuteOper {
                 break;
             }
             // evaluate and add each
+        }
+        if(f instanceof NativeFunction){
+            DataVal ret = ((NativeFunction) f).call(args);
+            validateReturnType(ret, f);
+            return ret;
         }
         FunctionCall call = new FunctionCall(f, args);
         getEvaluator().getCallStack().push(call);

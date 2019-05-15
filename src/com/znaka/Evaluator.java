@@ -118,7 +118,7 @@ public class Evaluator {
         if(returned != null){ // if there is a return type (no return type are: statements and void)
             lastReturnedValue = returned;
         }
-       System.out.println(lastReturnedValue);
+//       System.out.println(lastReturnedValue);
     }
 
     public void setMainScope(Scope mainScope) {
