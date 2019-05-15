@@ -14,6 +14,10 @@ public class Library {
     public static void addFunctions(HashSet<Function> functions){
         functions.add(printFn());
         functions.add(pow());
+        functions.add(sqrt());
+        functions.add(floor());
+        functions.add(ceil());
+
     }
 
     private static NativeFunction printFn(){
@@ -43,5 +47,45 @@ public class Library {
 
         };
     }
+
+    private static Function sqrt(){
+        List<Variable> args = new ArrayList<>();
+        args.add(new Variable<>("base", new DataVal<>("", "double"), false));
+        return new NativeFunction("sqrt", "double", args) {
+            @Override
+            public DataVal call(List<DataVal> arguments) {
+                double result = Math.sqrt((double) arguments.get(0).getVal());
+                return new DataVal<>(result, "double");
+            }
+
+        };
+    }
+
+    private static Function floor(){
+        List<Variable> args = new ArrayList<>();
+        args.add(new Variable<>("base", new DataVal<>("", "double"), false));
+        return new NativeFunction("floor", "double", args) {
+            @Override
+            public DataVal call(List<DataVal> arguments) {
+                double result = Math.floor((double) arguments.get(0).getVal());
+                return new DataVal<>(result, "double");
+            }
+
+        };
+    }
+
+    private static Function ceil(){
+        List<Variable> args = new ArrayList<>();
+        args.add(new Variable<>("base", new DataVal<>("", "double"), false));
+        return new NativeFunction("ceil", "double", args) {
+            @Override
+            public DataVal call(List<DataVal> arguments) {
+                double result = Math.ceil((double) arguments.get(0).getVal());
+                return new DataVal<>(result, "double");
+            }
+
+        };
+    }
+
 
 }
