@@ -17,6 +17,10 @@ public class Library {
         functions.add(sqrt());
         functions.add(floor());
         functions.add(ceil());
+        functions.add(atof());
+        functions.add(atoi());
+        functions.add(rand());
+
 
     }
 
@@ -82,6 +86,46 @@ public class Library {
             public DataVal call(List<DataVal> arguments) {
                 double result = Math.ceil((double) arguments.get(0).getVal());
                 return new DataVal<>(result, "double");
+            }
+
+        };
+    }
+
+    private static Function rand(){
+        List<Variable> args = new ArrayList<>();
+        return new NativeFunction("rand", "double", args) {
+            @Override
+            public DataVal call(List<DataVal> arguments) {
+                return new DataVal<>(Math.random(), "double");
+            }
+
+        };
+    }
+
+    private static Function atof(){
+        List<Variable> args = new ArrayList<>();
+        args.add(new Variable<>("str", new DataVal<>("", "string"), false));
+        return new NativeFunction("atof", "float", args) {
+            @Override
+            public DataVal call(List<DataVal> arguments) {
+                String arg = String.valueOf(arguments.get(0));
+                arg = arg.substring(1, arg.length() - 1);
+                return new DataVal<>(Float.parseFloat(arg), "float");
+            }
+
+        };
+    }
+
+    private static Function atoi(){
+        List<Variable> args = new ArrayList<>();
+        args.add(new Variable<>("str", new DataVal<>("", "string"), false));
+        return new NativeFunction("atoi", "integer", args) {
+            @Override
+            public DataVal call(List<DataVal> arguments) {
+                String arg = String.valueOf(arguments.get(0));
+                arg = arg.substring(1, arg.length() - 1);
+
+                return new DataVal<>(Integer.parseInt(arg), "integer");
             }
 
         };
