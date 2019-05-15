@@ -3,11 +3,19 @@ string foo(string a){
     ret a
 }
 
-int calc(){
-    ton = 20
-    ret ton + 20
+int fib(int n){
+    if(n==0){
+        ret 0
+    } else if(n==1){
+       ret 1
+    }
+    else{
+        a = n-1
+        b = n-2
+        ret fib(a) + fib(b)
+    }
+
 }
 
-
 foo("Toni")
-calc()
+println(fib(5))

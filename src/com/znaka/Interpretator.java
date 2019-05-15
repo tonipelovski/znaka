@@ -45,6 +45,7 @@ public class Interpretator {
                     evaluator.ProcessLine();
                 } catch (Throwable e) {
                     ErrorMessagePrint(e);
+                    e.printStackTrace();
                     System.out.println();
                     if(e instanceof ExitException || !interpretatorMode){
                         break;

@@ -120,7 +120,6 @@ public class Lexer {
         }
 
         if(!valid_brackets(line)){
-            br.close();
             throw new InvalidSyntax(last_bracket.getLine());
         }
         try {

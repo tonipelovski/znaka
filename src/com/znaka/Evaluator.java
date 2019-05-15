@@ -30,6 +30,7 @@ public class Evaluator {
         this.parser = parser;
         mainScope = new Scope();
         currentScope = mainScope;
+        lastReturnedValue = new DataVal<>(null, "void");
         this.callStack = new Stack<>();
         addAllOperations();
     }
