@@ -4,6 +4,7 @@ import com.znaka.EvaluatorStructures.DataVal;
 import com.znaka.EvaluatorStructures.Functions.Function;
 import com.znaka.EvaluatorStructures.Functions.NativeFunction;
 import com.znaka.EvaluatorStructures.Variable;
+import com.znaka.Exceptions.ExitException;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -17,6 +18,7 @@ public class Library {
         functions.add(sqrt());
         functions.add(floor());
         functions.add(ceil());
+        functions.add(exit());
 
     }
 
@@ -29,6 +31,18 @@ public class Library {
             public DataVal call(List<DataVal> arguments) {
                 System.out.println(arguments.get(0));
                 return null;
+            }
+
+        };
+    }
+
+    private static NativeFunction exit(){
+
+        List<Variable> args = new ArrayList<>();
+        return new NativeFunction("exit", "void", args) {
+            @Override
+            public DataVal call(List<DataVal> arguments) throws ExitException {
+                throw new ExitException();
             }
 
         };

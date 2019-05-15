@@ -2,6 +2,7 @@ package StdLibTests;
 
 import EvaluatorTests.EvaluatorTest;
 import com.znaka.Exceptions.EvaluatorException;
+import com.znaka.Exceptions.ExitException;
 import com.znaka.Exceptions.LexerException;
 import com.znaka.Exceptions.ParserException;
 import com.znaka.StdLib.Library;
@@ -33,7 +34,7 @@ public class BasicTests extends EvaluatorTest {
     }
 
     @Test
-    public void FileTest() throws IOException, EvaluatorException, ParserException, LexerException {
+    public void FileTest() throws IOException, EvaluatorException, ParserException, LexerException, ExitException {
         setNewFile("EvaluatorResources/NativeFunctions.zk");
         evaluator.run();
         checkLastValAndType(null, "void");

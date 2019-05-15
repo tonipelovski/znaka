@@ -126,7 +126,6 @@ public class Lexer {
         try {
             tokens = tm.tokenizeLine(line);
         }catch (TokenMatchException tme){
-            br.close();
             throw new TokenMatchException(String.format("Couldn't process line(%d): ", lineNum)  + tme.getMessage());
         }
         lineNum++;

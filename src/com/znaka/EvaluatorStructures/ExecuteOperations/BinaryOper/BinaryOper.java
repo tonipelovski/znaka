@@ -4,14 +4,16 @@ import com.znaka.Evaluator;
 import com.znaka.EvaluatorStructures.DataVal;
 import com.znaka.EvaluatorStructures.ExecuteOperations.BaseExecuteOper;
 import com.znaka.EvaluatorStructures.Variable;
-import com.znaka.Exceptions.*;
+import com.znaka.Exceptions.CannotEvaluate;
+import com.znaka.Exceptions.EvaluatorException;
+import com.znaka.Exceptions.ExitException;
+import com.znaka.Exceptions.UnknownVariable;
 import com.znaka.ParserStructures.DefaultAST;
 import com.znaka.ParserStructures.Expression.AssignAST;
 import com.znaka.ParserStructures.Expression.OperatorAST;
-import com.znaka.ParserStructures.NumberAST;
 import com.znaka.ParserStructures.Expression.VarAST;
+import com.znaka.ParserStructures.NumberAST;
 
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -22,7 +24,7 @@ public class BinaryOper extends BaseExecuteOper {
     }
 
     @Override
-    public DataVal exec(DefaultAST ast) throws EvaluatorException {
+    public DataVal exec(DefaultAST ast) throws EvaluatorException, ExitException {
         DataVal ret = null;
         OperatorAST binaryOper = (OperatorAST) ast;
 
@@ -183,7 +185,7 @@ public class BinaryOper extends BaseExecuteOper {
         return left_num > right_num;
     }
 
-    private DataVal calculate_assign(DataVal left, DataVal right, OperatorAST operatorAST) throws EvaluatorException {
+    private DataVal calculate_assign(DataVal left, DataVal right, OperatorAST operatorAST) throws EvaluatorException, ExitException {
         Double left_num = Double.parseDouble(String.valueOf(left.getVal()));
         Double right_num = Double.parseDouble(String.valueOf(right.getVal()));
 

@@ -8,10 +8,7 @@ import com.znaka.EvaluatorStructures.Functions.Function;
 import com.znaka.EvaluatorStructures.Functions.FunctionCall;
 import com.znaka.EvaluatorStructures.Scope;
 import com.znaka.EvaluatorStructures.Variable;
-import com.znaka.Exceptions.CannotEvaluate;
-import com.znaka.Exceptions.EvaluatorException;
-import com.znaka.Exceptions.LexerException;
-import com.znaka.Exceptions.ParserException;
+import com.znaka.Exceptions.*;
 import com.znaka.ParserStructures.DefaultAST;
 
 import java.io.IOException;
@@ -55,12 +52,12 @@ public class Evaluator {
 
     }
 
-    public void run() throws ParserException, IOException, LexerException, EvaluatorException {
+    public void run() throws ParserException, IOException, LexerException, EvaluatorException, ExitException {
         while(ProcessLine()){
         }
     }
 
-    public boolean ProcessLine() throws ParserException, IOException, LexerException, EvaluatorException {
+    public boolean ProcessLine() throws ParserException, IOException, LexerException, EvaluatorException, ExitException {
         if(!parser.parseLine()){
             return false;
         }
@@ -83,7 +80,7 @@ public class Evaluator {
         ExecLine(ast);
         if(debug){
             System.out.println("Running: " + getParser().getLastAst().toString());
-            System.out.println("Returned: " + (lastReturnedValue == null ? "Void" : lastReturnedValue.toString()));
+            System.out.println("Returned: " + (lastReturnedValue.getVal() == null ? "Void" : lastReturnedValue.getVal()));
         }
 
         return true;
@@ -122,7 +119,7 @@ public class Evaluator {
         return parser;
     }
 
-    public void ExecLine(DefaultAST ast) throws EvaluatorException {
+    public void ExecLine(DefaultAST ast) throws EvaluatorException, ExitException {
         DataVal returned = Eval(ast);
         if(returned != null){ // if there is a return type (no return type are: statements and void)
             lastReturnedValue = returned;
@@ -142,7 +139,7 @@ public class Evaluator {
         return currentScope;
     }
 
-    public DataVal Eval(DefaultAST ast) throws EvaluatorException {
+    public DataVal Eval(DefaultAST ast) throws EvaluatorException, ExitException {
         for (BaseExecuteOper oper : operations) {
             //System.out.println(ast.getClass());
             if(ast.getClass().isAssignableFrom(oper.getMatchClass()) || oper.getMatchClass().isAssignableFrom(ast.getClass())){ // can it be casted to the oper MatchClass
