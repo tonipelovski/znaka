@@ -82,7 +82,6 @@ public class UnaryOper extends BaseExecuteOper {
         }else{
             left_num = false;
         }
-        System.out.println(left_result.getType() + " " + left_result.getVal());
         if(unaryOperatorAST.getOperator().equals("!")){
             return new DataVal(not(left_num), "boolean");
         }
