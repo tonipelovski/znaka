@@ -26,17 +26,20 @@ public class ConditionOper extends BaseExecuteOper {
     @Override
     public DataVal exec(DefaultAST ast) throws EvaluatorException {
 
-        originalScope.variables.addAll(getEvaluator().getMainScope().variables);
-        originalScope.functions.addAll(getEvaluator().getMainScope().functions);
+        originalScope.variables.addAll(getEvaluator().getCurrentScope().variables);
+        originalScope.functions.addAll(getEvaluator().getCurrentScope().functions);
         //originalScope = eval.getMainScope();
 
-        conditionalScope.variables = getEvaluator().getCurrentScope().variables;
-        conditionalScope.functions = getEvaluator().getCurrentScope().functions;
+        conditionalScope.variables.addAll(getEvaluator().getCurrentScope().variables);
+        conditionalScope.functions.addAll(getEvaluator().getCurrentScope().functions);
         getEvaluator().setCurrentScope(conditionalScope);
         if(ast instanceof IfConditionAST || ast instanceof ElseConditionAST) {
 
             ConditionalsAST ast1 = (ConditionalsAST) ast;
-            DataVal result = this.getEvaluator().Eval(ast1.getCond().getAll_AST().get(0));
+            DataVal result = new DataVal(true, "boolean");
+            if(ast1.getCond() != null){
+                result = this.getEvaluator().Eval(ast1.getCond().getAll_AST().get(0));
+            }
             if (result != null) {
                 getEvaluator().setLastReturnedValue(result);
             }
@@ -47,11 +50,16 @@ public class ConditionOper extends BaseExecuteOper {
             if (cond_result) {
                 MainAST body = ast1.getBody();
                 for (DefaultAST ast2 : body.getAll_AST()) {
-                    DataVal body_result = this.getEvaluator().Eval(ast2);
-                    if (body_result != null) {
-                        getEvaluator().setLastReturnedValue(body_result);
+                    if(ast2.getType().equals("conditional")){
+                        new ConditionOper(getEvaluator()).exec(ast2);
+                    }else {
+                        DataVal body_result = this.getEvaluator().Eval(ast2);
+                        if (body_result != null) {
+                            getEvaluator().setLastReturnedValue(body_result);
+                        }
                     }
                 }
+
             } else {
                 if(ast1.getElse_cond() == null){
                     return null;
@@ -60,9 +68,13 @@ public class ConditionOper extends BaseExecuteOper {
 
                     MainAST body = ast1.getElse_cond().getBody();
                     for (DefaultAST ast2 : body.getAll_AST()) {
-                        DataVal body_result = this.getEvaluator().Eval(ast2);
-                        if (body_result != null) {
-                            getEvaluator().setLastReturnedValue(body_result);
+                        if(ast2.getType().equals("conditional")){
+                            new ConditionOper(getEvaluator()).exec(ast2);
+                        }else {
+                            DataVal body_result = this.getEvaluator().Eval(ast2);
+                            if (body_result != null) {
+                                getEvaluator().setLastReturnedValue(body_result);
+                            }
                         }
                     }
                 }else{
@@ -84,9 +96,13 @@ public class ConditionOper extends BaseExecuteOper {
             while (cond_result) {
                 MainAST body = ast1.getBody();
                 for (DefaultAST ast2 : body.getAll_AST()) {
-                    DataVal body_result = this.getEvaluator().Eval(ast2);
-                    if (body_result != null) {
-                        getEvaluator().setLastReturnedValue(body_result);
+                    if(ast2.getType().equals("conditional")){
+                        new ConditionOper(getEvaluator()).exec(ast2);
+                    }else {
+                        DataVal body_result = this.getEvaluator().Eval(ast2);
+                        if (body_result != null) {
+                            getEvaluator().setLastReturnedValue(body_result);
+                        }
                     }
                 }
                 result = this.getEvaluator().Eval(ast1.getCond().getAll_AST().get(0));
@@ -101,7 +117,6 @@ public class ConditionOper extends BaseExecuteOper {
         }
 
         getEvaluator().setCurrentScope(originalScope);
-        getEvaluator().setMainScope(originalScope);
         return null;
     }
 }

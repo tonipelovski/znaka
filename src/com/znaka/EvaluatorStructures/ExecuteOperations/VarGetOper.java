@@ -25,7 +25,6 @@ public class VarGetOper extends BaseExecuteOper {
         String varName = ast1.getText();
         HashSet<Variable> vars = getEvaluator().getVariables();
         Variable var = findVar(vars, varName);
-
         if(var == null){
             throw new UnknownVariable("No such variable: " + varName);
         }

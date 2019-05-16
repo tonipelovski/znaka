@@ -55,7 +55,9 @@ public class AssignOper extends BaseExecuteOper {
             ret = rightSide;
         }
         Variable var = VarGetOper.findVar(vars, varName);
+
         if(var  == null){
+            System.out.println("var" + varName);
             var = new Variable<>(varName, ret, constant);
             vars.add(var);
         }

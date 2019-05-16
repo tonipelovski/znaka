@@ -19,4 +19,4 @@ int fib(int n){
 
 }
 
-fib(3)
+fib(5)

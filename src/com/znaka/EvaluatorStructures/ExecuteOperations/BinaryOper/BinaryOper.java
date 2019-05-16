@@ -10,6 +10,7 @@ import com.znaka.Exceptions.ExitException;
 import com.znaka.Exceptions.UnknownVariable;
 import com.znaka.ParserStructures.DefaultAST;
 import com.znaka.ParserStructures.Expression.AssignAST;
+import com.znaka.ParserStructures.Expression.FunctionCallAST;
 import com.znaka.ParserStructures.Expression.OperatorAST;
 import com.znaka.ParserStructures.Expression.VarAST;
 import com.znaka.ParserStructures.NumberAST;
@@ -50,7 +51,7 @@ public class BinaryOper extends BaseExecuteOper {
         DataVal left_result = null;
         HashSet<Variable> vars = getEvaluator().getVariables();
 
-        if(left instanceof OperatorAST || left instanceof VarAST){
+        if(left instanceof OperatorAST || left instanceof VarAST || left instanceof FunctionCallAST){
             //System.out.println("true");
             left_result = this.getEvaluator().Eval(left);
             if(left_result != null){
@@ -85,7 +86,7 @@ public class BinaryOper extends BaseExecuteOper {
             }
         }
 
-        if(right instanceof OperatorAST || right instanceof VarAST){
+        if(right instanceof OperatorAST || right instanceof VarAST || right instanceof FunctionCallAST){
             right_result = this.getEvaluator().Eval(right);
             if(right_result != null){
                 getEvaluator().setLastReturnedValue(right_result);
