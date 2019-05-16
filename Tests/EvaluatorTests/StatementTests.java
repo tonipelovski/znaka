@@ -112,10 +112,25 @@ public class StatementTests extends EvaluatorTest {
         setNewFile("EvaluatorResources/ConditionalTests.zk");
         Library.addFunctions(evaluator.getFunctions());
         evaluator.run();
+        ExecuteStringNoExceptions("if(True){a=10}");
+        ExecuteStringNoExceptions("a");
+        checkLastValAndType(10, "int");
         ExecuteStringNoExceptions("a");
         ExecuteStringNoExceptions("b");
         ExecuteAndCheckThrows("c", UnknownVariable.class);
         ExecuteAndCheckThrows("d", UnknownVariable.class);
+        ExecuteStringNoExceptions("if(True){a=10}\na");
+        checkLastValAndType(10, "int");
+
+    }
+
+    @Test
+    public void ScopesTest2() throws IOException, EvaluatorException, ParserException, LexerException {
+        setNewFile("EvaluatorResources/ConditionalTest2.zk");
+        Library.addFunctions(evaluator.getFunctions());
+        evaluator.run();
+        ExecuteAndCheckThrows("g", UnknownVariable.class);
+        ExecuteAndCheckThrows("c", UnknownVariable.class);
 
     }
 }
