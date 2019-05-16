@@ -15,6 +15,7 @@ import com.znaka.ParserStructures.Expression.FunctionCallAST;
 import com.znaka.ParserStructures.Expression.VarAST;
 import com.znaka.ParserStructures.FunctionDefAST;
 import com.znaka.ParserStructures.NumberAST;
+import com.znaka.StdLib.Library;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -160,4 +161,27 @@ public class FunctionsTest extends EvaluatorTest {
 
 //        checkLastValAndType("\"Toni\"", "string");
     }
+
+    @Test
+    public void FullFunctionTestFromFile() throws IOException, EvaluatorException, ParserException, LexerException {
+        setNewFile("EvaluatorResources/BasicFunctionTest.zk");
+        Library.addFunctions(evaluator.getFunctions());
+        evaluator.run();
+        ExecuteStringNoExceptions("f1()");
+        checkLastValAndType(10, "int");
+        ExecuteStringNoExceptions("f2()");
+        checkLastValAndType(1, "int");
+        ExecuteStringNoExceptions("f5()");
+        checkLastValAndType(null, "void");
+        ExecuteStringNoExceptions("f3()");
+        checkLastValAndType(20, "int");
+        ExecuteStringNoExceptions("f4()");
+        checkLastValAndType(21, "int");
+
+
+    }
+
+
+
+
 }
