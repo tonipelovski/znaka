@@ -44,9 +44,10 @@ public class ConditionOper extends BaseExecuteOper {
                 getEvaluator().setLastReturnedValue(result);
             }
             Boolean cond_result = false;
-            if (result.getType().equals("boolean")) {
+            if (result.getType().equals("bool") || result.getType().equals("boolean")) {
                 cond_result = (Boolean) result.getVal();
             }
+
             if (cond_result) {
                 MainAST body = ast1.getBody();
                 for (DefaultAST ast2 : body.getAll_AST()) {
@@ -56,6 +57,7 @@ public class ConditionOper extends BaseExecuteOper {
                         DataVal body_result = this.getEvaluator().Eval(ast2);
                         if (body_result != null) {
                             getEvaluator().setLastReturnedValue(body_result);
+                            System.out.println("body_result" + body_result.getVal());
                         }
                     }
                 }
@@ -115,7 +117,14 @@ public class ConditionOper extends BaseExecuteOper {
                 }
             }
         }
+        for(Variable variable : originalScope.variables){
+                for(Variable variable1 : conditionalScope.variables){
+                    if(variable.getName().equals(variable1.getName())){
+                        variable.setVal(variable1.getVal());
 
+                    }
+            }
+        }
         getEvaluator().setCurrentScope(originalScope);
         return null;
     }

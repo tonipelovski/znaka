@@ -20,14 +20,7 @@ public class StartFromFile {
         evaluator.ProcessLine();
         evaluator.ProcessLine();
         evaluator.ProcessLine();
-        evaluator.ProcessLine();
-        evaluator.ProcessLine();
 
-        evaluator.ProcessLine();
-        System.out.println("Outside Scope");
-        for(Variable variable : evaluator.getCurrentScope().variables){
-            System.out.println("outside scope: " + variable.getName());
-        }
 
         //evaluator.ProcessLine();
         //while(parser.parseLine()){

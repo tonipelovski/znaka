@@ -106,7 +106,9 @@ public class Lexer {
     }
 
     public boolean readLine() throws IOException, LexerException {
-        String line = br.readLine();
+
+        String line;
+        while((line = br.readLine()) != null && line.isEmpty()){}
         last_line = line;
         tokens.clear();
         if (line == null) {
