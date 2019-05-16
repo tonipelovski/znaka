@@ -109,7 +109,7 @@ public class StatementTests extends EvaluatorTest {
 
     @Test
     public void ScopesTest() throws IOException, EvaluatorException, ParserException, LexerException {
-        setNewFile("EvaluatorResources/ConditionalTests.zk");
+        setNewFile("ParserResources/ConditionalTests.zk");
         Library.addFunctions(evaluator.getFunctions());
         evaluator.run();
         ExecuteStringNoExceptions("if(True){a=10}");
@@ -126,7 +126,7 @@ public class StatementTests extends EvaluatorTest {
 
     @Test
     public void ScopesTest2() throws IOException, EvaluatorException, ParserException, LexerException {
-        setNewFile("EvaluatorResources/ConditionalTest2.zk");
+        setNewFile("ParserResources/ConditionalTest2.zk");
         Library.addFunctions(evaluator.getFunctions());
         evaluator.run();
         ExecuteAndCheckThrows("g", UnknownVariable.class);

@@ -3,62 +3,20 @@ package LexerTests;
 import com.znaka.Exceptions.InvalidSyntax;
 import com.znaka.Exceptions.LexerException;
 import com.znaka.Exceptions.TokenMatchException;
-import com.znaka.Lexer;
-import com.znaka.Tokens.TokenMatches.Token;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.io.*;
-import java.net.URL;
-import java.util.ArrayList;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import java.io.IOException;
 //TODO INdex into punctuation
 //TODO Fix error messages
 
-public class LexerTests {
-    private Lexer lexer;
-
-    @BeforeEach
-    public void setUp() throws FileNotFoundException {
-        URL url = LexerTests.class.getResource("test.txt");
-        File file = new File(url.getPath());
-        BufferedReader reader = new BufferedReader(new FileReader(file));
-        //BufferedReader reader = new BufferedReader(new StringReader("fun(10, 15)"));
-        ArrayList<Token> tokens = new ArrayList<>();
-        lexer = new Lexer(tokens, reader);
-    }
-
-    private <T extends Throwable> void LexerErrorHelper(String s1, Class<T> exception) {
-        lexer.resetInput(new BufferedReader(new StringReader(s1)));
-        Assertions.assertThrows(exception, () -> {
-            lexer.readLine();
-            lexer.readLine();
-        });
-    }
-
-    private void LineTestHelper(String line) throws IOException, LexerException {
-        lexer.resetInput(new BufferedReader(new StringReader(line)));
-        lexer.readLine();
-        Assertions.assertEquals(line, lexer.getLast_line());
-    }
-
-    private void ErrorMessageHelper(String expected, String actual) {
-        lexer.resetInput(new BufferedReader(new StringReader(actual)));
-        try {
-            lexer.readLine();
-            lexer.readLine();
-        } catch (Throwable t) {
-            assertEquals(expected, t.getMessage());
-        }
-    }
+public class LexerTests extends  LexerTest{
 
     @Test
     @DisplayName("Test if the lexer can pick the right tokens from a file")
     public void TestLexerPrint() throws IOException, LexerException {
-
+        setNewFile("LexerResources/test.txt");
         String lexerOutput = "";
         while (lexer.readLine()) {
             lexerOutput = lexerOutput.concat(lexer.tokensToString());

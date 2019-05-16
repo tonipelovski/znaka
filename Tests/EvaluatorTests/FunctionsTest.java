@@ -181,6 +181,19 @@ public class FunctionsTest extends EvaluatorTest {
 
     }
 
+    @Test
+    public void Recursion() throws IOException, EvaluatorException, ParserException, LexerException {
+        setNewFile("EvaluatorResources/Recursion.zk");
+        Library.addFunctions(evaluator.getFunctions());
+        evaluator.run();
+        ExecuteStringNoExceptions("fib(3)");
+        checkLastValAndType(1, "int");
+        ExecuteStringNoExceptions("fib(4)");
+        checkLastValAndType(2, "int");
+        ExecuteStringNoExceptions("fib(5)");
+        checkLastValAndType(3, "int");
+    }
+
 
 
 
