@@ -1,0 +1,22 @@
+int f1(){
+    ret 10
+}
+
+int f2(){
+    if(1==1){
+        ret 1
+    }
+    ret 2
+}
+
+int f3(){
+    ret f1() + f1()
+}
+
+int f4(){
+    ret f3() + f2()
+}
+
+void f5(){
+    println("Hey")
+}
