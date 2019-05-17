@@ -10,7 +10,6 @@ import com.znaka.Exceptions.EvaluatorException;
 import com.znaka.Exceptions.NoSuchFunction;
 import com.znaka.Exceptions.WrongType;
 import com.znaka.ParserStructures.DefaultAST;
-import com.znaka.ParserStructures.ReturnAST;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,9 +35,6 @@ public class FunctionCalling extends BaseExecuteOper {
                 break;
             }
             args.add(getEvaluator().Eval(arg));
-            if(arg instanceof ReturnAST){
-                break;
-            }
             // evaluate and add each
         }
         if(f instanceof NativeFunction){

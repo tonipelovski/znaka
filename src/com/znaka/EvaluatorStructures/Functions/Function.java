@@ -29,13 +29,13 @@ public class Function {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Function function = (Function) o;
-        return name.equals(function.name) &&
-                return_type.equals(function.return_type);
+        return name.equals(function.name)
+                && args.equals(function.args);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, return_type);
+        return Objects.hash(name, args);
     }
 
     public List<DefaultAST> getBody() {

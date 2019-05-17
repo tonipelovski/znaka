@@ -15,8 +15,17 @@ int f3(){
 
 int f4(){
     ret f3() + f2()
+    ret 8
+
 }
 
 void f5(){
     println("Hey")
+}
+
+int f6(){
+    if(True){
+        ret 7
+        ret 2
+    }
 }
