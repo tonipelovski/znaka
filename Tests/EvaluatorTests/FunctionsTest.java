@@ -178,7 +178,7 @@ public class FunctionsTest extends EvaluatorTest {
         ExecuteStringNoExceptions("f4()");
         checkLastValAndType(21, "int");
         ExecuteStringNoExceptions("f6()");
-        checkLastValAndType(21, "int");
+        checkLastValAndType(7, "int");
 
 
     }

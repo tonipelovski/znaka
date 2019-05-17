@@ -9,6 +9,7 @@ public class ReturnAST extends KeywordAST {
     private DefaultAST toReturn;
 
     public ReturnAST(DefaultAST toReturn) {
+        super("return");
         this.toReturn = toReturn;
     }
 

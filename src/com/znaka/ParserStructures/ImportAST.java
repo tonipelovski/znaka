@@ -9,6 +9,7 @@ public class ImportAST extends KeywordAST {
     private String fileImport;
 
     public ImportAST(String fileImport) {
+        super("import");
         this.fileImport = fileImport;
     }
 

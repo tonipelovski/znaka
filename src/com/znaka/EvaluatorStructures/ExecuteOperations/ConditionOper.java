@@ -16,11 +16,20 @@ import com.znaka.ParserStructures.Statement.LoopAST;
 public class ConditionOper extends BaseExecuteOper {
     private Scope conditionalScope;
     private Scope originalScope;
+    private boolean returnStatus;
     public ConditionOper(Evaluator eval) {
         super(ConditionalsAST.class, eval);
         conditionalScope = new Scope();
         originalScope = new Scope();
+        returnStatus = false;
+    }
 
+    public boolean isReturnStatus() {
+        return returnStatus;
+    }
+
+    public void setReturnStatus(boolean returnStatus) {
+        this.returnStatus = returnStatus;
     }
 
     @Override
@@ -52,12 +61,27 @@ public class ConditionOper extends BaseExecuteOper {
                 MainAST body = ast1.getBody();
                 for (DefaultAST ast2 : body.getAll_AST()) {
                     if(ast2.getType().equals("conditional")){
-                        new ConditionOper(getEvaluator()).exec(ast2);
-                    }else {
+                        ConditionOper conditionOper = new ConditionOper(getEvaluator());
+                        conditionOper.exec(ast2);
+                        if(conditionOper.isReturnStatus()){
+                            setReturnStatus(true);
+                            break;
+                        }
+                    }else if(ast2.getType().equals("return")){
                         DataVal body_result = this.getEvaluator().Eval(ast2);
                         if (body_result != null) {
                             getEvaluator().setLastReturnedValue(body_result);
-                            System.out.println("body_result" + body_result.getVal());
+                        }
+                        returnStatus = true;
+                        break;
+                    }
+                    else if(ast2.getType().equals("break")){
+                        break;
+                    }
+                    else {
+                        DataVal body_result = this.getEvaluator().Eval(ast2);
+                        if (body_result != null) {
+                            getEvaluator().setLastReturnedValue(body_result);
                         }
                     }
                 }
@@ -71,7 +95,22 @@ public class ConditionOper extends BaseExecuteOper {
                     MainAST body = ast1.getElse_cond().getBody();
                     for (DefaultAST ast2 : body.getAll_AST()) {
                         if(ast2.getType().equals("conditional")){
-                            new ConditionOper(getEvaluator()).exec(ast2);
+                            ConditionOper conditionOper = new ConditionOper(getEvaluator());
+                            conditionOper.exec(ast2);
+                            if(conditionOper.isReturnStatus()){
+                                setReturnStatus(true);
+                                break;
+                            }
+                        }else if(ast2.getType().equals("return")){
+                            DataVal body_result = this.getEvaluator().Eval(ast2);
+                            if (body_result != null) {
+                                getEvaluator().setLastReturnedValue(body_result);
+                            }
+                            returnStatus = true;
+                            break;
+                        }
+                        else if(ast2.getType().equals("break")){
+                            break;
                         }else {
                             DataVal body_result = this.getEvaluator().Eval(ast2);
                             if (body_result != null) {
@@ -99,7 +138,22 @@ public class ConditionOper extends BaseExecuteOper {
                 MainAST body = ast1.getBody();
                 for (DefaultAST ast2 : body.getAll_AST()) {
                     if(ast2.getType().equals("conditional")){
-                        new ConditionOper(getEvaluator()).exec(ast2);
+                        ConditionOper conditionOper = new ConditionOper(getEvaluator());
+                        conditionOper.exec(ast2);
+                        if(conditionOper.isReturnStatus()){
+                            setReturnStatus(true);
+                            break;
+                        }
+                    }else if(ast2.getType().equals("return")){
+                        DataVal body_result = this.getEvaluator().Eval(ast2);
+                        if (body_result != null) {
+                            getEvaluator().setLastReturnedValue(body_result);
+                        }
+                        returnStatus = true;
+                        break;
+                    }
+                    else if(ast2.getType().equals("break")){
+                        break;
                     }else {
                         DataVal body_result = this.getEvaluator().Eval(ast2);
                         if (body_result != null) {

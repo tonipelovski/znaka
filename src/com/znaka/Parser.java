@@ -370,7 +370,7 @@ public class Parser {
                 return order_redo(to_order, level, closeCurlyAST, be_ordered);
             }
 
-            if(to_order.getAll_AST().get(0).getType().equals("keyword")){
+            if(to_order.getAll_AST().get(0) instanceof KeywordAST ){
                 error = false;
                 DefaultAST keywordAST = to_order.getAll_AST().get(0);
                 to_order.popFrontAST(1);
