@@ -6,7 +6,6 @@ import com.znaka.EvaluatorStructures.Scope;
 import com.znaka.EvaluatorStructures.Variable;
 import com.znaka.Exceptions.EvaluatorException;
 import com.znaka.ParserStructures.DefaultAST;
-import com.znaka.ParserStructures.Expression.VarAST;
 import com.znaka.ParserStructures.MainAST;
 import com.znaka.ParserStructures.Statement.ConditionalsAST;
 import com.znaka.ParserStructures.Statement.ElseConditionAST;
@@ -35,9 +34,9 @@ public class ConditionOper extends BaseExecuteOper {
     @Override
     public DataVal exec(DefaultAST ast) throws EvaluatorException {
 
-        originalScope.variables.addAll(getEvaluator().getCurrentScope().variables);
-        originalScope.functions.addAll(getEvaluator().getCurrentScope().functions);
-        //originalScope = eval.getMainScope();
+        /*originalScope.variables.addAll(getEvaluator().getCurrentScope().variables);
+        originalScope.functions.addAll(getEvaluator().getCurrentScope().functions);*/
+        originalScope = getEvaluator().getCurrentScope();
 
         conditionalScope.variables.addAll(getEvaluator().getCurrentScope().variables);
         conditionalScope.functions.addAll(getEvaluator().getCurrentScope().functions);
@@ -88,6 +87,7 @@ public class ConditionOper extends BaseExecuteOper {
 
             } else {
                 if(ast1.getElse_cond() == null){
+                    getEvaluator().setCurrentScope(originalScope);
                     return null;
                 }
                 if (ast1.getElse_cond().getCond() == null) {

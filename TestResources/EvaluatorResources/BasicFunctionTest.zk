@@ -27,5 +27,20 @@ int f6(){
     if(True){
         ret 7
         ret 2
+        ret 5
     }
+    if(True){
+       ret 9
+    }
+    if(False){
+        ret 8
+    }
+    ret 10
+}
+
+int f7(int a){
+    if(False){
+
+    }
+    ret a
 }
