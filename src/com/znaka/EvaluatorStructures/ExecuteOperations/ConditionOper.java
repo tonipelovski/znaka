@@ -2,6 +2,7 @@ package com.znaka.EvaluatorStructures.ExecuteOperations;
 
 import com.znaka.Evaluator;
 import com.znaka.EvaluatorStructures.DataVal;
+import com.znaka.EvaluatorStructures.Functions.Function;
 import com.znaka.EvaluatorStructures.Scope;
 import com.znaka.EvaluatorStructures.Variable;
 import com.znaka.Exceptions.EvaluatorException;
@@ -34,27 +35,31 @@ public class ConditionOper extends BaseExecuteOper {
 
     @Override
     public DataVal exec(DefaultAST ast) throws EvaluatorException {
+        originalScope = null;
+        conditionalScope = new Scope();
+        //originalScope.variables.addAll(getEvaluator().getCurrentScope().variables);
+        //originalScope.functions.addAll(getEvaluator().getCurrentScope().functions);
+        originalScope = getEvaluator().getCurrentScope();
 
-        originalScope.variables.addAll(getEvaluator().getCurrentScope().variables);
-        originalScope.functions.addAll(getEvaluator().getCurrentScope().functions);
         //originalScope = eval.getMainScope();
 
         conditionalScope.variables.addAll(getEvaluator().getCurrentScope().variables);
         conditionalScope.functions.addAll(getEvaluator().getCurrentScope().functions);
+
         getEvaluator().setCurrentScope(conditionalScope);
         if(ast instanceof IfConditionAST || ast instanceof ElseConditionAST) {
 
             ConditionalsAST ast1 = (ConditionalsAST) ast;
-            DataVal result = new DataVal(true, "boolean");
+            DataVal result = null;
             if(ast1.getCond() != null){
                 result = this.getEvaluator().Eval(ast1.getCond().getAll_AST().get(0));
             }
+            Boolean cond_result = false;
             if (result != null) {
                 getEvaluator().setLastReturnedValue(result);
-            }
-            Boolean cond_result = false;
-            if (result.getType().equals("bool") || result.getType().equals("boolean")) {
-                cond_result = (Boolean) result.getVal();
+                if (result.getType().equals("bool") || result.getType().equals("boolean")) {
+                    cond_result = (Boolean) result.getVal();
+                }
             }
 
             if (cond_result) {
@@ -88,10 +93,19 @@ public class ConditionOper extends BaseExecuteOper {
 
             } else {
                 if(ast1.getElse_cond() == null){
+                   /* for(Variable variable : originalScope.variables){
+                        for(Variable variable1 : conditionalScope.variables){
+                            if(variable.getName().equals(variable1.getName())){
+                                variable.setVal(variable1.getVal());
+
+                            }
+                        }
+                    }
+*/
+                    getEvaluator().setCurrentScope(originalScope);
                     return null;
                 }
                 if (ast1.getElse_cond().getCond() == null) {
-
                     MainAST body = ast1.getElse_cond().getBody();
                     for (DefaultAST ast2 : body.getAll_AST()) {
                         if(ast2.getType().equals("conditional")){
@@ -102,6 +116,7 @@ public class ConditionOper extends BaseExecuteOper {
                                 break;
                             }
                         }else if(ast2.getType().equals("return")){
+                            System.out.println("returning");
                             DataVal body_result = this.getEvaluator().Eval(ast2);
                             if (body_result != null) {
                                 getEvaluator().setLastReturnedValue(body_result);
@@ -179,7 +194,9 @@ public class ConditionOper extends BaseExecuteOper {
                     }
             }
         }
-        getEvaluator().setCurrentScope(originalScope);
+        if(!returnStatus) {
+            getEvaluator().setCurrentScope(originalScope);
+        }
         return null;
     }
 }

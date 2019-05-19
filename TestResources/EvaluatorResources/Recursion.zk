@@ -8,9 +8,9 @@ int fib(int n){
     }
         a = n-1
         b = n-2
-
         f1 = fib(a)
         f2 = fib(b)
-        ret f1 + f2
+        result = f1 + f2
+        ret result
 
 }
