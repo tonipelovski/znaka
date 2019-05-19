@@ -1,4 +1,5 @@
 int fib(int n){
+
     if(n==0){
         ret 0
     }
@@ -8,9 +9,7 @@ int fib(int n){
     }
         a = n-1
         b = n-2
-        f1 = fib(a)
-        f2 = fib(b)
-        result = f1 + f2
-        ret result
+
+        ret fib(a) + fib(b)
 
 }

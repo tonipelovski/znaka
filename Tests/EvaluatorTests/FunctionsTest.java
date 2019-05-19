@@ -167,10 +167,11 @@ public class FunctionsTest extends EvaluatorTest {
         setNewFile("EvaluatorResources/BasicFunctionTest.zk");
         Library.addFunctions(evaluator.getFunctions());
         evaluator.run();
-        ExecuteStringNoExceptions("f1()");
-        checkLastValAndType(10, "int");
+        ExecuteStringNoExceptions("f7(7)");
+        checkLastValAndType(7, "int");
         ExecuteStringNoExceptions("f2()");
         checkLastValAndType(1, "int");
+        Assertions.assertEquals(0, evaluator.getCallStack().size());
         ExecuteStringNoExceptions("f5()");
         checkLastValAndType(null, "void");
         ExecuteStringNoExceptions("f3()");
@@ -179,6 +180,8 @@ public class FunctionsTest extends EvaluatorTest {
         checkLastValAndType(21, "int");
         ExecuteStringNoExceptions("f6()");
         checkLastValAndType(7, "int");
+        ExecuteStringNoExceptions("f7(5-1)");
+        checkLastValAndType(4, "int");
 
 
     }
@@ -188,6 +191,9 @@ public class FunctionsTest extends EvaluatorTest {
         setNewFile("EvaluatorResources/Recursion.zk");
         Library.addFunctions(evaluator.getFunctions());
         evaluator.run();
+        ExecuteStringNoExceptions("fib(1)");
+        checkLastValAndType(1, "int");
+        Assertions.assertEquals(0, evaluator.getCallStack().size());
         ExecuteStringNoExceptions("fib(3)");
         checkLastValAndType(1, "int");
         ExecuteStringNoExceptions("fib(4)");
