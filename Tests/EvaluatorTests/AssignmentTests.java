@@ -14,6 +14,7 @@ public class AssignmentTests extends EvaluatorTest {
 //        evaluator.run();
 //        evaluator.ProcessLine();
 //        evaluator.ProcessLine();
+//        ExecuteString("void c = if(1==1){}");
         ExecuteString("h = True");
         ExecuteString("j = 10 + 20.7");
         ExecuteString("a = 2");

@@ -44,3 +44,12 @@ int f7(int a){
     }
     ret a
 }
+
+void f8(non-var any a){
+    println(a)
+}
+
+int f9(non-var any a){
+    a = 7
+    ret a
+}

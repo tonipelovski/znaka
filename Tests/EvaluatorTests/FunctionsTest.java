@@ -182,8 +182,10 @@ public class FunctionsTest extends EvaluatorTest {
         checkLastValAndType(7, "int");
         ExecuteStringNoExceptions("f7(5-1)");
         checkLastValAndType(4, "int");
-
-
+        ExecuteStringNoExceptions("f8(7)");
+        checkLastValAndType(null, "void");
+        ExecuteAndCheckThrows("f9(5)", CannotModifyConstant.class);
+        
     }
 
     @Test
