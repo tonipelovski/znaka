@@ -195,11 +195,19 @@ public class FunctionsTest extends EvaluatorTest {
         checkLastValAndType(1, "int");
         Assertions.assertEquals(0, evaluator.getCallStack().size());
         ExecuteStringNoExceptions("fib(3)");
-        checkLastValAndType(1, "int");
-        ExecuteStringNoExceptions("fib(4)");
         checkLastValAndType(2, "int");
-        ExecuteStringNoExceptions("fib(5)");
+        ExecuteStringNoExceptions("fib(4)");
         checkLastValAndType(3, "int");
+        ExecuteStringNoExceptions("fib(5)");
+        checkLastValAndType(5, "int");
+        ExecuteStringNoExceptions("fact(1)");
+        checkLastValAndType(1, "int");
+        ExecuteStringNoExceptions("fact(2)");
+        checkLastValAndType(2, "int");
+        ExecuteStringNoExceptions("fact(3)");
+        checkLastValAndType(6, "int");
+        ExecuteStringNoExceptions("fact(4)");
+        checkLastValAndType(24, "int");
     }
 
 

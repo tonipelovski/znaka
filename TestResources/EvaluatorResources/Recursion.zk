@@ -13,3 +13,13 @@ int fib(int n){
         ret fib(a) + fib(b)
 
 }
+
+int fact(int n){
+    if(n==1){
+        ret 1
+    }
+    if(n==0){
+        ret 1
+    }
+    ret fact(n-1)*n
+}
