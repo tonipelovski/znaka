@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 
-public class BasicTests extends EvaluatorTest {
+public class StdlibTests extends EvaluatorTest {
     @BeforeEach
     public void addNatives(){
         Library.addFunctions(evaluator.getFunctions());
@@ -19,7 +19,9 @@ public class BasicTests extends EvaluatorTest {
 
     @Test
     public void BasicTest() throws LexerException, ParserException, EvaluatorException, IOException {
-        ExecuteString("println(\"heya\")");
+        ExecuteStringNoExceptions("println(\"heya\")");
+        ExecuteStringNoExceptions("println(2)");
+        ExecuteStringNoExceptions("println(10)");
     }
 
     @Test

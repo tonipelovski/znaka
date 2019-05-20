@@ -35,20 +35,17 @@ public class FunctionCall {
         return func;
     }
 
-    private static void validateArgs(Function func, List<DataVal> args) throws ArgumentException, WrongType{
-        if(args.size() < func.getArgs().size()){
+
+    public static void validateAllArgs(List<DataVal> arguments, List<Variable> args) throws ArgumentException, WrongType {
+        if(args.size() < arguments.size()){
             throw new ArgumentException("Too few arguments provided");
         }
-        else if(args.size() > func.getArgs().size()){
+        else if(args.size() > arguments.size()){
             throw new ArgumentException("Too much arguments provided");
         }
         for (int i = 0; i < args.size(); i++) {
-            if(!args.get(i).getType().equals(func.getArgs().get(i).getVal().getType())){
-                throw new WrongType(args.get(i).getType(),
-                        func.getArgs().get(i).getVal().getType(), args.get(i).getVal().toString());
-            }
+            Variable.validateType(args.get(i).getVal(), arguments.get(i));
         }
-
     }
 
     private void createVariablesIntoScope(List<DataVal> args) {
@@ -61,7 +58,7 @@ public class FunctionCall {
     public FunctionCall(Function func, List<DataVal> args) throws ArgumentException, WrongType {
         this.func = func;
         this.scope = new Scope();
-        validateArgs(func, args);
+        validateAllArgs( args, func.getArgs());
         createVariablesIntoScope(args);
 
 

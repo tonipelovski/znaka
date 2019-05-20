@@ -24,6 +24,16 @@ public class AssignmentTests extends EvaluatorTest {
         ExecuteString("int c = a");
     }
 
+    @Test
+    public void AnyTypeTest(){
+        ExecuteStringNoExceptions("any a = 10");
+        checkLastValAndType(10, "int");
+        ExecuteStringNoExceptions("any a = \"asd\"");
+        checkLastValAndType("\"asd\"", "string");
+        ExecuteStringNoExceptions("any a = True");
+        checkLastValAndType(true, "bool");
+    }
+
      // waiting for changes of lexer and parser
     @Test
     public void VariableWithTypesReturnTest() throws LexerException, ParserException,  IOException, EvaluatorException {

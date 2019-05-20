@@ -48,10 +48,14 @@ public class Variable<T> {
         if(isConst){
             throw new CannotModifyConstant();
         }
-        if(!newVal.getType().equals(val.getType())){
-            throw new WrongType(newVal.getType(), val.getType(), newVal.toString());
-        }
+        validateType(newVal, val);
         this.val = newVal;
+    }
+
+    public static void validateType(DataVal v, DataVal val2) throws WrongType {
+        if(!v.getType().equals("any") && !v.getType().equals(val2.getType())){
+            throw new WrongType(v.getType(), val2.getType(), v.toString());
+        }
     }
 
     public String getName() {

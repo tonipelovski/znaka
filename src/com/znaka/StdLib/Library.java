@@ -2,9 +2,12 @@ package com.znaka.StdLib;
 
 import com.znaka.EvaluatorStructures.DataVal;
 import com.znaka.EvaluatorStructures.Functions.Function;
+import com.znaka.EvaluatorStructures.Functions.FunctionCall;
 import com.znaka.EvaluatorStructures.Functions.NativeFunction;
 import com.znaka.EvaluatorStructures.Variable;
+import com.znaka.Exceptions.ArgumentException;
 import com.znaka.Exceptions.ExitException;
+import com.znaka.Exceptions.WrongType;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -27,12 +30,12 @@ public class Library {
     }
 
     private static NativeFunction printFn(){
-
         List<Variable> args = new ArrayList<>();
-        args.add(new Variable<>("str", new DataVal<>("", "string"), false));
+        args.add(new Variable<>("str", new DataVal<>("", "any"), false));
         return new NativeFunction("println", "void", args) {
             @Override
-            public DataVal call(List<DataVal> arguments) {
+            public DataVal call(List<DataVal> arguments) throws ArgumentException, WrongType {
+                FunctionCall.validateAllArgs(arguments, args);
                 System.out.println(arguments.get(0));
                 return null;
             }
