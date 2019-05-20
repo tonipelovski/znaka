@@ -9,10 +9,7 @@ import com.znaka.Exceptions.EvaluatorException;
 import com.znaka.Exceptions.ExitException;
 import com.znaka.Exceptions.UnknownVariable;
 import com.znaka.ParserStructures.DefaultAST;
-import com.znaka.ParserStructures.Expression.AssignAST;
-import com.znaka.ParserStructures.Expression.FunctionCallAST;
-import com.znaka.ParserStructures.Expression.OperatorAST;
-import com.znaka.ParserStructures.Expression.VarAST;
+import com.znaka.ParserStructures.Expression.*;
 import com.znaka.ParserStructures.NumberAST;
 
 import java.util.Arrays;
@@ -70,13 +67,7 @@ public class BinaryOper extends BaseExecuteOper {
                     left_result = new DataVal<>((float) lv, "float");
                 }
             }
-            if(leftType.equals("boolean")){
-                if(leftVal.equals("true")){
-                    left_result = new DataVal<>((int) 1, "int");
-                }else{
-                    left_result = new DataVal<>((int) 0, "int");
-                }
-            }
+
             if (leftType.equals("char")) {
                 //error
             }
@@ -86,7 +77,7 @@ public class BinaryOper extends BaseExecuteOper {
             }
         }
 
-        if(right instanceof OperatorAST || right instanceof VarAST || right instanceof FunctionCallAST){
+        if(right instanceof BasicOperators || right instanceof VarAST || right instanceof FunctionCallAST){
             right_result = this.getEvaluator().Eval(right);
             if(right_result != null){
                 getEvaluator().setLastReturnedValue(right_result);
@@ -106,13 +97,7 @@ public class BinaryOper extends BaseExecuteOper {
                     right_result = new DataVal<>((float) rv, "float");
                 }
             }
-            if(rightType.equals("boolean")){
-                if(rightVal.equals("true")){
-                    right_result = new DataVal<>((int) 1, "int");
-                }else{
-                    right_result = new DataVal<>((int) 0, "int");
-                }
-            }
+
             if(rightType.equals("char")){
                 //error
             }
@@ -138,12 +123,12 @@ public class BinaryOper extends BaseExecuteOper {
     }
 
     private DataVal boolean_calculation(DataVal left_result, DataVal right_result, OperatorAST binaryOper) {
-        Integer left_num = Integer.parseInt(String.valueOf(left_result.getVal()));
-        Integer right_num = Integer.parseInt(String.valueOf(right_result.getVal()));
+        Boolean left = Boolean.parseBoolean(String.valueOf(left_result.getVal()));
+        Boolean right = Boolean.parseBoolean(String.valueOf(right_result.getVal()));
         if(binaryOper.getOperator().equals("&&")){
-            return new DataVal(and(left_num, right_num), "boolean");
+            return new DataVal(and(left, right), "boolean");
         }else if(binaryOper.getOperator().equals("||")){
-            return new DataVal(or(left_num, right_num), "boolean");
+            return new DataVal(or(left, right), "boolean");
         }
         return null;
     }
@@ -279,27 +264,13 @@ public class BinaryOper extends BaseExecuteOper {
         return new DataVal(result, "double");
     }
 
-    private Boolean and(Integer left_num, Integer right_num) {
-        Boolean left_bool = false;
-        if(left_num == 1){
-            left_bool = true;
-        }
-        Boolean right_bool = false;
-        if(right_num == 1){
-            right_bool = true;
-        }
+    private Boolean and(Boolean left_bool, Boolean right_bool) {
+
         return left_bool && right_bool;
     }
 
-    private Boolean or(Integer left_num, Integer right_num) {
-        Boolean left_bool = false;
-        if(left_num == 1){
-            left_bool = true;
-        }
-        Boolean right_bool = false;
-        if(right_num == 1){
-            right_bool = true;
-        }
+    private Boolean or(Boolean left_bool, Boolean right_bool) {
+
         return left_bool || right_bool;
     }
 
