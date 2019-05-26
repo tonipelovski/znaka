@@ -23,9 +23,9 @@ public class StartFromFile {
 
 
         //evaluator.ProcessLine();
-        //while(parser.parseLine()){
+        while(parser.parseLine()){
 
-        //}
+        }
         System.out.println(parser.toString());
 
         //reader.close();
