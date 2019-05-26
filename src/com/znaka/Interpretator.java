@@ -45,8 +45,8 @@ public class Interpretator {
                     evaluator.ProcessLine();
                 } catch (Throwable e) {
                     ErrorMessagePrint(e);
-                    e.printStackTrace();
-                    System.out.println();
+//                    e.printStackTrace();
+
                     if(e instanceof ExitException || !interpretatorMode){
                         break;
                     }
@@ -58,7 +58,8 @@ public class Interpretator {
     private void ErrorMessagePrint(Throwable exc){
 
         final Parser parser = evaluator.getParser();
-        System.out.printf("0: %s\n  error: %s",
+        int linenum = interpretatorMode ? 1 : parser.getLexer().getLineNum()-1;
+        System.out.printf("%d: %s\n  error: %s\n", linenum,
                 parser.getLexer().getLast_line(), exc.getMessage());
     }
 }
