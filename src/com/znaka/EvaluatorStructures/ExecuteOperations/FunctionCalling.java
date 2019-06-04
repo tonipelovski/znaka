@@ -37,25 +37,27 @@ public class FunctionCalling extends BaseExecuteOper {
             args.add(getEvaluator().Eval(arg));
             // evaluate and add each
         }
+        DataVal returned = new DataVal<>(null, "void");
         if(f instanceof NativeFunction){
-            DataVal ret = ((NativeFunction) f).call(args);
+            returned = ((NativeFunction) f).call(args);
             if(f.getReturn_type().equals("void")){
-                ret = new DataVal<>(null, "void");
-            }
-            validateReturnType(ret, f);
-            return ret;
-        }
-        FunctionCall call = new FunctionCall(f, args);
-        call.getScope().functions.addAll(getEvaluator().getFunctions());
-        getEvaluator().getCallStack().push(call);
-        getEvaluator().switchScope();
-        for (DefaultAST line : f.getBody()) {
-            getEvaluator().ExecLine(line);
-            if(getEvaluator().getCallStack().isEmpty() || !getEvaluator().getCallStack().lastElement().equals(call)){
-                break;
+                returned = new DataVal<>(null, "void");
             }
         }
-        DataVal returned = getEvaluator().getLastReturnedValue();
+        else{
+            FunctionCall call = new FunctionCall(f, args);
+            call.getScope().functions.addAll(getEvaluator().getFunctions());
+            getEvaluator().getCallStack().push(call);
+            getEvaluator().switchScope();
+            for (DefaultAST line : f.getBody()) {
+                getEvaluator().ExecLine(line);
+                if(getEvaluator().getCallStack().isEmpty() || !getEvaluator().getCallStack().lastElement().equals(call)){
+                    break;
+                }
+            }
+            returned = getEvaluator().getLastReturnedValue();
+        }
+
         validateReturnType(returned, f);
         /*if(f.getReturn_type().equals("void")){
             returned = new DataVal<>(null, "void");
