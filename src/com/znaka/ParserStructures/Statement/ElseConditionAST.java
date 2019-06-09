@@ -40,7 +40,9 @@ public class ElseConditionAST extends ConditionalsAST {
         if (getBody() != null){
             for(DefaultAST defaultAST : getBody().getAll_AST()) {
                 if(defaultAST != null) {
-                    then = then.concat(defaultAST.toString());
+                    if(!defaultAST.getType().equals("close_curly")) {
+                        then = then.concat(defaultAST.toString());
+                    }
                 }
             }        }
         String else_cond = "";

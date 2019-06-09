@@ -365,8 +365,11 @@ public class Parser {
                 error = false;
                 DefaultAST closeCurlyAST = to_order.getAll_AST().get(0);
                 to_order.popFrontAST(1);
+                if(last != null) {
+                    be_ordered.addAST(last);
+                }
                 be_ordered.addAST(closeCurlyAST);
-                //be_ordered.addAST(last);
+               //System.out.println("From close curly: ");
                 return order_redo(to_order, level, closeCurlyAST, be_ordered);
             }
 
@@ -518,11 +521,13 @@ public class Parser {
 
                 //error = true;
                 basicOperators.setRight(orderAST(to_order, level + 1, basicOperators, be_ordered));
-                to_order.popFrontAST(1);
+                //to_order.popFrontAST(1);
 
                 return order_redo(to_order, level, basicOperators, be_ordered);
             }
         }else {
+           // System.out.println("From operator: " + to_order.getAll_AST().get(0));
+
             basicOperators.setRight(orderAST(to_order, level + 1, basicOperators, be_ordered));
             to_order.popFrontAST(1);
             return order_redo(to_order, level, basicOperators, be_ordered);
@@ -532,78 +537,144 @@ public class Parser {
 
 
     private DefaultAST getBody(MainAST to_order, int level, DefaultAST last, MainAST be_ordered, ConditionalsAST conditionalsAST, MainAST asts) throws IOException, LexerException, ParserException {
-        if(!to_order.has(2)) {
-            Parser temp_parser = new Parser(lexer);
+        Parser temp_parser;
+        DefaultAST defaultAST;
+        boolean noParsing = false;
+        int open = 0;
+        boolean oneLine = false;
+        if(to_order.has(1)) {
+            defaultAST = to_order.getAll_AST().get(0);
+            if(defaultAST.getType().equals("open_curly")) {
+                to_order.popFrontAST(1);
+                open = 1;
 
-            while(temp_parser.parseLine()){
-                //System.out.println("cccc");
-                for(DefaultAST defaultAST1 : temp_parser.mainAST.getAll_AST()){
-                    if(defaultAST1.getType().equals("close_curly")){
-                        temp_parser.mainAST.popFrontAST(1);
+                if (to_order.has(1)) {
+                    for (DefaultAST defaultAST1 : to_order.getAll_AST()) {
+                        if (defaultAST1.getType().equals("open_curly")) {
+                            open++;
 
-                        conditionalsAST.setBody(asts);
-
-                        if(temp_parser.mainAST.getAll_AST().get(0) instanceof ElseConditionAST){
-                            //System.out.println(temp_parser.mainAST.getAll_AST().get(0).toString());
-
-                            conditionalsAST.setElse_cond((ConditionalsAST) temp_parser.mainAST.getAll_AST().get(0));
-                            be_ordered.addAST(conditionalsAST);
-                            //System.out.println("there" + conditionalsAST.getElse_cond().toString());
-
-
-                        }else{
-                            be_ordered.addAST(conditionalsAST);
-                            //System.out.println("there" + conditionalsAST.toString());
-
+                        } else if (defaultAST1.getType().equals("close_curly")) {
+                            open--;
                         }
 
-                        temp_parser.mainAST.getAll_AST().clear();
-                        return null;
-                    }else if(!defaultAST1.getType().equals("open_curly")){
-                        temp_parser.mainAST.popFrontAST(1);
-                        asts.addAST(defaultAST1);
-
-                    }else if(defaultAST1.getType().equals("open_curly")){
-                        temp_parser.mainAST.popFrontAST(1);
+                        if (open == 0) {
+                            oneLine = true;
+                        }
                     }
-                    //System.out.println(defaultAST1.toString());
+                }
+            }else{
+                if (to_order.has(1)) {
+                    if(to_order.getAll_AST().get(0).getType().equals("conditional")){
+                        noParsing = true;
+                    }
+                    for (DefaultAST defaultAST1 : to_order.getAll_AST()) {
+                        if (defaultAST1.getType().equals("open_curly")) {
+                            open++;
+
+                        } else if (defaultAST1.getType().equals("close_curly")) {
+                            open--;
+                        }
+
+                    }
+
+                    if (open == 0) {
+                        oneLine = true;
+                    }else{
+                        open = 0;
+                    }
+                }
+            }
+        }else{
+            oneLine = false;
+        }
+        if(!oneLine){
+            //System.out.println("not one line");
+            MainAST currentLine = new MainAST(new Stack<>());
+            orderAST(to_order, level, conditionalsAST, currentLine);
+            temp_parser = new Parser(lexer);
+            MainAST body = new MainAST(new Stack<>());
+            for(DefaultAST toAdd : currentLine.getAll_AST()){
+                body.addAST(toAdd);
+            }
+            if(noParsing){
+                conditionalsAST.setBody(body);
+                be_ordered.addAST(conditionalsAST);
+                return null;
+            }
+            while(temp_parser.parseLine()) {
+                for(DefaultAST toAdd : temp_parser.mainAST.getAll_AST()){
+                    if(toAdd.getType().equals("open_curly")){
+                        open++;
+                    }else if(toAdd.getType().equals("close_curly")){
+                        open--;
+                    }else{
+                        body.addAST(toAdd);
+                    }
+                    //System.out.println("Open: " + open);
+                    if(open == 0){
+                        conditionalsAST.setBody(body);
+                        be_ordered.addAST(conditionalsAST);
+                        temp_parser.mainAST.popFrontAST(1);
+                        if(temp_parser.mainAST.getAll_AST().size() > 0) {
+                            if(temp_parser.mainAST.getAll_AST().get(0) instanceof ConditionalsAST){
+                                ((ConditionalsAST) be_ordered.getAll_AST().get(be_ordered.getAll_AST().size()-1)).setElse_cond((ConditionalsAST) temp_parser.mainAST.getAll_AST().get(0));
+                            }else{
+                                //System.out.println("start printing");
+                                for(DefaultAST defaultAST1 : temp_parser.mainAST.getAll_AST()){
+                                   // System.out.println(defaultAST1.toString());
+                                    if(defaultAST1.toString() != null){
+                                        be_ordered.addAST(defaultAST1);
+                                    }
+                                }
+                            }
+                        }
+                        return null;
+                    }
+                    temp_parser.mainAST.popFrontAST(1);
 
                 }
             }
         }else{
-            if(to_order.getAll_AST().get(0).getType().equals("open_curly")) {
-                to_order.popFrontAST(1);
-            }
-            boolean flag_body = false;
-            orderAST(to_order, 0, null, asts);
+            //System.out.println("oneline");
+            MainAST currentLine = new MainAST(new Stack<>());
+            orderAST(to_order, level, conditionalsAST, currentLine);
             MainAST body = new MainAST(new Stack<>());
-            for(DefaultAST defaultAST : asts.getAll_AST()){
-                if(conditionalsAST instanceof IfConditionAST){
-                    if(defaultAST instanceof ElseConditionAST){
-                        (conditionalsAST).setElse_cond((ConditionalsAST) defaultAST);
-                        break;
-                    }
+
+            for(DefaultAST toAdd : currentLine.getAll_AST()){
+                if(toAdd.getType().equals("open_curly")){
+                    open++;
+                }else if(toAdd.getType().equals("close_curly")){
+                    open--;
                 }else{
-                    if(conditionalsAST instanceof ElseConditionAST && defaultAST instanceof ConditionalsAST){
-                        conditionalsAST.setCond(((ConditionalsAST) defaultAST).getCond());
-                        conditionalsAST.setBody(((ConditionalsAST) defaultAST).getBody());
-                        conditionalsAST.setElse_cond(((ConditionalsAST) defaultAST).getElse_cond());
-                        flag_body = true;
+                    //System.out.println("toAdd: " + toAdd.toString());
 
-                    }else {
-                        body.addAST(defaultAST);
-                    }
+                    body.addAST(toAdd);
                 }
+                //System.out.println("Open: " + open);
+
+                if(open == 0){
+                    conditionalsAST.setBody(body);
+                    be_ordered.addAST(conditionalsAST);
+                    currentLine.popFrontAST(1);
+                    if(currentLine.getAll_AST().size() > 1) {
+                        if(currentLine.getAll_AST().get(1) instanceof ConditionalsAST){
+                            ((ConditionalsAST) be_ordered.getAll_AST().get(be_ordered.getAll_AST().size()-1)).setElse_cond((ConditionalsAST) currentLine.getAll_AST().get(1));
+                        }else{
+
+                            for(DefaultAST defaultAST1 : currentLine.getAll_AST()){
+                                // System.out.println(defaultAST1.toString());
+                                if(defaultAST1.toString() != null){
+                                    be_ordered.addAST(defaultAST1);
+                                }
+                            }                        }
+                    }
+                    //System.out.println(conditionalsAST.toString());
+
+                    return null;
+                }
+                currentLine.popFrontAST(1);
 
             }
-            if(!flag_body) {
-                conditionalsAST.setBody(asts);
-            }
-            //System.out.println("here" + conditionalsAST.toString());
-            be_ordered.addAST(conditionalsAST);
-
-            return order_redo(to_order, level, null, be_ordered);
-
         }
         return order_redo(to_order, level, conditionalsAST, be_ordered);
     }

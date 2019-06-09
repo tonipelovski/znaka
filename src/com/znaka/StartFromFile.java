@@ -18,8 +18,8 @@ public class StartFromFile {
         Parser parser = new Parser(lexer);
         Evaluator evaluator = new Evaluator(parser);
         evaluator.ProcessLine();
-        evaluator.ProcessLine();
-        evaluator.ProcessLine();
+        //evaluator.ProcessLine();
+        //evaluator.ProcessLine();
 
 
         //evaluator.ProcessLine();
