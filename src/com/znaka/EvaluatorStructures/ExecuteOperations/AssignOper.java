@@ -27,6 +27,7 @@ public class AssignOper extends BaseExecuteOper {
         ls.add(new CharOper());
         ls.add(new StringOper());
         ls.add(new BoolOper());
+        ls.add(new ArrayOper());
     }
 
     @Override
