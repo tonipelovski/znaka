@@ -22,7 +22,6 @@ public class InterpretatorTests {
     @Test
     public void CustomTest() throws IOException {
         Interpretator interpretator = new Interpretator("TestResources/General/CustomFile.zk", false);
-        Assertions.assertThrows(EvaluatorException.class, interpretator::run);
         interpretator.run();
         Assertions.assertEquals(1,1);
     }

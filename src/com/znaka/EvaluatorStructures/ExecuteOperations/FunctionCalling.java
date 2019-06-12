@@ -88,7 +88,7 @@ public class FunctionCalling extends BaseExecuteOper {
     }
 
     public static void validateReturnType(DataVal lastReturnedValue, Function f) throws WrongType {
-        if(!lastReturnedValue.getType().equals(f.getReturn_type())){
+        if(!f.getReturn_type().equals("any") && !lastReturnedValue.getType().equals(f.getReturn_type())){
             throw new WrongType(lastReturnedValue.getType(), f.getReturn_type(), lastReturnedValue.toString());
         }
     }
