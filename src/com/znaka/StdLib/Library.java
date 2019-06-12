@@ -18,16 +18,6 @@ import java.util.List;
 public class Library {
 
     public static void addFunctions(HashSet<Function> functions){
-        /*functions.add(printFn());
-        functions.add(pow());
-        functions.add(sqrt());
-        functions.add(floor());
-        functions.add(ceil());
-        functions.add(exit());
-        functions.add(atof());
-        functions.add(atoi());
-        functions.add(rand());*/
-        //GLEI SA KAK SE PRAWI
         Library l = new Library();
         Class<? extends Library> aClass = l.getClass();
         for (Method method : aClass.getDeclaredMethods()) {

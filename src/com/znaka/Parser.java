@@ -352,7 +352,7 @@ public class Parser {
                             VarAST varAST = (VarAST) operatorAST.getLeft();
                             expressionASTS.add(varAST);
                             expressionASTS.addAll(functionCallAST.getArgs());
-                            FunctionCallAST method = new FunctionCallAST(functionCallAST.getName(), expressionASTS);
+                            MethodAST method = new MethodAST(functionCallAST.getName(), expressionASTS);
                             return order_redo(to_order, level, method, be_ordered);
                         }else {
                             return getRight(to_order, level, last, be_ordered, operatorAST, right);

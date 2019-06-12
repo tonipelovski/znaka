@@ -10,6 +10,8 @@ import com.znaka.Exceptions.EvaluatorException;
 import com.znaka.Exceptions.NoSuchFunction;
 import com.znaka.Exceptions.WrongType;
 import com.znaka.ParserStructures.DefaultAST;
+import com.znaka.ParserStructures.Expression.ExpressionAST;
+import com.znaka.ParserStructures.Expression.MethodAST;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +24,15 @@ public class FunctionCalling extends BaseExecuteOper {
     @Override
     public DataVal exec(DefaultAST ast) throws EvaluatorException {
         FunctionCallASTInter fnc = (FunctionCallASTInter) ast;
+        if(ast instanceof MethodAST){
+            MethodAST st = (MethodAST) ast;
+            ExpressionAST instance = st.getArgs().get(0);
+            DataVal ins = getEvaluator().Eval(instance);
+            if(ins.getType().equals("array")){
+
+            }
+
+        }
         Function f = getEvaluator().getFunctions().stream()
                 .filter(o -> o.getName().equals(fnc.getName()))
                 .findFirst()
