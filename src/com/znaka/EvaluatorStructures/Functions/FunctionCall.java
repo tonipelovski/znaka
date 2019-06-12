@@ -44,7 +44,7 @@ public class FunctionCall {
             throw new ArgumentException("Too much arguments provided");
         }
         for (int i = 0; i < args.size(); i++) {
-            Variable.validateType(args.get(i).getVal(), arguments.get(i));
+            Variable.validateType( arguments.get(i), args.get(i).getVal());
         }
     }
 

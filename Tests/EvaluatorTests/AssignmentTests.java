@@ -28,11 +28,13 @@ public class AssignmentTests extends EvaluatorTest {
     @Test
     public void AnyTypeTest(){
         ExecuteStringNoExceptions("any a = 10");
-        checkLastValAndType(10, "int");
+        checkLastValAndType(10, "any");
+        ExecuteStringNoExceptions("a = \"cqla nosht rakiq sum pil, razbiram 4e, kirow e debil\"");
+        Assertions.assertEquals("any", evaluator.getLastReturnedValue().getType());
         ExecuteStringNoExceptions("any a = \"asd\"");
-        checkLastValAndType("\"asd\"", "string");
+        checkLastValAndType("\"asd\"", "any");
         ExecuteStringNoExceptions("any a = True");
-        checkLastValAndType(true, "bool");
+        checkLastValAndType(true, "any");
     }
 
      // waiting for changes of lexer and parser
