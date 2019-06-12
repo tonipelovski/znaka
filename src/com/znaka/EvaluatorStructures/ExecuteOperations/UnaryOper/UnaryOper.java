@@ -7,6 +7,7 @@ import com.znaka.EvaluatorStructures.Variable;
 import com.znaka.Exceptions.EvaluatorException;
 import com.znaka.Exceptions.ExitException;
 import com.znaka.ParserStructures.DefaultAST;
+import com.znaka.ParserStructures.Expression.AssignAST;
 import com.znaka.ParserStructures.Expression.OperatorAST;
 import com.znaka.ParserStructures.Expression.UnaryOperatorAST;
 import com.znaka.ParserStructures.Expression.VarAST;
@@ -107,15 +108,26 @@ public class UnaryOper extends BaseExecuteOper {
             result = sub(left_num);
         }
 
+        DataVal to_assign = null;
+        NumberAST numberAST = new NumberAST(null);
+
         //System.out.println("real: " + 10/3);
         if(left.getType().equals("int")) {
-            return new DataVal(result.intValue(), "int");
+            to_assign = new DataVal(result.intValue(), "int");
+            numberAST.setNumberType("integer");
         }
-        if(left.getType().equals("float")) {
-            return new DataVal(result.floatValue(), "float");
+        else if(left.getType().equals("float")) {
+            to_assign = new DataVal(result.floatValue(), "float");
+            numberAST.setNumberType("float");
+        }else{
+            to_assign = new DataVal(result, "double");
+            numberAST.setNumberType("double");
         }
-
-        return new DataVal(result, "double");
+        numberAST.setValue(String.valueOf(to_assign.getVal()));
+        AssignAST assignAST = new AssignAST(unaryOperatorAST.getLeft(), numberAST);
+        DataVal assign_result = this.getEvaluator().Eval(assignAST);
+        getEvaluator().setLastReturnedValue(assign_result);
+        return assign_result;
     }
 
     private Double add(Double left_num) {

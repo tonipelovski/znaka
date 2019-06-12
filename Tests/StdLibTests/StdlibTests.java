@@ -30,6 +30,7 @@ public class StdlibTests extends EvaluatorTest {
         checkLastValAndType(8.0, "double");
 
         ExecuteString("sqrt(4.0)");
+        ExecuteAndCheckThrows("sqrt('s')", ClassCastException.class);
         checkLastValAndType(2.0, "double");
 
         ExecuteString("floor(3.5)");

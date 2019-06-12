@@ -6,8 +6,7 @@ import com.znaka.Tokens.TokenMatches.Token;
 import java.util.ArrayList;
 import java.util.Stack;
 
-public class ArrayAST extends DefaultAST{
-    private String type;
+public class ArrayAST extends LiteralTypesAST{
     private Stack<DefaultAST> all_AST;
 
     public ArrayAST(Stack<DefaultAST> all_AST) {
@@ -15,8 +14,8 @@ public class ArrayAST extends DefaultAST{
         this.all_AST = all_AST;
     }
 
-    public String getType() {
-        return type;
+    public Stack<DefaultAST> getContent() {
+        return all_AST;
     }
 
     @Override

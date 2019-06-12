@@ -9,6 +9,8 @@ import com.znaka.Exceptions.ArgumentException;
 import com.znaka.Exceptions.ExitException;
 import com.znaka.Exceptions.WrongType;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -16,7 +18,7 @@ import java.util.List;
 public class Library {
 
     public static void addFunctions(HashSet<Function> functions){
-        functions.add(printFn());
+        /*functions.add(printFn());
         functions.add(pow());
         functions.add(sqrt());
         functions.add(floor());
@@ -24,8 +26,21 @@ public class Library {
         functions.add(exit());
         functions.add(atof());
         functions.add(atoi());
-        functions.add(rand());
+        functions.add(rand());*/
+        //GLEI SA KAK SE PRAWI
+        Library l = new Library();
+        Class<? extends Library> aClass = l.getClass();
+        for (Method method : aClass.getDeclaredMethods()) {
+            if(method.getReturnType().getSimpleName().equals("NativeFunction") ||
+                    method.getReturnType().getSimpleName().equals("Function")){
+                try {
+                    functions.add((NativeFunction) method.invoke(Library.class));
+                } catch (IllegalAccessException | InvocationTargetException e) {
+                    e.printStackTrace();
+                }
+            }
 
+        }
 
     }
 
@@ -55,7 +70,20 @@ public class Library {
         };
     }
 
-    private static Function pow(){
+    /*private static NativeFunction setDebug(){
+
+        List<Variable> args = new ArrayList<>();
+        args.add(new Variable<>("state", new DataVal<>("", "boolean"), false));
+        return new NativeFunction("debugSet", "void", args) {
+            @Override
+            public DataVal call(List<DataVal> arguments) throws ExitException {
+
+            }
+
+        };
+    }*/
+
+    private static NativeFunction pow(){
         List<Variable> args = new ArrayList<>();
         args.add(new Variable<>("base", new DataVal<>("", "double"), false));
         args.add(new Variable<>("arg", new DataVal<>("", "double"), false));
@@ -69,7 +97,7 @@ public class Library {
         };
     }
 
-    private static Function sqrt(){
+    private static NativeFunction sqrt(){
         List<Variable> args = new ArrayList<>();
         args.add(new Variable<>("base", new DataVal<>("", "double"), false));
         return new NativeFunction("sqrt", "double", args) {
@@ -82,7 +110,7 @@ public class Library {
         };
     }
 
-    private static Function floor(){
+    private static NativeFunction floor(){
         List<Variable> args = new ArrayList<>();
         args.add(new Variable<>("base", new DataVal<>("", "double"), false));
         return new NativeFunction("floor", "double", args) {
@@ -95,7 +123,7 @@ public class Library {
         };
     }
 
-    private static Function ceil(){
+    private static NativeFunction ceil(){
         List<Variable> args = new ArrayList<>();
         args.add(new Variable<>("base", new DataVal<>("", "double"), false));
         return new NativeFunction("ceil", "double", args) {
@@ -108,7 +136,7 @@ public class Library {
         };
     }
 
-    private static Function rand(){
+    private static NativeFunction rand(){
         List<Variable> args = new ArrayList<>();
         return new NativeFunction("rand", "double", args) {
             @Override
@@ -119,7 +147,7 @@ public class Library {
         };
     }
 
-    private static Function atof(){
+    private static NativeFunction atof(){
         List<Variable> args = new ArrayList<>();
         args.add(new Variable<>("str", new DataVal<>("", "string"), false));
         return new NativeFunction("atof", "float", args) {
@@ -133,7 +161,7 @@ public class Library {
         };
     }
 
-    private static Function atoi(){
+    private static NativeFunction atoi(){
         List<Variable> args = new ArrayList<>();
         args.add(new Variable<>("str", new DataVal<>("", "string"), false));
         return new NativeFunction("atoi", "integer", args) {

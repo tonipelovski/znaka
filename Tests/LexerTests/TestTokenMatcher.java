@@ -34,6 +34,7 @@ public class TestTokenMatcher {
 
         checkStatementFromTokens("bool a = True",
                 "[type : bool], [symbol : a], [operator : =], [boolean : True]");
+//        checkStatementFromTokens("ls.add(2)", "[type : bool]");
 
 
     }

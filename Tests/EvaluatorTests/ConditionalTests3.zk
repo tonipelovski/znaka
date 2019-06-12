@@ -1,0 +1,14 @@
+if(1<2){    a = 10}else if(2<1){    b = 11}else{    c = 12}
+if(1>2){    a = 10
+}else if(2>1){    b = 11
+}else{
+    c = 12
+}
+if(1>2){
+    a = 10
+}else if(2<1){
+    b = 11
+}else{
+    c = 12
+}
+

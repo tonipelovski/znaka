@@ -4,9 +4,12 @@ import com.znaka.Evaluator;
 import com.znaka.EvaluatorStructures.DataVal;
 import com.znaka.Exceptions.CannotEvaluate;
 import com.znaka.Exceptions.UnknownVariable;
+import com.znaka.ParserStructures.ArrayAST;
 import com.znaka.ParserStructures.DefaultAST;
 import com.znaka.ParserStructures.LiteralTypesAST;
 import com.znaka.ParserStructures.NumberAST;
+
+import java.util.ArrayList;
 
 public class LiterValueOper extends BaseExecuteOper {
     public LiterValueOper(Evaluator eval) {
@@ -36,6 +39,13 @@ public class LiterValueOper extends BaseExecuteOper {
         }
         if(ast1.getType().equals("boolean")){
             return new DataVal(Boolean.parseBoolean(ast1.getText()), "bool");
+        }
+        if(ast1.getType().equals("array")){ // make it actually work
+            ArrayList<DataVal> a = new ArrayList();
+            for (DefaultAST element : ((ArrayAST) ast1).getContent()) {
+                a.add(getEvaluator().Eval(element));
+            }
+            return new DataVal(a.clone(), "array");
         }
         /*if(ast1.getNumberType().equals("double")){
             return new DataVal(Double.parseDouble(ast1.getText()), ast1.getNumberType());
