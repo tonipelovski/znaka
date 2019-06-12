@@ -165,7 +165,8 @@ public class FunctionsTest extends EvaluatorTest {
     @Test
     public void FullFunctionTestFromFile() throws IOException, EvaluatorException, ParserException, LexerException {
         setNewFile("EvaluatorResources/BasicFunctionTest.zk");
-        Library.addFunctions(evaluator.getFunctions());
+//        Library.addFunctions(evaluator.getFunctions());
+        evaluator.getLibraries().add(new Library());
         evaluator.run();
         ExecuteStringNoExceptions("f7(7)");
         checkLastValAndType(7, "int");
@@ -191,7 +192,8 @@ public class FunctionsTest extends EvaluatorTest {
     @Test
     public void Recursion() throws IOException, EvaluatorException, ParserException, LexerException {
         setNewFile("EvaluatorResources/Recursion.zk");
-        Library.addFunctions(evaluator.getFunctions());
+//        Library.addFunctions(evaluator.getFunctions());
+        evaluator.getLibraries().add(new Library());
         evaluator.run();
         ExecuteStringNoExceptions("fib(1)");
         checkLastValAndType(1, "int");

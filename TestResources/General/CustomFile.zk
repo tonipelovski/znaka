@@ -1,0 +1,4 @@
+a = {2,3}
+a.add(5)
+a.add("asd")
+println(a.get(0))

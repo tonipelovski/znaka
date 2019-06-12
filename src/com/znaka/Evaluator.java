@@ -10,6 +10,7 @@ import com.znaka.EvaluatorStructures.Scope;
 import com.znaka.EvaluatorStructures.Variable;
 import com.znaka.Exceptions.*;
 import com.znaka.ParserStructures.DefaultAST;
+import com.znaka.StdLib.Library;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -25,6 +26,11 @@ public class Evaluator {
     private Scope mainScope;
     private Scope currentScope;
     private Stack<FunctionCall> callStack;
+    private HashSet<Library> libraries = new HashSet<>();
+
+    public HashSet<Library> getLibraries() {
+        return libraries;
+    }
 
     public Evaluator(Parser parser) {
         this.parser = parser;
@@ -63,20 +69,6 @@ public class Evaluator {
             return false;
         }
         DefaultAST ast = parser.getLastAst(); // needs to be changed....
-
-        /*lastReturnedValue = new DataVal<>(2);
-        System.out.println(lastReturnedValue.getVal());
-        lastReturnedValue = new DataVal<>("Asd");
-        System.out.println(lastReturnedValue.getVal());*/
-
-        /*System.out.println(ast);
-        System.out.println(ast instanceof AssignAST);
-        System.out.println(ast.getText());
-        AssignAST ast1 = (AssignAST)ast;
-
-        System.out.println(ast1.getOperator());
-        System.out.println(ast1.getLeft());
-        System.out.println(ast1.getRight());*/
 
         ExecLine(ast);
         if(debug){

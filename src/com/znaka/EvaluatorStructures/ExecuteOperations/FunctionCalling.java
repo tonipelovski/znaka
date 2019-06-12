@@ -10,6 +10,8 @@ import com.znaka.Exceptions.EvaluatorException;
 import com.znaka.Exceptions.NoSuchFunction;
 import com.znaka.Exceptions.WrongType;
 import com.znaka.ParserStructures.DefaultAST;
+import com.znaka.ParserStructures.Expression.ExpressionAST;
+import com.znaka.ParserStructures.Expression.MethodAST;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,12 +24,29 @@ public class FunctionCalling extends BaseExecuteOper {
     @Override
     public DataVal exec(DefaultAST ast) throws EvaluatorException {
         FunctionCallASTInter fnc = (FunctionCallASTInter) ast;
+        if(ast instanceof MethodAST){
+            MethodAST st = (MethodAST) ast;
+            ExpressionAST instance = st.getArgs().get(0);
+            DataVal ins = getEvaluator().Eval(instance);
+            if(ins.getType().equals("array")){
+
+            }
+
+        }
+
         Function f = getEvaluator().getFunctions().stream()
                 .filter(o -> o.getName().equals(fnc.getName()))
                 .findFirst()
                 .orElse(null);
         if(f == null){
-            throw new NoSuchFunction("No such function: " + fnc.getName());
+            f = getEvaluator().getLibraries().stream()
+                    .flatMap(o -> o.getFunctions().stream())
+                    .filter(o -> o.getName().equals(fnc.getName()))
+                    .findFirst()
+                    .orElse(null);
+            if(f==null){
+                throw new NoSuchFunction("No such function: " + fnc.getName());
+            }
         }
         List<DataVal> args = new ArrayList<>();
         for (DefaultAST arg : fnc.getArgs()) {
@@ -69,7 +88,7 @@ public class FunctionCalling extends BaseExecuteOper {
     }
 
     public static void validateReturnType(DataVal lastReturnedValue, Function f) throws WrongType {
-        if(!lastReturnedValue.getType().equals(f.getReturn_type())){
+        if(!f.getReturn_type().equals("any") && !lastReturnedValue.getType().equals(f.getReturn_type())){
             throw new WrongType(lastReturnedValue.getType(), f.getReturn_type(), lastReturnedValue.toString());
         }
     }

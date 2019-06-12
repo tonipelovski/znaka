@@ -7,7 +7,6 @@ import com.znaka.Exceptions.ParserException;
 import com.znaka.Exceptions.UnknownVariable;
 import com.znaka.Lexer;
 import com.znaka.Parser;
-import com.znaka.StdLib.Library;
 import com.znaka.Tokens.TokenMatches.Token;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -132,7 +131,7 @@ public class StatementTests extends EvaluatorTest {
     @Test
     public void ScopesTest() throws IOException, EvaluatorException, ParserException, LexerException {
         setNewFile("ParserResources/ConditionalTests.zk");
-        Library.addFunctions(evaluator.getFunctions());
+//        Library.addFunctions(evaluator.getFunctions());
         evaluator.run();
         ExecuteStringNoExceptions("if(True){a=10}");
         ExecuteStringNoExceptions("a");
@@ -149,7 +148,7 @@ public class StatementTests extends EvaluatorTest {
     @Test
     public void ScopesTest2() throws IOException, EvaluatorException, ParserException, LexerException {
         setNewFile("ParserResources/ConditionalTest2.zk");
-        Library.addFunctions(evaluator.getFunctions());
+//        Library.addFunctions(evaluator.getFunctions());
         evaluator.run();
         ExecuteAndCheckThrows("g", UnknownVariable.class);
         ExecuteAndCheckThrows("c", UnknownVariable.class);
