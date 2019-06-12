@@ -33,12 +33,20 @@ public class FunctionCalling extends BaseExecuteOper {
             }
 
         }
+
         Function f = getEvaluator().getFunctions().stream()
                 .filter(o -> o.getName().equals(fnc.getName()))
                 .findFirst()
                 .orElse(null);
         if(f == null){
-            throw new NoSuchFunction("No such function: " + fnc.getName());
+            f = getEvaluator().getLibraries().stream()
+                    .flatMap(o -> o.getFunctions().stream())
+                    .filter(o -> o.getName().equals(fnc.getName()))
+                    .findFirst()
+                    .orElse(null);
+            if(f==null){
+                throw new NoSuchFunction("No such function: " + fnc.getName());
+            }
         }
         List<DataVal> args = new ArrayList<>();
         for (DefaultAST arg : fnc.getArgs()) {

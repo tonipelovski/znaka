@@ -1,6 +1,7 @@
 package com.znaka;
 
 import com.znaka.Exceptions.ExitException;
+import com.znaka.StdLib.Array;
 import com.znaka.StdLib.Library;
 
 import java.io.BufferedReader;
@@ -17,14 +18,18 @@ public class Interpretator {
     public Interpretator(String filename, boolean debug) throws IOException { // exec file
         evaluator = createEvaluator(Files.newBufferedReader(Paths.get(filename),
                 StandardCharsets.US_ASCII));
-        Library.addFunctions(evaluator.getFunctions());
+//        Library.addFunctions(evaluator.getFunctions());
+        evaluator.getLibraries().add(new Library());
+        evaluator.getLibraries().add(new Array());
         evaluator.setDebug(debug);
 
     }
 
     public Interpretator(){ // interprator mode
         evaluator = createEvaluator(new BufferedReader(new InputStreamReader(System.in)));
-        Library.addFunctions(evaluator.getFunctions());
+//        Library.addFunctions(evaluator.getFunctions());
+        evaluator.getLibraries().add(new Library());
+        evaluator.getLibraries().add(new Array());
         evaluator.setDebug(true);
         interpretatorMode = true;
     }

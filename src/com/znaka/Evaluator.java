@@ -26,9 +26,9 @@ public class Evaluator {
     private Scope mainScope;
     private Scope currentScope;
     private Stack<FunctionCall> callStack;
-    private List<Library> libraries = new ArrayList<>();
+    private HashSet<Library> libraries = new HashSet<>();
 
-    public List<Library> getLibraries() {
+    public HashSet<Library> getLibraries() {
         return libraries;
     }
 

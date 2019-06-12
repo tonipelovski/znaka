@@ -14,7 +14,8 @@ import java.io.IOException;
 public class StdlibTests extends EvaluatorTest {
     @BeforeEach
     public void addNatives(){
-        Library.addFunctions(evaluator.getFunctions());
+//        Library.addFunctions(evaluator.getFunctions());
+        evaluator.getLibraries().add(new Library());
     }
 
     @Test

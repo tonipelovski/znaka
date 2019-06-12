@@ -9,7 +9,7 @@ import com.znaka.Exceptions.WrongType;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Array {
+public class Array extends Library{
     public static NativeFunction add() {
         List<Variable> args = new ArrayList<>();
         args.add(new Variable<>("self", new DataVal<>("", "array"), true));

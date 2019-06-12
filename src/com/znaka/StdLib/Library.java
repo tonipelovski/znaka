@@ -16,10 +16,14 @@ import java.util.HashSet;
 import java.util.List;
 
 public class Library {
+    private HashSet<Function> functions = new HashSet<>();
 
-    public static void addFunctions(HashSet<Function> functions){
-        Library l = new Library();
-        Class<? extends Library> aClass = l.getClass();
+    public HashSet<Function> getFunctions() {
+        return functions;
+    }
+
+    public Library() {
+        Class<? extends Library> aClass = this.getClass();
         for (Method method : aClass.getDeclaredMethods()) {
             if(method.getReturnType().getSimpleName().equals("NativeFunction") ||
                     method.getReturnType().getSimpleName().equals("Function")){
@@ -31,7 +35,6 @@ public class Library {
             }
 
         }
-
     }
 
     private static NativeFunction printFn(){
