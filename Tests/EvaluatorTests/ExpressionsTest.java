@@ -113,7 +113,7 @@ public class ExpressionsTest extends EvaluatorTest{
         ExecuteString("a++");
         Assertions.assertEquals(21, evaluator.getLastReturnedValue().getVal());
         ExecuteString("a--");
-        Assertions.assertEquals(19, evaluator.getLastReturnedValue().getVal());
+        Assertions.assertEquals(20, evaluator.getLastReturnedValue().getVal());
         ExecuteString("!a");
         Assertions.assertEquals(true, evaluator.getLastReturnedValue().getVal());
         ExecuteString("!c");

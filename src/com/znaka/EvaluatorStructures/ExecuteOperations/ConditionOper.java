@@ -150,29 +150,36 @@ public class ConditionOper extends BaseExecuteOper {
                 cond_result = (Boolean) result.getVal();
             }
             while (cond_result) {
+                System.out.println(cond_result);
                 MainAST body = ast1.getBody();
+                label:
                 for (DefaultAST ast2 : body.getAll_AST()) {
-                    if(ast2.getType().equals("conditional")){
-                        ConditionOper conditionOper = new ConditionOper(getEvaluator());
-                        conditionOper.exec(ast2);
-                        if(conditionOper.isReturnStatus()){
-                            setReturnStatus(true);
+                    switch (ast2.getType()) {
+                        case "conditional":
+                            ConditionOper conditionOper = new ConditionOper(getEvaluator());
+                            conditionOper.exec(ast2);
+                            if (conditionOper.isReturnStatus()) {
+                                setReturnStatus(true);
+                                break label;
+                            }
                             break;
+                        case "return": {
+                            DataVal body_result = this.getEvaluator().Eval(ast2);
+                            if (body_result != null) {
+                                getEvaluator().setLastReturnedValue(body_result);
+                            }
+                            returnStatus = true;
+                            break label;
                         }
-                    }else if(ast2.getType().equals("return")){
-                        DataVal body_result = this.getEvaluator().Eval(ast2);
-                        if (body_result != null) {
-                            getEvaluator().setLastReturnedValue(body_result);
-                        }
-                        returnStatus = true;
-                        break;
-                    }
-                    else if(ast2.getType().equals("break")){
-                        break;
-                    }else {
-                        DataVal body_result = this.getEvaluator().Eval(ast2);
-                        if (body_result != null) {
-                            getEvaluator().setLastReturnedValue(body_result);
+                        case "break":
+                            break label;
+                        default: {
+                            DataVal body_result = this.getEvaluator().Eval(ast2);
+                            if (body_result != null) {
+                                getEvaluator().setLastReturnedValue(body_result);
+                                System.out.println(body_result.getVal());
+                            }
+                            break;
                         }
                     }
                 }

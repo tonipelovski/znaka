@@ -107,6 +107,28 @@ public class StatementTests extends EvaluatorTest {
     }
 
     @Test
+    public void ElseIfConditionTestUltimate() throws LexerException, ParserException, EvaluatorException, IOException {
+        ExecuteStringNoExceptions("if(1<2){a = 10}else if(2<1){b = 11}else{c = 12}");
+        checkLastValAndType(10, "int");
+        ExecuteStringNoExceptions("if(1>2){\n" +
+                "    a = 10\n" +
+                "}else if(2<1){\n" +
+                "    b = 11\n" +
+                "}else{\n" +
+                "    c = 12\n" +
+                "}");
+        checkLastValAndType(12, "int");
+        ExecuteStringNoExceptions("if(1>2){    a = 10\n" +
+                "}else if(2>1){    b = 11\n" +
+                "}else{\n" +
+                "    c = 12\n" +
+                "}");
+        checkLastValAndType(11, "int");
+
+    }
+
+
+    @Test
     public void ScopesTest() throws IOException, EvaluatorException, ParserException, LexerException {
         setNewFile("ParserResources/ConditionalTests.zk");
 //        Library.addFunctions(evaluator.getFunctions());
