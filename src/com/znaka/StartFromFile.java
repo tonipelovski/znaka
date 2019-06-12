@@ -1,33 +1,40 @@
 package com.znaka;
 
-import com.znaka.EvaluatorStructures.Variable;
 import com.znaka.Exceptions.EvaluatorException;
 import com.znaka.Exceptions.LexerException;
 import com.znaka.Exceptions.ParserException;
 
-import java.io.*;
-import java.net.URL;
+import java.io.IOException;
+import java.nio.file.NoSuchFileException;
+import java.util.ArrayList;
 
 public class StartFromFile {
     public static void main(String[] args) throws IOException, EvaluatorException, ParserException, LexerException {
-        URL url = Main.class.getResource("ParserPrinting");
-        File file = new File(url.getPath());
-        BufferedReader reader = new BufferedReader(new FileReader(file));
-
-        Lexer lexer = new Lexer(reader);
-        Parser parser = new Parser(lexer);
-        Evaluator evaluator = new Evaluator(parser);
-       // evaluator.ProcessLine();
-       // evaluator.ProcessLine();
-        //evaluator.ProcessLine();
-
-
-        //evaluator.ProcessLine();
-        while(parser.parseLine()){
-
+        Interpretator interpretator;
+        boolean debug = false;
+        ArrayList<String> s = new ArrayList<>();
+        for (String arg : args) {
+            if(arg.equals("-d")){
+                debug = true;
+            }
+            else {
+                s.add(arg);
+            }
         }
-        System.out.println(parser.toString());
+        if(s.size() == 0){
+                interpretator = new Interpretator();
+                interpretator.setDebug(debug);
+        }
+        else {
+            try{
 
+                interpretator = new Interpretator(s.get(0), debug);
+            }catch (NoSuchFileException e){
+                System.out.println("No such file: " + e.getMessage());
+                return;
+            }
+        }
+        interpretator.run();
         //reader.close();
     }
 }

@@ -34,6 +34,10 @@ public class Interpretator {
         interpretatorMode = true;
     }
 
+    public void setDebug(boolean state){
+        evaluator.setDebug(state);
+    }
+
     private static Evaluator createEvaluator(BufferedReader reader){
         Lexer lexer = new Lexer(reader);
         Parser parser = new Parser(lexer);
@@ -47,8 +51,14 @@ public class Interpretator {
                     System.out.print("<o> ");
                 }
                 try {
-                    evaluator.ProcessLine();
+                    if(!evaluator.ProcessLine()){
+                        break;
+                    }
+                    if(!evaluator.isDebug() && interpretatorMode){
+                        System.out.println(evaluator.getLastReturnedValue());
+                    }
                 } catch (Throwable e) {
+
                     ErrorMessagePrint(e);
 //                    e.printStackTrace();
 

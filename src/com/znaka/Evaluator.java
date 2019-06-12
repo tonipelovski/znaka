@@ -25,6 +25,11 @@ public class Evaluator {
     private DataVal lastReturnedValue;
     private Scope mainScope;
     private Scope currentScope;
+
+    public boolean isDebug() {
+        return debug;
+    }
+
     private Stack<FunctionCall> callStack;
     private HashSet<Library> libraries = new HashSet<>();
 
