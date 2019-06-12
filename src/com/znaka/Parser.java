@@ -680,48 +680,136 @@ public class Parser {
     }
 
     private DefaultAST getFuncBody(MainAST to_order, int level, DefaultAST last, MainAST be_ordered, FunctionDefAST functionDefAST, MainAST asts) throws IOException, LexerException, ParserException {
-        if(!to_order.has(2)) {
-            Parser temp_parser = new Parser(lexer);
+        Parser temp_parser;
+        DefaultAST defaultAST;
+        boolean noParsing = false;
+        int open = 0;
+        boolean oneLine = false;
+        if (to_order.has(1)) {
+            defaultAST = to_order.getAll_AST().get(0);
+            if (defaultAST.getType().equals("open_curly")) {
+                to_order.popFrontAST(1);
+                open = 1;
 
-            while(temp_parser.parseLine()){
-                //System.out.println("cccc");
-                for(DefaultAST defaultAST1 : temp_parser.mainAST.getAll_AST()){
-                    if(defaultAST1.getType().equals("close_curly")){
-                        temp_parser.mainAST.popFrontAST(1);
-                        //System.out.println(asts.getAll_AST().get(1));
+                if (to_order.has(1)) {
+                    for (DefaultAST defaultAST1 : to_order.getAll_AST()) {
+                        if (defaultAST1.getType().equals("open_curly")) {
+                            open++;
 
-                        functionDefAST.setBody(asts.getAll_AST());
-                        be_ordered.addAST(functionDefAST);
-                        if(temp_parser.mainAST.getAll_AST().size() > 1) {
-                            be_ordered.addAST(temp_parser.mainAST);
+                        } else if (defaultAST1.getType().equals("close_curly")) {
+                            open--;
                         }
 
-                        temp_parser.mainAST.getAll_AST().clear();
-                        return null;
-                    }else if(!defaultAST1.getType().equals("open_curly")){
-                        temp_parser.mainAST.popFrontAST(1);
-                        asts.addAST(defaultAST1);
-
-                    }else if(defaultAST1.getType().equals("open_curly")){
-                        temp_parser.mainAST.popFrontAST(1);
+                        if (open == 0) {
+                            oneLine = true;
+                        }
                     }
-                    //System.out.println(defaultAST1.toString());
+                }
+            } else {
+                if (to_order.has(1)) {
+                    if (to_order.getAll_AST().get(0).getType().equals("conditional")) {
+                        noParsing = true;
+                    }
+                    for (DefaultAST defaultAST1 : to_order.getAll_AST()) {
+                        if (defaultAST1.getType().equals("open_curly")) {
+                            open++;
+
+                        } else if (defaultAST1.getType().equals("close_curly")) {
+                            open--;
+                        }
+
+                    }
+
+                    if (open == 0) {
+                        oneLine = true;
+                    } else {
+                        open = 0;
+                    }
+                }
+            }
+        } else {
+            oneLine = false;
+        }
+        if (!oneLine) {
+            //System.out.println("not one line");
+            MainAST currentLine = new MainAST(new Stack<>());
+            orderAST(to_order, level, functionDefAST, currentLine);
+            temp_parser = new Parser(lexer);
+            MainAST body = new MainAST(new Stack<>());
+            for (DefaultAST toAdd : currentLine.getAll_AST()) {
+                body.addAST(toAdd);
+            }
+            if (noParsing) {
+                functionDefAST.setBody(body.getAll_AST());
+                be_ordered.addAST(functionDefAST);
+                return null;
+            }
+            while (temp_parser.parseLine()) {
+                for (DefaultAST toAdd : temp_parser.mainAST.getAll_AST()) {
+                    if (toAdd.getType().equals("open_curly")) {
+                        open++;
+                    } else if (toAdd.getType().equals("close_curly")) {
+                        open--;
+                    } else {
+                        body.addAST(toAdd);
+                    }
+                    //System.out.println("Open: " + open);
+                    if (open == 0) {
+                        functionDefAST.setBody(body.getAll_AST());
+                        be_ordered.addAST(functionDefAST);
+                        temp_parser.mainAST.popFrontAST(1);
+                        if (temp_parser.mainAST.getAll_AST().size() > 0) {
+                            //System.out.println("start printing");
+                            for (DefaultAST defaultAST1 : temp_parser.mainAST.getAll_AST()) {
+                                // System.out.println(defaultAST1.toString());
+                                if (defaultAST1.toString() != null) {
+                                    be_ordered.addAST(defaultAST1);
+                                }
+                            }
+                        }
+                        return null;
+                    }
+                    temp_parser.mainAST.popFrontAST(1);
 
                 }
             }
-        }else{
-            if(to_order.getAll_AST().get(0).getType().equals("open_curly")) {
-                to_order.popFrontAST(1);
-            }
-            orderAST(to_order, 0, null, asts);
+        } else {
+            //System.out.println("oneline");
+            MainAST currentLine = new MainAST(new Stack<>());
+            orderAST(to_order, level, functionDefAST, currentLine);
             MainAST body = new MainAST(new Stack<>());
-            for(DefaultAST defaultAST : asts.getAll_AST()){
-                body.addAST(defaultAST);
+
+            for (DefaultAST toAdd : currentLine.getAll_AST()) {
+                if (toAdd.getType().equals("open_curly")) {
+                    open++;
+                } else if (toAdd.getType().equals("close_curly")) {
+                    open--;
+                } else {
+                    //System.out.println("toAdd: " + toAdd.toString());
+
+                    body.addAST(toAdd);
+                }
+                //System.out.println("Open: " + open);
+
+                if (open == 0) {
+                    functionDefAST.setBody(body.getAll_AST());
+                    be_ordered.addAST(functionDefAST);
+                    currentLine.popFrontAST(1);
+                    if (currentLine.getAll_AST().size() > 1) {
+                        for (DefaultAST defaultAST1 : currentLine.getAll_AST()) {
+                            // System.out.println(defaultAST1.toString());
+                            if (defaultAST1.toString() != null) {
+                                be_ordered.addAST(defaultAST1);
+                            }
+                        }
+                    }
+                    //System.out.println(conditionalsAST.toString());
+
+                    return null;
+                }
+                currentLine.popFrontAST(1);
 
             }
-            functionDefAST.setBody(asts.getAll_AST());
-            return order_redo(to_order, level, functionDefAST, be_ordered);
-
         }
         return order_redo(to_order, level, functionDefAST, be_ordered);
     }
