@@ -19,7 +19,7 @@ public class StartFromFile {
         Evaluator evaluator = new Evaluator(parser);
         evaluator.ProcessLine();
         evaluator.ProcessLine();
-        evaluator.ProcessLine();
+       // evaluator.ProcessLine();
 
 
         //evaluator.ProcessLine();

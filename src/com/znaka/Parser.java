@@ -345,8 +345,18 @@ public class Parser {
                         DefaultAST right = to_order.getAll_AST().get(0);
                         operatorAST.setLeft(left);
                         //System.out.println("debaaa" + operatorAST.toString());
+                        if(operatorAST.getOperator().equals(".")){
+                            FunctionCallAST functionCallAST = (FunctionCallAST) orderAST(to_order, level + 1, operatorAST, be_ordered);
 
-                        return getRight(to_order, level, last, be_ordered, operatorAST, right);
+                            List<ExpressionAST> expressionASTS = new ArrayList<>();
+                            VarAST varAST = (VarAST) operatorAST.getLeft();
+                            expressionASTS.add(varAST);
+                            expressionASTS.addAll(functionCallAST.getArgs());
+                            FunctionCallAST method = new FunctionCallAST(functionCallAST.getName(), expressionASTS);
+                            return order_redo(to_order, level, method, be_ordered);
+                        }else {
+                            return getRight(to_order, level, last, be_ordered, operatorAST, right);
+                        }
                     } else {
                         StringBuffer outputBuffer = new StringBuffer();
                         String message = "Expected right: ";
