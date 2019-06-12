@@ -55,6 +55,7 @@ public class AssignOper extends BaseExecuteOper {
             //throw new CannotEvaluate("Cannot evaluate right side");
             ret = rightSide;
         }
+        ret.setType(leftType);
         Variable var = VarGetOper.findVar(vars, varName);
 
         if(var  == null){

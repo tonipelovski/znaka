@@ -19,6 +19,10 @@ public class DataVal<T> {
 
     }
 
+    public void setType(String type) {
+        this.type = type;
+    }
+
     public T getVal() {
         return val;
     }
