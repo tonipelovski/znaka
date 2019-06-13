@@ -48,6 +48,8 @@ public class Interpretator {
 
             while(true){
                 if(interpretatorMode){
+//                    System.out.println("  ↓ ");
+//                    System.out.print(  "→ o ← ");
                     System.out.print("<o> ");
                 }
                 try {

@@ -18,7 +18,7 @@ import java.util.ArrayList;
 public class ParserTests {
     @Test
     public void genaralBasicsTest() throws IOException, LexerException, ParserException {
-        URL url = ParserTests.class.getResource("testParserSecond");
+        URL url = ParserTests.class.getResource("ts.zk"); //testParserSecond
         File file = new File(url.getPath());
         BufferedReader reader = new BufferedReader(new FileReader(file));
         ArrayList<Token> tokens = new ArrayList<>();
@@ -60,6 +60,22 @@ public class ParserTests {
                 "     [string_literal:\"kurwa\"]]";
         Assertions.assertEquals(expected, parserOutput);
 
+    }
+
+    @Test
+    public void LogicOperationTest() throws IOException, LexerException, ParserException {
+        URL url = ParserTests.class.getResource("ts.zk"); //testParserSecond
+        File file = new File(url.getPath());
+        BufferedReader reader = new BufferedReader(new FileReader(file));
+        ArrayList<Token> tokens = new ArrayList<>();
+        Lexer lexer = new Lexer(tokens, reader);
+
+        Parser parser = new Parser(lexer);
+        while (parser.parseLine()) {
+
+        }
+        String parserOutput = parser.toString();
+        Assertions.assertEquals("", parserOutput);
     }
 
     @Test
